@@ -1,6 +1,6 @@
 # Zhaobing Jiang's Personal Homepage
 
-Personal homepage of **Zhaobing Jiang (江召兵)** — Chairman of Nanjing Optiya Information Technology Co., Ltd., Associate Professor, and adjunct supervisor at Northwestern Polytechnical University, Nanjing University of Aeronautics and Astronautics, and Xi'an Jiaotong University.
+Personal homepage of **Zhaobing Jiang (江召兵)** — Chairman of Nanjing Opatiya Information Technology Co., Ltd., Associate Professor, and adjunct supervisor at Northwestern Polytechnical University, Nanjing University of Aeronautics and Astronautics, and Xi'an Jiaotong University.
 
 Live at: <https://ZhaobingJiang.github.io/>
 
