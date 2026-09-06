@@ -198,6 +198,31 @@ a:hover {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* ---------- Poems ---------- */
+.poem {
+  margin-bottom: 30px;
+}
+
+.poem-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+}
+
+.poem-body {
+  font-family: "KaiTi", "楷体", "STKaiti", "FangSong", serif;
+  font-size: 16px;
+  line-height: 2;
+  color: var(--text-color);
+  white-space: pre-wrap;
+  padding: 14px 18px;
+  background: #fafafa;
+  border-left: 3px solid var(--accent-color);
+  border-radius: 0 6px 6px 0;
+  overflow-x: auto;
+}
+
 .note {
   font-size: 14px;
   color: var(--muted-color);
