@@ -1,0 +1,197 @@
+/* ============================================================
+   Minimal-light style personal homepage
+   Inspired by the minimal-light template (yaoyao-liu/minimal-light)
+   ============================================================ */
+
+:root {
+  --bg-color: #ffffff;
+  --text-color: #3d3d3d;
+  --heading-color: #212121;
+  --accent-color: #0383a9;
+  --accent-hover: #026a8a;
+  --muted-color: #8a8a8a;
+  --border-color: #e8e8e8;
+  --link-color: #1772d0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Header / Navigation ---------- */
+.site-header {
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.site-nav {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 24px;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 14px 2px;
+  font-size: 15px;
+  color: var(--text-color);
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+  text-decoration: none;
+  color: var(--accent-color);
+}
+
+.nav-link.active {
+  border-bottom-color: var(--accent-color);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 20px 24px;
+}
+
+.title-section {
+  margin-bottom: 8px;
+}
+
+.name {
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--heading-color);
+  letter-spacing: 0.2px;
+}
+
+.name-zh,
+.name-en {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--muted-color);
+  margin-left: 8px;
+}
+
+.affiliation {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+/* ---------- Sections ---------- */
+.section {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-color);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 14px;
+}
+
+.section p {
+  margin-bottom: 12px;
+  text-align: justify;
+}
+
+/* ---------- Lists ---------- */
+.item-list {
+  list-style: none;
+}
+
+.item-list li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 10px;
+}
+
+.item-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+}
+
+.item-date {
+  display: inline-block;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-right: 4px;
+}
+
+.pub-lang {
+  color: var(--muted-color);
+  font-size: 14.5px;
+}
+
+.note {
+  font-size: 14px;
+  color: var(--muted-color);
+  margin-top: 16px;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border-color);
+  margin-top: 48px;
+  padding: 24px 20px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted-color);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .name {
+    font-size: 26px;
+  }
+
+  .name-zh,
+  .name-en {
+    font-size: 19px;
+  }
+
+  .container {
+    padding-top: 32px;
+  }
+
+  .site-nav {
+    gap: 14px;
+  }
+}
