@@ -247,17 +247,58 @@ a:hover {
   margin-bottom: 8px;
 }
 
+/* 诗词正文：行书、居中排版（参照欧帕提亚官网诗词页），字号较默认大两号 */
 .poem-body {
-  font-family: "KaiTi", "楷体", "STKaiti", "FangSong", serif;
-  font-size: 16px;
-  line-height: 2;
+  font-family: "STXingkai", "华文行楷", "Xingkai SC", "KaiTi", "楷体", "STKaiti", cursive;
+  font-size: 20px;
+  line-height: 1.9;
+  letter-spacing: 0.3px;
   color: var(--text-color);
-  white-space: pre-wrap;
-  padding: 14px 18px;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 22px 24px;
   background: #fafafa;
-  border-left: 3px solid var(--accent-color);
-  border-radius: 0 6px 6px 0;
-  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.poem-body .poem-headline {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 0.4em;
+}
+
+.poem-body .poem-verse {
+  padding: 1px 0;
+}
+
+.poem-body .poem-blank {
+  height: 0.85em;
+}
+
+.poem-body .poem-sign {
+  font-family: "KaiTi", "楷体", "STKaiti", serif;
+  font-size: 15px;
+  color: var(--muted-color);
+  margin-top: 0.9em;
+  padding-top: 0.9em;
+}
+
+.poem-body .poem-note {
+  font-family: "KaiTi", "楷体", "STKaiti", serif;
+  text-align: left;
+  font-size: 13.5px;
+  color: var(--muted-color);
+  line-height: 1.9;
+  margin: 3px 0;
+}
+
+/* 赋（散文体）：段落左对齐、首行缩进 */
+.poem-body .poem-para {
+  text-align: left;
+  text-indent: 2em;
+  margin-bottom: 0.5em;
 }
 
 .note {
@@ -293,6 +334,15 @@ a:hover {
 
   .site-nav {
     gap: 14px;
+  }
+
+  .poem-body {
+    font-size: 17px;
+    padding: 16px 14px;
+  }
+
+  .poem-body .poem-headline {
+    font-size: 19px;
   }
 }
 

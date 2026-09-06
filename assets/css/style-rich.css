@@ -135,10 +135,15 @@ body[data-theme="rich"] .poem-title {
 
 body[data-theme="rich"] .poem-body {
   background: linear-gradient(135deg, #f6f8ff, #fcf6ff);
-  border-left: 4px solid #6a11cb;
-  border-radius: 0 12px 12px 0;
+  border: 1px solid rgba(106, 17, 203, 0.18);
+  border-radius: 12px;
   box-shadow: inset 0 0 0 1px rgba(106, 17, 203, 0.07);
   color: #3a4257;
+}
+
+body[data-theme="rich"] .poem-body .poem-sign,
+body[data-theme="rich"] .poem-body .poem-note {
+  color: #8b94a8;
 }
 
 body[data-theme="rich"] .poem::after {
