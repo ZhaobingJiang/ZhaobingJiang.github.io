@@ -1,0 +1,189 @@
+/* ============================================================
+   Rich theme for the personal homepage
+   Gradient hero + card layout + soft shadows
+   Activated via body[data-theme="rich"] (theme.js)
+   ============================================================ */
+
+body[data-theme="rich"] {
+  background: #eef1f8;
+  font-size: 16px;
+}
+
+/* ---------- Header / Navigation ---------- */
+body[data-theme="rich"] .site-header {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 12px rgba(30, 60, 114, 0.08);
+  border-bottom: none;
+}
+
+body[data-theme="rich"] .site-nav {
+  max-width: 900px;
+}
+
+body[data-theme="rich"] .nav-link {
+  color: #33415c;
+}
+
+body[data-theme="rich"] .nav-link:hover {
+  color: #2a5298;
+}
+
+body[data-theme="rich"] .nav-link.active {
+  color: #2a5298;
+  border-bottom-color: #2a5298;
+}
+
+/* ---------- Layout ---------- */
+body[data-theme="rich"] .container {
+  max-width: 900px;
+  padding: 0 24px 32px;
+}
+
+/* ---------- Hero ---------- */
+body[data-theme="rich"] .title-section {
+  margin: 0 -24px;
+  padding: 58px 32px 50px;
+  background: linear-gradient(135deg, #141a2e 0%, #1e3c72 45%, #2a5298 75%, #6a11cb 100%);
+  border-radius: 0 0 28px 28px;
+  color: #ffffff;
+  text-align: center;
+  box-shadow: 0 8px 28px rgba(20, 26, 46, 0.25);
+}
+
+body[data-theme="rich"] .avatar {
+  width: 168px;
+  height: 168px;
+  border: 4px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.14), 0 12px 32px rgba(0, 0, 0, 0.3);
+  margin: 0 auto 20px;
+}
+
+body[data-theme="rich"] .name {
+  color: #ffffff;
+  font-size: 38px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+body[data-theme="rich"] .name-zh,
+body[data-theme="rich"] .name-en {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+body[data-theme="rich"] .affiliation {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ---------- Sections (cards) ---------- */
+body[data-theme="rich"] .section {
+  margin-top: 26px;
+  padding: 26px 30px;
+  border: none;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 14px rgba(30, 60, 114, 0.07);
+}
+
+body[data-theme="rich"] .section-title {
+  font-size: 21px;
+  color: #1e3c72;
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 18px;
+}
+
+body[data-theme="rich"] .section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 4px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #2a5298, #6a11cb);
+}
+
+body[data-theme="rich"] .section p a {
+  color: #2a5298;
+  font-weight: 600;
+}
+
+/* ---------- Lists ---------- */
+body[data-theme="rich"] .item-list li {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+body[data-theme="rich"] .item-list li::before {
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #2a5298, #6a11cb);
+  box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.12);
+}
+
+body[data-theme="rich"] .item-date {
+  color: #1e3c72;
+}
+
+/* ---------- Poems ---------- */
+body[data-theme="rich"] .poem-title {
+  color: #1e3c72;
+}
+
+body[data-theme="rich"] .poem-body {
+  background: linear-gradient(135deg, #f6f8ff, #fcf6ff);
+  border-left: 4px solid #6a11cb;
+  border-radius: 0 12px 12px 0;
+  box-shadow: inset 0 0 0 1px rgba(106, 17, 203, 0.07);
+  color: #3a4257;
+}
+
+body[data-theme="rich"] .poem::after {
+  color: #b9c2d6;
+}
+
+/* ---------- Certificates / downloads ---------- */
+body[data-theme="rich"] .cert-thumb {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(30, 60, 114, 0.12);
+}
+
+body[data-theme="rich"] .pub-dl {
+  color: #2a5298;
+}
+
+body[data-theme="rich"] .pub-lang,
+body[data-theme="rich"] .note {
+  color: #8b94a8;
+}
+
+/* ---------- Footer ---------- */
+body[data-theme="rich"] .site-footer {
+  margin-top: 36px;
+  padding: 26px 20px;
+  border: none;
+  background: #141a2e;
+  color: #9aa3b8;
+}
+
+body[data-theme="rich"] .site-footer a {
+  color: #c9d4f0;
+}
+
+/* ---------- Toggle button in rich mode ---------- */
+body[data-theme="rich"] .theme-toggle-btn {
+  background: rgba(20, 26, 46, 0.85);
+  color: #e8edf9;
+  border-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body[data-theme="rich"] .theme-toggle-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
