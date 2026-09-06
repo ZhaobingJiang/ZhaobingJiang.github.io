@@ -199,6 +199,23 @@ a:hover {
 }
 
 /* ---------- Poems ---------- */
+.poem-link {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--heading-color);
+  text-decoration: none;
+}
+
+.poem-link:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
+.poem-pager {
+  margin-top: 18px;
+  font-size: 14.5px;
+}
+
 .poem {
   margin-bottom: 34px;
   padding-bottom: 32px;
