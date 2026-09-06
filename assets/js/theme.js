@@ -1,5 +1,6 @@
 /* Theme switcher: minimal-light (default) <-> rich style.
- * Injects a fixed toggle button (top-right) and persists the choice. */
+ * Injects a fixed toggle button (top-right) and persists the choice.
+ * Safe to load in <head>: button creation waits for DOM readiness. */
 (function () {
   "use strict";
 
@@ -14,17 +15,15 @@
 
   var KEY = "jzb-site-theme";
   var dir = cssDir();
-  var rich = localStorage.getItem(KEY) === "rich";
+  var rich = false;
+  try {
+    rich = localStorage.getItem(KEY) === "rich";
+  } catch (e) {}
 
   var link = document.createElement("link");
   link.id = "theme-rich-style";
   link.rel = "stylesheet";
-
-  var btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "theme-toggle-btn";
-  btn.setAttribute("aria-label", "Toggle theme");
-  document.body.appendChild(btn);
+  var btn = null;
 
   function apply() {
     if (rich) {
@@ -33,15 +32,38 @@
     } else if (link.parentNode) {
       link.parentNode.removeChild(link);
     }
-    btn.textContent = rich ? "简约样式" : "富文本样式";
-    document.body.setAttribute("data-theme", rich ? "rich" : "minimal");
+    if (btn) {
+      btn.textContent = rich ? "简约样式" : "富文本样式";
+    }
+    if (document.body) {
+      document.body.setAttribute("data-theme", rich ? "rich" : "minimal");
+    }
     try { localStorage.setItem(KEY, rich ? "rich" : "minimal"); } catch (e) {}
   }
 
-  btn.addEventListener("click", function () {
-    rich = !rich;
+  function init() {
+    if (!document.body) return;
+    btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "theme-toggle-btn";
+    btn.setAttribute("aria-label", "Toggle theme");
+    btn.addEventListener("click", function () {
+      rich = !rich;
+      apply();
+    });
+    document.body.appendChild(btn);
     apply();
-  });
+  }
 
-  apply();
+  // Preload rich stylesheet immediately if stored choice is rich (avoids flash)
+  if (rich) {
+    link.href = dir + "style-rich.css";
+    document.head.appendChild(link);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
