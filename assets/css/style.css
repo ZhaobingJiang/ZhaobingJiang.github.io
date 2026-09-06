@@ -200,7 +200,27 @@ a:hover {
 
 /* ---------- Poems ---------- */
 .poem {
-  margin-bottom: 30px;
+  margin-bottom: 34px;
+  padding-bottom: 32px;
+}
+
+.poem::after {
+  content: "◆ ◆ ◆";
+  display: block;
+  text-align: center;
+  color: var(--muted-color);
+  font-size: 12px;
+  letter-spacing: 10px;
+  margin-top: 32px;
+}
+
+.poem:last-child::after {
+  content: none;
+}
+
+.poem:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .poem-title {
