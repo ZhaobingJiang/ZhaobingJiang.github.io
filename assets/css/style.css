@@ -250,7 +250,7 @@ a:hover {
 /* 诗词正文：行书、居中排版（参照欧帕提亚官网诗词页），字号较默认大两号 */
 .poem-body {
   font-family: "STXingkai", "华文行楷", "Xingkai SC", "KaiTi", "楷体", "STKaiti", cursive;
-  font-size: 20px;
+  font-size: 26px;
   line-height: 1.9;
   letter-spacing: 0.3px;
   color: var(--text-color);
@@ -264,7 +264,7 @@ a:hover {
 }
 
 .poem-body .poem-headline {
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 600;
   margin-bottom: 0.4em;
 }
@@ -279,7 +279,7 @@ a:hover {
 
 .poem-body .poem-sign {
   font-family: "KaiTi", "楷体", "STKaiti", serif;
-  font-size: 15px;
+  font-size: 17px;
   color: var(--muted-color);
   margin-top: 0.9em;
   padding-top: 0.9em;
@@ -288,7 +288,7 @@ a:hover {
 .poem-body .poem-note {
   font-family: "KaiTi", "楷体", "STKaiti", serif;
   text-align: left;
-  font-size: 13.5px;
+  font-size: 15px;
   color: var(--muted-color);
   line-height: 1.9;
   margin: 3px 0;
@@ -337,12 +337,12 @@ a:hover {
   }
 
   .poem-body {
-    font-size: 17px;
+    font-size: 22px;
     padding: 16px 14px;
   }
 
   .poem-body .poem-headline {
-    font-size: 19px;
+    font-size: 25px;
   }
 }
 
