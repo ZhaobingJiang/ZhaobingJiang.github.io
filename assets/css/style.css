@@ -326,6 +326,17 @@ html[lang="zh-CN"] .section > p.poem-pager {
   color: var(--muted-color);
 }
 
+.site-footer .visit-counter {
+  font-size: 14px;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.site-footer .visit-counter span {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
   .name {

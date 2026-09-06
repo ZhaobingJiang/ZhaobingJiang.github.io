@@ -192,11 +192,26 @@
   </main>
 
   <footer class="site-footer">
+    <p class="visit-counter">Visits: <span id="visit-counter">1008</span></p>
     <p>
       &copy; 2026 Zhaobing Jiang. This site is built in the style of the
       <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a> template.
       Feel free to use the source code.
     </p>
   </footer>
+  <script>
+    (function () {
+      var KEY = 'jzb-visit-count';
+      var count = 1007;
+      try {
+        var v = parseInt(localStorage.getItem(KEY), 10);
+        if (!isNaN(v) && v >= 1008) { count = v; }
+      } catch (e) {}
+      count += 1;
+      try { localStorage.setItem(KEY, String(count)); } catch (e) {}
+      var el = document.getElementById('visit-counter');
+      if (el) { el.textContent = count; }
+    })();
+  </script>
 </body>
 </html>
