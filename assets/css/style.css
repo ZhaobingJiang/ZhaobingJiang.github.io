@@ -138,6 +138,15 @@ a:hover {
   text-align: justify;
 }
 
+/* 中文页面：段落首行缩进两个汉字字符（标题区居中的说明文字不缩进） */
+html[lang="zh-CN"] .section > p {
+  text-indent: 2em;
+}
+
+html[lang="zh-CN"] .section > p.poem-pager {
+  text-indent: 0;
+}
+
 /* ---------- Lists ---------- */
 .item-list {
   list-style: none;
