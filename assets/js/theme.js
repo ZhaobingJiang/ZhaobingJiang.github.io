@@ -15,6 +15,10 @@
 
   var KEY = "jzb-site-theme";
   var dir = cssDir();
+  var isZh = /\/zh\//.test(location.pathname);
+  var labels = isZh
+    ? { toRich: "富文本样式", toMinimal: "简约样式" }
+    : { toRich: "Rich Style", toMinimal: "Minimal Style" };
   var rich = false;
   try {
     rich = localStorage.getItem(KEY) === "rich";
@@ -33,7 +37,7 @@
       link.parentNode.removeChild(link);
     }
     if (btn) {
-      btn.textContent = rich ? "简约样式" : "富文本样式";
+      btn.textContent = rich ? labels.toMinimal : labels.toRich;
     }
     if (document.body) {
       document.body.setAttribute("data-theme", rich ? "rich" : "minimal");
