@@ -2,7 +2,7 @@
 
 Personal homepage of **Zhaobing Jiang (江召兵)** — Chairman of Nanjing Optiya Information Technology Co., Ltd., Associate Professor, and adjunct supervisor at Northwestern Polytechnical University, Nanjing University of Aeronautics and Astronautics, and Xi'an Jiaotong University.
 
-Live at: <https://owen9020.github.io/ZhaobingJiang/>
+Live at: <https://ZhaobingJiang.github.io/>
 
 ## Structure
 
@@ -20,4 +20,4 @@ It is a pure static site (plain HTML + CSS), no build step required.
 
 ## Deployment
 
-Push to the `main` branch of the `ZhaobingJiang` repository, then enable GitHub Pages (Settings → Pages → deploy from branch `main`). The site is served at `https://owen9020.github.io/ZhaobingJiang/`.
+Push to the `main` branch of the `ZhaobingJiang.github.io` repository — GitHub Pages serves it automatically at `https://ZhaobingJiang.github.io/`.
