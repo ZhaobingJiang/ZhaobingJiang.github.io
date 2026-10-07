@@ -374,8 +374,9 @@ def main():
         part_html.append(f'<button class="sec-link" data-v="{p}" aria-pressed="false">'
                          f'<span class="lb">{esc(label)}</span><i>{n}</i></button>')
 
+    # 每个章节按钮后面紧跟它自己的目录面板：面板必须贴着按钮，否则展开第五章时
+    # 目录会跑到整份章节列表的末尾去（参考站也是 appendChild(button); appendChild(sub)）
     ch_html = [f'<button class="sec-link all" data-v="" aria-pressed="true"><span class="lb">全部章节</span><i>{len(cards)}</i></button>']
-    toc_html = []
     for g in groups:
         ch_html.append(
             f'<button class="sec-link" data-v="{g["key"]}" aria-pressed="false">'
@@ -385,7 +386,7 @@ def main():
         sub = [f'<a href="#{c["id"]}" data-go="{c["id"]}"><i>{esc(c["toc"])}</i>'
                f'<span>{esc(c["title"])}</span></a>' for c in g["cards"]]
         sub.append('<p class="toc-none" hidden>没有符合当前筛选的单元</p>')
-        toc_html.append(f'<div class="toc-sub" data-for="{g["key"]}" hidden>{"".join(sub)}</div>')
+        ch_html.append(f'<div class="toc-sub" data-for="{g["key"]}" hidden>{"".join(sub)}</div>')
 
     def counts(field):
         if field == "kind":
@@ -480,7 +481,6 @@ def main():
   <div class="group">
     <div class="gt">章节 <small>点箭头看本节目录</small></div>
     <div class="sec-links" id="f-ch" data-dim="ch">{''.join(ch_html)}</div>
-    {''.join(toc_html)}
   </div>
   <div class="group">
     <div class="gt">这一节给你什么 <small>可多选</small></div>

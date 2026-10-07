@@ -139,13 +139,25 @@
     writeUrl();
   }
 
-  /* ---------- 折叠某章节的目录 ---------- */
+  /* ---------- 目录面板 ---------- */
   function fold(key, want) {
     var sub = SUBS[key];
     if (!sub) return;
     sub.hidden = !want;
     var btn = document.querySelector('#f-ch [data-v="' + key + '"]');
     if (btn) btn.classList.toggle('open', want);
+  }
+
+  // 侧栏一次只展开一个章节的目录：同时摊开好几份会把后面的章节挤到看不见，
+  // 也容易让人以为「这一节的条目跑到了列表末尾」
+  function openOnly(key, want, reveal) {
+    if (!want) { fold(key, false); return; }
+    Object.keys(SUBS).forEach(function (k) { if (k !== key) fold(k, false); });
+    fold(key, true);
+    if (reveal) {
+      var btn = document.querySelector('#f-ch [data-v="' + key + '"]');
+      if (btn) btn.scrollIntoView({ block: 'nearest' });
+    }
   }
 
   /* ---------- 跳到某个单元 ---------- */
@@ -188,11 +200,11 @@
         if (dim === 'ch') {
           // 点折叠箭头，或再点一次已选中的章：只收起或展开目录，筛选不动
           if (ev.target.closest('.fold') || state.ch === v) {
-            fold(v, SUBS[v] && SUBS[v].hidden);
+            openOnly(v, !!(SUBS[v] && SUBS[v].hidden), true);
             return;
           }
           state.ch = v;
-          if (v) fold(v, true);
+          if (v) openOnly(v, true, true);
         } else if (dim === 'part' && v === '') {
           state.part = [];
         } else {
@@ -258,7 +270,8 @@
           Object.keys(TOC).forEach(function (k) { TOC[k].classList.remove('on'); });
           a.classList.add('on');
           var key = a.closest('.toc-sub').dataset.for;
-          if (SUBS[key] && SUBS[key].hidden) fold(key, true);
+          // 只展开、不滚动侧栏：跟着阅读位置自动滚会一直和读者抢滚动条
+          if (SUBS[key] && SUBS[key].hidden) openOnly(key, true, false);
         });
       }, { rootMargin: '-30% 0px -60% 0px' });
       CARDS.forEach(function (el) { io.observe(el); });

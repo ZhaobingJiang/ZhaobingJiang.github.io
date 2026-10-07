@@ -123,6 +123,75 @@ with sync_playwright() as p:
     check("reset restores all", page.locator("#list .card:visible").count() == 94)
     check("reset clears url", "kind=" not in page.url, page.url)
 
+    # ---- 回归：章节目录面板必须贴着自己的按钮，不能被挤到列表末尾 ----
+    panels = page.evaluate("""() => Array.from(document.querySelectorAll('.toc-sub')).map(s => ({
+        for: s.dataset.for, parentId: s.parentElement.id,
+        prevBtn: s.previousElementSibling && s.previousElementSibling.dataset
+                 ? s.previousElementSibling.dataset.v : null }))""")
+    check("every chapter panel lives inside #f-ch", len(panels) == 18 and
+          all(x["parentId"] == "f-ch" for x in panels), str(len(panels)))
+    check("every chapter panel follows its own button",
+          all(x["prevBtn"] == x["for"] for x in panels),
+          str([x for x in panels if x["prevBtn"] != x["for"]][:3]))
+
+    # 第五章：4 节 + 1 份行动清单
+    page.click('#f-ch [data-v="5"] .fold')
+    page.wait_for_timeout(400)
+    geom = page.evaluate("""() => {
+      const sub = document.querySelector('.toc-sub[data-for="5"]');
+      const btn = document.querySelector('#f-ch [data-v="5"]');
+      return {gap: Math.round(sub.getBoundingClientRect().top - btn.getBoundingClientRect().bottom),
+              links: sub.querySelectorAll('a[data-go]').length};
+    }""")
+    check("chapter 5 panel opens right under its own button", 0 <= geom["gap"] <= 12,
+          f"gap {geom['gap']}px")
+    check("chapter 5 panel lists its 5 units", geom["links"] == 5, str(geom["links"]))
+
+    page.click('#f-ch [data-v="5"]')
+    page.wait_for_timeout(400)
+    ch5 = page.evaluate("""() => {
+      const sub = document.querySelector('.toc-sub[data-for="5"]');
+      return {cards: Array.from(document.querySelectorAll('#list .card')).filter(c => !c.hidden).length,
+              blocks: Array.from(document.querySelectorAll('#list .sec-block')).filter(b => !b.hidden).map(b => b.id),
+              noneShown: !sub.querySelector('.toc-none').hidden,
+              linksHidden: Array.from(sub.querySelectorAll('a[data-go]')).filter(a => a.hidden).length,
+              scrollY: Math.round(window.scrollY),
+              headTop: Math.round(document.querySelector('#sec-5 .sec-h').getBoundingClientRect().top),
+              appTop: Math.round(document.getElementById('sec-app').getBoundingClientRect().top)};
+    }""")
+    check("chapter 5 selects its 5 units", ch5["cards"] == 5, str(ch5["cards"]))
+    check("chapter 5 is the only visible block", ch5["blocks"] == ["sec-5"], str(ch5["blocks"]))
+    check("chapter 5 panel does not claim an empty result",
+          not ch5["noneShown"] and ch5["linksHidden"] == 0, json.dumps(ch5))
+    check("chapter 5 renders in the first screen, not after the appendices",
+          ch5["scrollY"] == 0 and 0 < ch5["headTop"] < 950,
+          f"scrollY={ch5['scrollY']} headTop={ch5['headTop']}")
+    page.screenshot(path=os.path.join(SHOTS, "09-chapter-5.png"))
+
+    # 空结果时，提示必须落在被点的那一章自己下面（第五章没有「需专注」的单元）
+    page.click('[data-dim="len"] .chip:has-text("需专注")')
+    page.wait_for_timeout(400)
+    empty5 = page.evaluate("""() => {
+      const sub = document.querySelector('.toc-sub[data-for="5"]');
+      const none = sub.querySelector('.toc-none');
+      const btn = document.querySelector('#f-ch [data-v="5"]');
+      return {shown: !sub.hidden && !none.hidden,
+              gap: Math.round(none.getBoundingClientRect().top - btn.getBoundingClientRect().bottom),
+              panelsShowingIt: Array.from(document.querySelectorAll('.toc-sub'))
+                .filter(s => !s.hidden && !s.querySelector('.toc-none').hidden).map(s => s.dataset.for),
+              emptyState: !document.getElementById('empty').hidden,
+              counter: document.getElementById('cnt').textContent};
+    }""")
+    check("empty-result note sits under the chapter that was clicked",
+          empty5["shown"] and 0 <= empty5["gap"] <= 12 and empty5["panelsShowingIt"] == ["5"],
+          json.dumps(empty5))
+    check("empty result also shows the list empty state",
+          empty5["emptyState"] and empty5["counter"] == "0", json.dumps(empty5))
+    page.click("#reset")
+    page.wait_for_timeout(300)
+    page.click('#f-ch [data-v=""]')
+    page.wait_for_timeout(250)
+
     # ---- chapter select + TOC ----
     page.click('#f-ch [data-v="3"]')
     page.wait_for_timeout(250)
