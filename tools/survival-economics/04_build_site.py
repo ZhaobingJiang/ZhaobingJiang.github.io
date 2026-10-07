@@ -431,7 +431,7 @@ def main():
 <meta name="theme-color" content="#3451b2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1b1b1f" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="{BASE}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233451b2'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='white' font-family='serif'%3E%E7%94%9F%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233451b2'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='white' font-family='serif'%3E%E6%B1%9F%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="book">
 <meta property="og:site_name" content="江召兵 · 专著">
 <meta property="og:locale" content="zh_CN">
@@ -453,7 +453,7 @@ def main():
 <body>
 <header class="nav">
   <div class="nav-in">
-    <a class="title" href="./"><span class="logo">生</span><span>{esc(model['title'])}</span></a>
+    <a class="title" href="./"><span class="logo">江</span><span>{esc(model['title'])}</span></a>
     <div class="search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="搜索 {meta['sections']} 节正文与 {meta['actions']} 条行动，例如：提前还贷 / 明斯基 / 法拍房" autocomplete="off" spellcheck="false">
