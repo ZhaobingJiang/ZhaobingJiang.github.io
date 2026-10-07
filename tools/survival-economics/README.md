@@ -24,7 +24,8 @@ python 06_fidelity_check.py    # 逐段核对：书稿里每一段、每一个�
 ```sh
 python -m http.server 8099 --bind 127.0.0.1     # 在仓库根目录另开一个终端
 python 05_verify_page.py       # Playwright：筛选、检索、深链、深色模式、移动端、入口链接、
-                               #   正文与图片同宽、中文首行缩进（共 65 项）
+                               #   正文与图片同宽、中文首行缩进、章节目录面板位置（共 75 项）
+python 13_sweep_chapters.py    # 逐个点开 18 个章节条目，核对目录面板位置、条目数与筛选结果
 python 07_compare_format.py    # 与参考站逐项比对版式令牌与关键尺寸
 python 06_fidelity_check.py    # 逐段核对：书稿每一段、每个表格单元格都在网页里
 python 08_dump_cards.py        # 导出每个单元的核心判断与三行说明，便于人工校对措辞
