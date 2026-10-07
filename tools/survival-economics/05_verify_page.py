@@ -59,6 +59,43 @@ with sync_playwright() as p:
     check("appendix cards laid out", page.evaluate(
         "['e-appA','e-appB','e-appC'].every(i=>{const r=document.getElementById(i).getBoundingClientRect();return r.width>0&&r.height>0;})"))
     check("appendix section visible", page.locator("#sec-app").is_visible())
+
+    # ---- 回归：正文与图片同宽、中文首行缩进 ----
+    col = page.evaluate("""() => {
+      const w = s => { const el = document.querySelector(s); return el ? Math.round(el.getBoundingClientRect().width) : null; };
+      const card = document.querySelector('#list .card');
+      card.querySelector('details.more').open = true;
+      // 正文不受额外 max-width 限制：宽度应等于所在容器的内容宽度
+      const fills = s => {
+        const el = document.querySelector(s);
+        const p = el.parentElement, cs = getComputedStyle(p);
+        const avail = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        return {w: Math.round(el.getBoundingClientRect().width), avail: Math.round(avail),
+                mw: getComputedStyle(el).maxWidth};
+      };
+      const of = s => { const el = document.querySelector(s); const cs = getComputedStyle(el);
+        return [cs.textIndent, cs.fontSize]; };
+      return {
+        doc: w('.doc'), hero: w('.hero'), card: w('.card'), part: w('.part'),
+        intro: fills('.intro'), lede: fills('.lede'), partP: fills('.part p'),
+        bodyP: fills('details.more .body p.bk'), glossP: fills('.gloss dd'),
+        indent: {bk: of('details.more .body p.bk'), lede: of('.lede'), intro: of('.intro'),
+                 part: of('.part p'), human: of('.human'), rows: of('.rows'),
+                 actionItem: of('details.more .body ol li p')},
+      };
+    }""")
+    boxes = {col["doc"], col["hero"], col["card"], col["part"]}
+    check("every block shares the 900px column", boxes == {900}, str(sorted(boxes)))
+    for k in ("intro", "lede", "partP", "bodyP"):
+        v = col[k]
+        check(f"{k} fills its container without a width cap",
+              v["w"] == v["avail"] and v["mw"] == "none", f"{v['w']} / {v['avail']} max-width={v['mw']}")
+    for k in ("bk", "lede", "intro", "part"):
+        ti, fs = col["indent"][k]
+        check(f"{k} has a 2-character first-line indent", ti == f"{2 * float(fs[:-2]):g}px",
+              f"{ti} at {fs}")
+    for k in ("human", "rows", "actionItem"):
+        check(f"{k} is not first-line indented", col["indent"][k][0] == "0px", col["indent"][k][0])
     check("kind chips", page.locator('[data-dim="kind"] .chip').count() == 4)
     check("mat chips", page.locator('[data-dim="mat"] .chip').count() == 4)
     check("len chips", page.locator('[data-dim="len"] .chip').count() == 3)
@@ -203,7 +240,12 @@ with sync_playwright() as p:
 # ---- static checks on the file itself ----
 html = open(PAGE, encoding="utf-8").read()
 check("static html has all cards", html.count('<article class="card"') == 94)
-check("static html has full text", html.count("<p>") > 400, f"{html.count('<p>')} paragraphs")
+n_p = html.count("<p>") + html.count("<p ")
+check("static html has full text", n_p > 400, f"{n_p} paragraphs")
+check("book paragraphs carry the indent class", html.count('<p class="bk">') > 350,
+      str(html.count('<p class="bk">')))
+check("chapter ledes carry the indent class", html.count('<p class="lede">') > 25,
+      str(html.count('<p class="lede">')))
 check("static chapter keys consistent", html.count('data-ch="app"') == 4, str(html.count('data-ch="app"')))
 check("no placeholder braces", "{{" not in html and "%s" not in html)
 

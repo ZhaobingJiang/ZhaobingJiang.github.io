@@ -4,8 +4,8 @@ docx_report.txt
 book_model.json
 images.json
 cards_report.txt
-cmp.txt
-verify_repo.txt
-shots/
+cmp*.txt
+verify*.txt
+shots*/
 __pycache__/
 *.pyc

@@ -76,7 +76,8 @@ def render_blocks(blocks):
             trs = "".join("<tr>" + "".join(f"<td>{esc(c)}</td>" for c in r) + "</tr>" for r in body)
             out.append(f'<div class="tw"><table><thead><tr>{th}</tr></thead><tbody>{trs}</tbody></table></div>')
         else:
-            out.append(f"<p>{esc(b['x'])}</p>")
+            # class="bk" 标记书稿正文段落：中文首行缩进两字，由 style.css 统一处理
+            out.append(f'<p class="bk">{esc(b["x"])}</p>')
     return "\n".join(out)
 
 
@@ -225,7 +226,7 @@ def main():
                 f'<section class="part" id="part-{esc(ch["part"])}" data-part="{esc(ch["part"])}">'
                 f'<span class="p-k">{esc(ch["part"])}\u3000篇</span>'
                 f'<h2>{esc(p["title"])}</h2>'
-                f'<p>{esc(p["lede"])}</p></section>')
+                f'<p class="bk">{esc(p["lede"])}</p></section>')
         parts = []
         if ch["hero_url"]:
             parts.append(f'<img class="hero" loading="lazy" src="{esc(ch["hero_url"])}" alt="第{ch["numCn"]}章插图">')
@@ -271,7 +272,7 @@ def main():
             kind, mats, chars, tier = facets(ab, "行动清单", is_action=True)
             body = "<ol>" + "".join(f"<li><p>{esc(a['text'])}</p></li>" for a in ch["actions"]) + "</ol>"
             for t in note_paras:
-                body += f"<p>{esc(t)}</p>"
+                body += f'<p class="bk">{esc(t)}</p>'
             parts.append(card_html(
                 cid, str(ch["num"]), ch["part"], "行动",
                 f"第{ch['numCn']}章行动清单：{ch['title'].split('：')[0]}", kind, mats, "一会儿", [], False,
@@ -285,7 +286,7 @@ def main():
         summary = ""
         if ch["summary"]:
             summary = ('<details class="gloss"><summary>本章小结</summary><div>'
-                       + "".join(f"<p>{esc(t)}</p>" for t in ch["summary"]) + "</div></details>")
+                       + "".join(f'<p class="bk">{esc(t)}</p>' for t in ch["summary"]) + "</div></details>")
         blocks_html.append(
             f'<section class="sec-block" id="sec-{ch["num"]}" data-ch="{ch["num"]}" data-part="{esc(ch["part"])}">\n'
             f'  <div class="sec-h"><span class="kicker">{esc(PART_LABEL[ch["part"]])}</span>'

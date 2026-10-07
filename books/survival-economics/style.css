@@ -130,22 +130,24 @@ html.dark .switch .sun{display:none}html.dark .switch .moon{display:block}
 .cover img{width:150px;height:auto;border-radius:8px;border:1px solid var(--divider);box-shadow:var(--shadow);flex:none}
 .cover .cv-t{font-size:13px;color:var(--t3);line-height:1.8;min-width:0}
 .cover .cv-t b{display:block;color:var(--t2);font-weight:600;font-size:14px;margin-bottom:2px}
-.intro{margin:0 0 12px;color:var(--t2);font-size:14px;max-width:74ch;overflow-wrap:break-word}
+.intro{margin:0 0 12px;color:var(--t2);font-size:14px;text-indent:2em;overflow-wrap:break-word}
 .intro:last-of-type{margin-bottom:20px}
 .intro code,.foot code{font-family:var(--mono);font-size:12.5px;background:var(--bg-mute);padding:2px 5px;border-radius:4px;word-break:break-all}
-.cover .cv-t,.lede,.human,.rows .v,.card-h h3,details.more .body p{overflow-wrap:break-word}
+.cover .cv-t,.human,.rows .v,.card-h h3,details.more .body p{overflow-wrap:break-word}
+/* 书稿正文段落：中文首行缩进两个汉字字符，与图片、卡片同宽（都是 .doc 的 900px） */
+.bk,.lede,.intro{text-indent:2em}
 .sec-block{margin-top:44px}
 /* 篇首横幅：大标题 + 本篇导语，不参与卡片筛选，只随本篇是否还有可见单元显隐 */
 .part{margin-top:72px;padding:26px 28px 22px;border-radius:14px;background:var(--bg-alt);border:1px solid var(--divider)}
 .part .p-k{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--brand-1);margin-bottom:8px}
 .part h2{margin:0 0 8px;font-size:26px;line-height:34px;font-weight:700;letter-spacing:-.02em;color:var(--t1)}
-.part p{margin:0;color:var(--t2);font-size:14.5px;line-height:1.9;max-width:74ch}
+.part p{margin:0;color:var(--t2);font-size:14.5px;line-height:1.9}
 #list>.part:first-child{margin-top:28px}
 .sec-h{display:flex;align-items:baseline;gap:12px;padding-top:24px;border-top:1px solid var(--divider);margin-bottom:8px}
 .sec-h .kicker{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--brand-1);flex:none;line-height:32px}
 .sec-h h2{font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.02em;margin:0}
 .sec-h .shown{margin-left:auto;font-size:13px;color:var(--t3);font-variant-numeric:tabular-nums;white-space:nowrap}
-.lede{margin:0 0 14px;color:var(--t2);font-size:14.5px;line-height:1.9;max-width:74ch}
+.lede{margin:0 0 14px;color:var(--t2);font-size:14.5px;line-height:1.9}
 .hero{display:block;width:100%;height:auto;max-height:340px;object-fit:cover;border-radius:12px;border:1px solid var(--divider);margin:10px 0 16px;background:var(--bg-soft)}
 
 .card{background:var(--bg-soft);border:1px solid transparent;border-radius:12px;padding:22px 24px 18px;margin-bottom:16px;transition:border-color .25s,background .25s;content-visibility:auto;contain-intrinsic-size:auto 320px}
