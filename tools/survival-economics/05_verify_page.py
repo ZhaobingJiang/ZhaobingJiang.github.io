@@ -50,6 +50,8 @@ with sync_playwright() as p:
     check("18 chapter blocks", page.locator("#list .sec-block").count() == 18)
     check("no 404s / console errors", not [c for c in console if c[0] in ("error", "pageerror")],
           json.dumps(console[:5], ensure_ascii=False))
+    check("page marks itself ready for external checks",
+          page.evaluate("document.documentElement.getAttribute('data-ready')") == "1")
 
     # ---- sidebar ----
     check("part buttons", page.locator('[data-dim="part"] [data-v]').count() == 6,

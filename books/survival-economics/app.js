@@ -282,6 +282,9 @@
   readUrl();
   wire();
   apply();
+  // 就绪标记：正文是一个 600 多 KB 的 HTML，首屏卡片出现得比样式表和脚本早得多，
+  // 外部核对（以及任何等待「页面可用」的地方）应该等这个属性，而不是等 load
+  document.documentElement.setAttribute('data-ready', '1');
   if (location.hash) {
     var target = document.getElementById(location.hash.slice(1));
     if (target && target.hidden) {
