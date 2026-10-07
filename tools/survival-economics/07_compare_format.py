@@ -68,18 +68,26 @@ if not mine:
     sys.exit("could not probe our page")
 
 keys = ["nav", "sidebar", "doc", "h1", "card", "cardH3", "human", "badge", "chip", "secH2", "body"]
+# 阅读区字阶是按书稿正文可读性单独定的（--fs），与参考站不同是设计决定，
+# 不参与版式一致性计分，只单独列出来备查
+TYPE_PROPS = {"fontSize", "lineHeight"}
 print(f"{'element':<10} {'property':<20} {'ours':<34} {'reference':<34} match")
 mismatch = 0
 total = 0
+type_rows = []
 for k in keys:
     a = mine.get(k) or {}
     r = (ref or {}).get(k) or {}
     for prop in a:
         if prop == "_box":
             continue
-        total += 1
         av, rv = a.get(prop), r.get(prop)
         same = (rv is None) or (av == rv)
+        if prop in TYPE_PROPS:
+            if rv is not None and not same:
+                type_rows.append((k, prop, av, rv))
+            continue
+        total += 1
         if not same:
             mismatch += 1
         print(f"{k:<10} {prop:<20} {str(av):<34} {str(rv):<34} {'OK' if same else 'DIFF'}")
@@ -92,6 +100,14 @@ for n in mv:
     print(f"  {n:<12} {mv[n]:<44} {str(rv.get(n)):<44} {'OK' if same else 'DIFF'}")
 
 print()
-print(f"property comparison: {total - mismatch}/{total} identical to the reference")
+print("deliberate type-scale differences (reading area is set from --fs, not the reference)")
+if type_rows:
+    for k, prop, av, rv in type_rows:
+        print(f"  {k:<10} {prop:<12} ours {av:<12} reference {rv}")
+else:
+    print("  none measured (the reference renders its cards after loading its corpus)")
+
+print()
+print(f"layout comparison: {total - mismatch}/{total} identical to the reference")
 if not ref:
     print("NOTE: the reference site was unreachable; only our own computed values are shown")

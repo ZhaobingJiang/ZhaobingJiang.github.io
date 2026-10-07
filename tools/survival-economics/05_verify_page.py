@@ -96,6 +96,43 @@ with sync_playwright() as p:
               f"{ti} at {fs}")
     for k in ("human", "rows", "actionItem"):
         check(f"{k} is not first-line indented", col["indent"][k][0] == "0px", col["indent"][k][0])
+
+    # ---- 回归：阅读区字阶由 --fs 驱动，正文可读性有下限 ----
+    typ = page.evaluate("""() => {
+      const fs = s => { const el = document.querySelector(s);
+        return el ? parseFloat(getComputedStyle(el).fontSize) : null; };
+      const p = document.querySelector('details.more .body p.bk');
+      const cs = getComputedStyle(p);
+      const probe = document.createElement('span');
+      probe.textContent = '汉'.repeat(40);
+      probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font:' + cs.font;
+      p.appendChild(probe);
+      const per = probe.getBoundingClientRect().width / 40;
+      probe.remove();
+      return {
+        root: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fs')),
+        body: fs('details.more .body p.bk'), lede: fs('.lede'), intro: fs('.intro'),
+        cardH3: fs('.card-h h3'), human: fs('.human'), rows: fs('.rows .v'), badge: fs('.badge'),
+        secH2: fs('.sec-h h2'), partH2: fs('.part h2'), h1: fs('.doc-head h1'),
+        sidebar: fs('.sec-link'), navInput: fs('.search input'),
+        hanPerLine: Math.round(p.getBoundingClientRect().width / per),
+        lineHeight: parseFloat(cs.lineHeight),
+      };
+    }""")
+    check("reading text is driven by --fs", typ["body"] == typ["root"] == 18,
+          f"body={typ['body']} --fs={typ['root']}")
+    check("body text is large enough to read comfortably", typ["body"] >= 17,
+          f"{typ['body']}px")
+    check("line spacing stays generous", typ["lineHeight"] / typ["body"] >= 1.8,
+          f"{typ['lineHeight']}px at {typ['body']}px = {typ['lineHeight'] / typ['body']:.2f}")
+    check("line measure stays readable", 30 <= typ["hanPerLine"] <= 55,
+          f"{typ['hanPerLine']} 汉字/行")
+    ramp = [typ["h1"], typ["partH2"], typ["secH2"], typ["cardH3"], typ["human"], typ["body"],
+            typ["rows"], typ["badge"]]
+    check("heading-to-body hierarchy is strictly descending", ramp == sorted(ramp, reverse=True),
+          str(ramp))
+    check("navigation chrome keeps its compact size", typ["sidebar"] == 14 and typ["navInput"] == 14,
+          f"sidebar={typ['sidebar']} search={typ['navInput']}")
     check("kind chips", page.locator('[data-dim="kind"] .chip').count() == 4)
     check("mat chips", page.locator('[data-dim="mat"] .chip').count() == 4)
     check("len chips", page.locator('[data-dim="len"] .chip').count() == 3)
