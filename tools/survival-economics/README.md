@@ -23,12 +23,22 @@ python 06_fidelity_check.py    # 逐段核对：书稿里每一段、每一个�
 
 ```sh
 python -m http.server 8099 --bind 127.0.0.1     # 在仓库根目录另开一个终端
-python 05_verify_page.py       # Playwright：筛选、检索、深链、深色模式、移动端、入口链接
+python 05_verify_page.py       # Playwright：筛选、检索、深链、深色模式、移动端、入口链接、
+                               #   正文与图片同宽、中文首行缩进（共 65 项）
 python 07_compare_format.py    # 与参考站逐项比对版式令牌与关键尺寸
+python 06_fidelity_check.py    # 逐段核对：书稿每一段、每个表格单元格都在网页里
 python 08_dump_cards.py        # 导出每个单元的核心判断与三行说明，便于人工校对措辞
 ```
 
-`05_verify_page.py`、`07_compare_format.py` 需要本机已安装 Playwright 与 Chromium。
+上线之后再跑一次线上冒烟（GitHub Pages 从这里访问首屏约 10 秒，脚本会重试并等
+`document.readyState === 'complete'`——整本书是一个 HTML 文件，第一张卡片出现得比样式表早得多）：
+
+```sh
+python 09_verify_live.py       # 线上页面的 20 项检查，含上面两个排版回归
+```
+
+`05_verify_page.py`、`07_compare_format.py`、`09_verify_live.py` 需要本机已安装 Playwright
+与 Chromium。
 
 ## 每个单元上显示什么
 
@@ -45,6 +55,16 @@ python 08_dump_cards.py        # 导出每个单元的核心判断与三行说�
 
 所有字段都由书稿本身推出，脚本不撰写任何书稿里没有的结论；`06_fidelity_check.py`
 保证没有任何一段被丢掉。
+
+## 排版约定
+
+- **一个阅读栏宽**：`.doc`、章首插图、卡片、篇首横幅、正文段落全部是 900px；卡片与
+  篇首横幅内部的文字按各自的内边距内缩（850px / 842px）。正文不再设 `max-width`，
+  否则文字会比插图窄。
+- **中文首行缩进**：书稿段落带 `class="bk"`（章首导语是 `.lede`，页面说明与篇首导语
+  也缩进），由 `style.css` 统一 `text-indent:2em`，与其他中文页面一致。
+  摘要式引文（`.human`）、成本/结构行（`.rows`）与编号行动条目不缩进——缩进会和
+  引用框、列表标记打架。
 
 ## 中间产物
 
