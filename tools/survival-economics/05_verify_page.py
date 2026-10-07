@@ -52,6 +52,15 @@ with sync_playwright() as p:
           json.dumps(console[:5], ensure_ascii=False))
     check("page marks itself ready for external checks",
           page.evaluate("document.documentElement.getAttribute('data-ready')") == "1")
+    brand = page.evaluate("""() => {
+      const mark = document.querySelector('.logo').textContent.trim();
+      const svg = decodeURIComponent(
+        document.querySelector('link[rel=icon]').href.replace(/^data:image\\/svg\\+xml,/, ''));
+      const m = svg.match(/<text[^>]*>([^<]+)<\\/text>/);
+      return {mark, favicon: m ? m[1] : null};
+    }""")
+    check("site mark and favicon use the author's surname",
+          brand["mark"] == "\u6c5f" and brand["favicon"] == "\u6c5f", str(brand))
 
     # ---- sidebar ----
     check("part buttons", page.locator('[data-dim="part"] [data-v]').count() == 6,
