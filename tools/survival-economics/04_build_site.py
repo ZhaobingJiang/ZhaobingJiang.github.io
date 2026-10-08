@@ -184,9 +184,9 @@ def main():
         cards.append({
             "id": cid, "ch": ch_key, "part": part, "title": title, "toc": idx,
             "kind": kind, "mats": mats, "len": tier,
-            "minsheng": minsheng, "table": bool(elems),
+            "flag": minsheng, "table": bool(elems),
         })
-        return f"""<article class="card" id="{cid}" data-ch="{esc(ch_key)}" data-part="{esc(part)}" data-kind="{esc(kind)}" data-mats="{esc('|'.join(mats))}" data-len="{esc(tier)}" data-minsheng="{1 if minsheng else 0}" data-table="{1 if elems else 0}" data-search="{esc(search_note)}">
+        return f"""<article class="card" id="{cid}" data-ch="{esc(ch_key)}" data-part="{esc(part)}" data-kind="{esc(kind)}" data-mats="{esc('|'.join(mats))}" data-len="{esc(tier)}" data-flag="{1 if minsheng else 0}" data-table="{1 if elems else 0}" data-search="{esc(search_note)}">
   <div class="card-h"><span class="idx">{esc(idx)}</span><h3>{esc(title)}</h3><a class="anchor" href="#{cid}" aria-label="本单元固定链接">#</a></div>
   <div class="badges">{''.join(badges)}</div>
   <p class="human">{esc(human)}</p>
@@ -270,7 +270,7 @@ def main():
             ab = [{"t": "p", "x": a["text"]} for a in ch["actions"]] + \
                  [{"t": "p", "x": t} for t in note_paras]
             kind, mats, chars, tier = facets(ab, "行动清单", is_action=True)
-            body = "<ol>" + "".join(f"<li><p>{esc(a['text'])}</p></li>" for a in ch["actions"]) + "</ol>"
+            body = '<ol class="acts">' + "".join(f"<li><p>{esc(a['text'])}</p></li>" for a in ch["actions"]) + "</ol>"
             for t in note_paras:
                 body += f'<p class="bk">{esc(t)}</p>'
             parts.append(card_html(
@@ -332,7 +332,7 @@ def main():
         human = app["lede"] or texts[0]
         body = render_blocks(app["blocks"])
         if letter == "C":
-            body = "<ol>" + "".join(
+            body = '<ol class="acts">' + "".join(
                 f"<li><p>{esc(t)}</p></li>" for t in texts) + "</ol>"
         elif letter == "B":
             body = render_blocks([b for b in app["blocks"] if b["t"] != "table"]) + \
@@ -495,7 +495,7 @@ def main():
     <div class="chips" data-dim="len">{len_chips}</div>
   </div>
   <div class="group">
-    <label class="toggle"><input type="checkbox" id="f-minsheng">只看「国内民生关切」</label>
+    <label class="toggle"><input type="checkbox" id="f-flag">只看「国内民生关切」</label>
     <label class="toggle"><input type="checkbox" id="f-table">只看含表格的单元</label>
     <button class="reset" id="reset">清空筛选</button>
   </div>
@@ -561,6 +561,13 @@ def main():
 
     with open(DEST, "w", encoding="utf-8") as f:
         f.write(page)
+
+    # 版式与交互层来自 tools/web-edition/，构建时复制到本书目录，页面保持自包含
+    import shutil
+    shared = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "web-edition")
+    for name in ("style.css", "app.js"):
+        shutil.copyfile(os.path.join(shared, name), os.path.join(SITE, name))
+        print(f"copied {name} from tools/web-edition/")
 
     print(f"cards={len(cards)}  html={len(page):,} bytes  chars={book_chars:,}")
     print("kind:", dict(Counter(c['kind'] for c in cards)))
