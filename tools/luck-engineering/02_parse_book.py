@@ -97,6 +97,8 @@ def blocks_of(items, lo, hi, drop_captions=False):
         nodes = it["nodes"]
         txt = text_of(nodes).strip()
         if it["img"]:
+            # 记下图片自己的序号：下面为了吃掉图注会把 i 前移，之后再查图名就查错了
+            img_i = i
             cap = ""
             j = i + 1
             while j < hi and blank(items[j]):
@@ -106,8 +108,8 @@ def blocks_of(items, lo, hi, drop_captions=False):
                 if CAPTION.match(nxt) or nxt.startswith("图 "):
                     cap = nxt
                     i = j
-            blocks.append({"t": "img", "src": f"img/{IMG_SRC[i]}" if i in IMG_SRC else "",
-                           "idx": i, "caption": cap})
+            blocks.append({"t": "img", "src": f"img/{IMG_SRC[img_i]}" if img_i in IMG_SRC else "",
+                           "idx": img_i, "caption": cap})
             i += 1
             continue
         # strip images that ride inside a paragraph of text
