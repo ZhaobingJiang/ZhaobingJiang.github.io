@@ -159,7 +159,7 @@ html.dark .switch .sun{display:none}html.dark .switch .moon{display:block}
 /* 基线对齐而不是 flex-start：编号、标题、锚点字号不同，行高不必凑成同一个数 */
 .card-h{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
 .card-h h3{margin:0;font-size:calc(var(--fs) + 4px);line-height:1.4;font-weight:600;letter-spacing:-.01em;flex:1;min-width:0;overflow-wrap:anywhere}
-.card-h .idx{color:var(--t3);font-size:calc(var(--fs) - 2px);line-height:1.4;font-variant-numeric:tabular-nums;min-width:38px;flex:none}
+.card-h .idx{color:var(--t3);font-size:calc(var(--fs) - 2px);line-height:1.4;font-variant-numeric:tabular-nums;min-width:38px;max-width:6em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:none}
 .card-h .anchor{opacity:0;color:var(--brand-1);font-size:calc(var(--fs) - 1px);line-height:1.4;font-weight:500;transition:opacity .2s;flex:none}
 .card:hover .anchor,.anchor:focus-visible{opacity:1}
 .badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
@@ -249,6 +249,9 @@ tbody tr:hover td{background:var(--bg-mute)}
   .backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:15;opacity:0;pointer-events:none;transition:opacity .25s}
   .backdrop.on{opacity:1;pointer-events:auto}
   .content{padding:calc(var(--nav-h) + 24px) 20px 96px}
+  /* 窄屏上标题行允许折行：篇名较长时（如「第一篇·黄金与螺旋」）标题与计数会被挤出视口 */
+  .sec-h{flex-wrap:wrap;row-gap:2px}
+  .sec-h h2{min-width:0}
   /* 窄屏同样只收一级，字号仍跟着 --fs 走 */
   .doc-head h1{font-size:calc(var(--fs) + 13px)}
   .cover{flex-direction:column;gap:12px}

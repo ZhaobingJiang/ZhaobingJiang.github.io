@@ -1,0 +1,8 @@
+# 生成脚本的中间产物与核对输出，可随时重新生成
+docx_items.json
+book_model.json
+images.json
+shots/
+*.txt
+__pycache__/
+*.pyc
