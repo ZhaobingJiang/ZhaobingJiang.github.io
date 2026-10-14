@@ -26,9 +26,34 @@ let shapes = [];
 let lastResult = null;          // {u, v, mask, entries, ms} of the latest prediction
 
 /* ------------------------------------------------------------------ boot */
+/* First load ships ~12 MB (10.5 MB ORT-WASM runtime + 1.6 MB models). GitHub
+ * Pages serves it at tens of KB/s with only a 10-min cache, so whenever
+ * jsDelivr is reachable both parts come from the CDN (immutable 1-yr cache for
+ * the npm-hosted runtime, 7-d cache for the repo-hosted models) and the
+ * in-repo lib/ + models/ copies act as the offline fallback. */
+const ORT_CDN = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.1/dist/';
+const MOD_CDN = 'https://cdn.jsdelivr.net/gh/ZhaobingJiang/ZhaobingJiang.github.io@main/' +
+                'softwares/stokes/models/';
+
+async function cdnReachable(url) {
+  try {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), 8000);
+    const r = await fetch(url, { method: 'HEAD', signal: ctl.signal, cache: 'no-store' });
+    clearTimeout(t);
+    return r.ok;
+  } catch (e) { return false; }
+}
+
 (async function boot() {
   try {
-    META = await (await fetch('models/meta.json')).json();
+    const [ortOk, modOk] = await Promise.all([
+      cdnReachable(ORT_CDN + 'ort-wasm-simd.wasm'),
+      cdnReachable(MOD_CDN + 'meta.json'),
+    ]);
+    const MBASE = modOk ? MOD_CDN : 'models/';
+
+    META = await (await fetch(MBASE + 'meta.json')).json();
     const m = META.model;
     XS = m.x; YS = m.y;
     WDF = new Float32Array(NY * NX);              // flatten the 28x112 wall-distance field
@@ -37,12 +62,12 @@ let lastResult = null;          // {u, v, mask, entries, ms} of the latest predi
     CMAP = META.colormap.viridis256;
 
     ort.env.logLevel = 'error';
-    ort.env.wasm.wasmPaths = new URL('lib/', location.href).href;
+    ort.env.wasm.wasmPaths = ortOk ? ORT_CDN : new URL('lib/', location.href).href;
     ort.env.wasm.numThreads = 1;                  // no COOP/COEP on GitHub Pages
     const so = { executionProviders: ['wasm'], graphOptimizationLevel: 'all' };
     [sessU, sessF] = await Promise.all([
-      ort.InferenceSession.create('models/unet.onnx', so),
-      ort.InferenceSession.create('models/force.onnx', so),
+      ort.InferenceSession.create(MBASE + 'unet.onnx', so),
+      ort.InferenceSession.create(MBASE + 'force.onnx', so),
     ]);
 
     ready = true;
