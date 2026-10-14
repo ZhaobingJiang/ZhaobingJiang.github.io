@@ -298,3 +298,163 @@ table.forces tr.sumrow td {
 }
 
 #veil.hide { opacity: 0; pointer-events: none; }
+
+/* ============================================================
+   Local-edition parity components (2026-10-14): live geometry
+   canvas, enable/disable cards, case picker, model info panel.
+   ============================================================ */
+
+/* header logo, same treatment as the local edition (white chip) */
+.demo-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.demo-logo {
+  width: auto;
+  height: 44px;
+  flex-shrink: 0;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+/* live 4:1 channel preview — same dark instrument look as the local edition */
+canvas#geom {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 9px;
+  background: #0b1019;
+  border: 1px solid var(--border-color);
+}
+
+.shape-list {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.sc-head input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent-color);
+  flex-shrink: 0;
+}
+
+.shape-card.off { opacity: 0.55; }
+
+/* held-out test-case picker */
+.case-select { margin-top: 12px; }
+
+.case-select label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-color);
+  margin-bottom: 4px;
+}
+
+.case-select select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 12.5px;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-color);
+}
+
+/* model info panel (fixed published bundle) */
+.info-block {
+  margin-top: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 9px 11px 10px;
+  background: #fafcfd;
+}
+
+.info-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--muted-color);
+  margin-bottom: 4px;
+}
+
+.info-note {
+  font-size: 11px;
+  color: var(--muted-color);
+  line-height: 1.55;
+  margin-top: 6px;
+}
+
+/* key-value read-out rows (local-edition style) */
+.kv {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 12.5px;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.kv span { color: var(--muted-color); }
+
+.kv b {
+  color: #0b6e8c;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.kv.metrics { margin-top: 8px; }
+
+/* warning strip (distribution warning / rejection notices) */
+.warn {
+  display: none;
+  background: #fdf6e8;
+  border: 1px solid #e6cf9a;
+  color: #8a6a1f;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  margin-top: 8px;
+}
+
+.warn.err {
+  background: #fdeef0;
+  border-color: #e5b3bb;
+  color: #a5324a;
+}
+
+/* view panel heading */
+.view-head {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 6px;
+}
+
+/* online-vs-local scope note under the result table */
+.local-note {
+  margin-top: 14px;
+  background: #f2f8fb;
+  border: 1px solid #d8e9f0;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-color);
+}
+
+.note .copyright {
+  color: var(--muted-color);
+  font-size: 12.5px;
+  margin-top: 14px;
+}
