@@ -6,8 +6,9 @@
  *   inference       field U-Net + 5-seed force ensemble          (ONNX Runtime Web / WASM)
  *   rendering       viridis speed map + quiver arrows + obstacles (matplotlib look-alike)
  *
- * Nothing leaves the browser: both ONNX graphs are fetched once from ./models and
- * evaluated locally with the single-threaded SIMD WASM backend.
+ * Nothing leaves the browser: both ONNX graphs are fetched once (jsDelivr repo
+ * mirror or ./models, whichever answers first) and evaluated locally with the
+ * single-threaded SIMD WASM backend.
  */
 
 const NX = 112, NY = 28, LX = 4.0, H = 1.0;
@@ -27,12 +28,15 @@ let lastResult = null;          // {u, v, mask, entries, ms} of the latest predi
 
 /* ------------------------------------------------------------------ boot */
 /* First load ships ~12 MB (10.5 MB ORT-WASM runtime + 1.6 MB models). GitHub
- * Pages serves it at tens of KB/s with only a 10-min cache, so whenever
- * jsDelivr is reachable both parts come from the CDN (immutable 1-yr cache for
- * the npm-hosted runtime, 7-d cache for the repo-hosted models) and the
- * in-repo lib/ + models/ copies act as the offline fallback. */
+ * Pages serves it at tens of KB/s with only a 10-min cache, so the runtime is
+ * fetched from the jsDelivr npm mirror whenever it answers, and the models race
+ * the jsDelivr repo mirror against the in-repo copies (see fetchRace). */
 const ORT_CDN = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.1/dist/';
-const MOD_CDN = 'https://cdn.jsdelivr.net/gh/ZhaobingJiang/ZhaobingJiang.github.io@main/' +
+/* Pin the repo CDN to a specific commit: a floating @main reference is
+ * re-resolved on every push, which invalidates the jsDelivr edge cache and can
+ * leave a cold node fetching from GitHub for a minute. Bump the hash whenever
+ * the ONNX assets under models/ change. */
+const MOD_CDN = 'https://cdn.jsdelivr.net/gh/ZhaobingJiang/ZhaobingJiang.github.io@b865b56/' +
                 'softwares/stokes/models/';
 
 async function cdnReachable(url, timeoutMs) {
@@ -45,39 +49,35 @@ async function cdnReachable(url, timeoutMs) {
   } catch (e) { return false; }
 }
 
-/* jsDelivr occasionally fails on a cold edge node (the file must first be
- * pulled from GitHub, and an error response carries no CORS header), so every
- * CDN load falls back to the in-repo copy: the CDN is an accelerator, never a
- * single point of failure. */
-async function fetchMeta(useCdn) {
-  if (useCdn) {
-    try {
-      const r = await fetch(MOD_CDN + 'meta.json');
-      if (r.ok) return await r.json();
-    } catch (e) { /* fall through */ }
-  }
-  return await (await fetch('models/meta.json')).json();
+/* The models race the CDN against the in-repo copies: whichever source
+ * delivers first wins and the loser is aborted. A warm jsDelivr edge answers
+ * in ~1 s; a cold edge may take a minute (it pulls from GitHub first), in
+ * which case the GitHub Pages copy simply wins instead - the CDN is an
+ * accelerator, never a single point of failure. */
+async function fetchRace(name) {
+  const cA = new AbortController(), cL = new AbortController();
+  const get = async (base, ac, other) => {
+    const r = await fetch(base + name, { signal: ac.signal });
+    if (!r.ok) throw new Error(base + ' -> HTTP ' + r.status);
+    const buf = await r.arrayBuffer();
+    other.abort();                          // this source won the race
+    return buf;
+  };
+  return await Promise.any([
+    get(MOD_CDN, cA, cL),
+    get('models/', cL, cA),
+  ]);
 }
 
-async function loadModel(name, so, useCdn) {
-  if (useCdn) {
-    try {
-      return await ort.InferenceSession.create(MOD_CDN + name, so);
-    } catch (e) { console.warn('CDN load failed for ' + name + ', using the in-repo copy'); }
-  }
-  return await ort.InferenceSession.create('models/' + name, so);
+async function loadModel(name, so) {
+  return await ort.InferenceSession.create(new Uint8Array(await fetchRace(name)), so);
 }
 
 (async function boot() {
   try {
-    const [ortOk, modOk] = await Promise.all([
-      cdnReachable(ORT_CDN + 'ort-wasm-simd.wasm', 8000),
-      /* the gh CDN may need a few seconds to pull the file from GitHub on a
-       * cold edge node, so give it a longer budget than the npm one */
-      cdnReachable(MOD_CDN + 'meta.json', 12000),
-    ]);
+    const ortOk = await cdnReachable(ORT_CDN + 'ort-wasm-simd.wasm', 8000);
 
-    META = await fetchMeta(modOk);
+    META = JSON.parse(new TextDecoder().decode(await fetchRace('meta.json')));
     const m = META.model;
     XS = m.x; YS = m.y;
     WDF = new Float32Array(NY * NX);              // flatten the 28x112 wall-distance field
@@ -90,8 +90,8 @@ async function loadModel(name, so, useCdn) {
     ort.env.wasm.numThreads = 1;                  // no COOP/COEP on GitHub Pages
     const so = { executionProviders: ['wasm'], graphOptimizationLevel: 'all' };
     [sessU, sessF] = await Promise.all([
-      loadModel('unet.onnx', so, modOk),
-      loadModel('force.onnx', so, modOk),
+      loadModel('unet.onnx', so),
+      loadModel('force.onnx', so),
     ]);
 
     ready = true;
