@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Software of Zhaobing Jiang — numerical solvers, deep-learning surrogate models and interactive browser demos">
+  <title>Softwares | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- software cards (page-local styles) ---- */
+    .soft-card {
+      position: relative;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px 18px;
+      margin-bottom: 18px;
+      background: var(--bg-color);
+      transition: box-shadow 0.2s ease;
+    }
+    .soft-card:hover { box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08); }
+    .soft-strip {
+      height: 6px;
+      border-radius: 3px;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, #440154, #3b528b, #21918c, #5ec962, #fde725);
+    }
+    .soft-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--heading-color);
+      margin-bottom: 8px;
+    }
+    .soft-tag {
+      display: inline-block;
+      margin-left: 10px;
+      vertical-align: 2px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      border-radius: 999px;
+      padding: 0 9px;
+      white-space: nowrap;
+    }
+    .soft-card .soft-desc { font-size: 15px; margin-bottom: 10px; }
+    .soft-card .soft-meta { font-size: 13.5px; color: var(--muted-color); margin-bottom: 14px; }
+    .soft-card .soft-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 16px;
+      margin-bottom: 0;
+    }
+    .soft-btn {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 14.5px;
+      font-weight: 600;
+    }
+    .soft-btn:hover { background: var(--accent-hover); text-decoration: none; }
+    .soft-side { font-size: 13px; color: var(--muted-color); }
+    .soft-more { color: var(--muted-color); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../" class="nav-link">Home</a>
+      <a href="../publications/" class="nav-link">Publications</a>
+      <a href="../projects.html" class="nav-link">Projects</a>
+      <a href="../awards/" class="nav-link">Awards</a>
+      <a href="../mooc.html" class="nav-link">MOOC</a>
+      <a href="../poems.html" class="nav-link">Poems</a>
+      <a href="../books/" class="nav-link">Books</a>
+      <a href="./" class="nav-link active">Softwares</a>
+      <a href="../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">Softwares</h1>
+      <p class="affiliation">
+        Numerical solvers, deep-learning surrogate models and interactive demos developed by
+        Zhaobing Jiang and his team. Every browser-based tool runs entirely on your own device:
+        nothing is uploaded, and no installation is required.
+      </p>
+    </div>
+
+    <section class="section">
+      <h2 class="section-title">Released Software</h2>
+
+      <!-- To add a new software, copy the <article class="soft-card"> block below and edit
+           the title, description, meta line and action link. Keep the newest entry first. -->
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">1. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">browser demo</span></h3>
+        <p class="soft-desc">
+          An interactive surrogate model for Stokes flow past circles and ellipses in a channel.
+          Trained on 2,400+ cases computed with <strong>FastBEM</strong> &mdash; the fast-multipole
+          boundary-element solver for 2-D Stokes flow by Prof. Y. J. Liu (SUSTech) &mdash; the model
+          predicts the full velocity field and the drag force on every obstacle in about 0.1&nbsp;s.
+          The U-Net field model and the five-model force ensemble are exported to ONNX and evaluated
+          locally with ONNX Runtime Web (WASM): the demo needs no server, and after the first visit
+          it works fully offline.
+        </p>
+        <p class="soft-meta">
+          112 &times; 28 CFD grid &nbsp;&middot;&nbsp; velocity-field median relative error 2.2%
+          &nbsp;&middot;&nbsp; total-drag median relative error 2.6% (held-out test set)
+          &nbsp;&middot;&nbsp; round-5 rolling training
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./stokes/">Open the interactive demo &rarr;</a>
+          <span class="soft-side">Runs entirely in your browser &middot; demo interface in Chinese</span>
+        </p>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">In Preparation</h2>
+      <p>
+        This page is the single entry point for all software releases &mdash; solvers, surrogate
+        models and web demos are added to the list above as they become available.
+      </p>
+      <ul class="item-list">
+        <li>FastBEM-based surrogate models for further physics &mdash; in development.</li>
+        <li>Online demos of the group&rsquo;s fast-multipole BEM solvers &mdash; planned.</li>
+      </ul>
+      <p class="soft-more">Please check back from time to time.</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Acknowledgements</h2>
+      <p>
+        The FastBEM solver used to generate the training data was developed by Prof. Y. J. Liu and
+        his group at SUSTech and is used here under its non-commercial academic licence. The
+        surrogate models and web demos are developed and maintained by Nanjing Opatiya Information
+        Technology Co., Ltd.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      &copy; 2026 Zhaobing Jiang. Built in the style of the
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a> template.
+    </p>
+  </footer>
+</body>
+</html>
