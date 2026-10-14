@@ -45,6 +45,29 @@ async function cdnReachable(url, timeoutMs) {
   } catch (e) { return false; }
 }
 
+/* jsDelivr occasionally fails on a cold edge node (the file must first be
+ * pulled from GitHub, and an error response carries no CORS header), so every
+ * CDN load falls back to the in-repo copy: the CDN is an accelerator, never a
+ * single point of failure. */
+async function fetchMeta(useCdn) {
+  if (useCdn) {
+    try {
+      const r = await fetch(MOD_CDN + 'meta.json');
+      if (r.ok) return await r.json();
+    } catch (e) { /* fall through */ }
+  }
+  return await (await fetch('models/meta.json')).json();
+}
+
+async function loadModel(name, so, useCdn) {
+  if (useCdn) {
+    try {
+      return await ort.InferenceSession.create(MOD_CDN + name, so);
+    } catch (e) { console.warn('CDN load failed for ' + name + ', using the in-repo copy'); }
+  }
+  return await ort.InferenceSession.create('models/' + name, so);
+}
+
 (async function boot() {
   try {
     const [ortOk, modOk] = await Promise.all([
@@ -53,9 +76,8 @@ async function cdnReachable(url, timeoutMs) {
        * cold edge node, so give it a longer budget than the npm one */
       cdnReachable(MOD_CDN + 'meta.json', 12000),
     ]);
-    const MBASE = modOk ? MOD_CDN : 'models/';
 
-    META = await (await fetch(MBASE + 'meta.json')).json();
+    META = await fetchMeta(modOk);
     const m = META.model;
     XS = m.x; YS = m.y;
     WDF = new Float32Array(NY * NX);              // flatten the 28x112 wall-distance field
@@ -68,8 +90,8 @@ async function cdnReachable(url, timeoutMs) {
     ort.env.wasm.numThreads = 1;                  // no COOP/COEP on GitHub Pages
     const so = { executionProviders: ['wasm'], graphOptimizationLevel: 'all' };
     [sessU, sessF] = await Promise.all([
-      ort.InferenceSession.create(MBASE + 'unet.onnx', so),
-      ort.InferenceSession.create(MBASE + 'force.onnx', so),
+      loadModel('unet.onnx', so, modOk),
+      loadModel('force.onnx', so, modOk),
     ]);
 
     ready = true;
