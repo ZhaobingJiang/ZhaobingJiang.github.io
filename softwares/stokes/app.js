@@ -35,10 +35,10 @@ const ORT_CDN = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.1/dist/';
 const MOD_CDN = 'https://cdn.jsdelivr.net/gh/ZhaobingJiang/ZhaobingJiang.github.io@main/' +
                 'softwares/stokes/models/';
 
-async function cdnReachable(url) {
+async function cdnReachable(url, timeoutMs) {
   try {
     const ctl = new AbortController();
-    const t = setTimeout(() => ctl.abort(), 8000);
+    const t = setTimeout(() => ctl.abort(), timeoutMs);
     const r = await fetch(url, { method: 'HEAD', signal: ctl.signal, cache: 'no-store' });
     clearTimeout(t);
     return r.ok;
@@ -48,8 +48,10 @@ async function cdnReachable(url) {
 (async function boot() {
   try {
     const [ortOk, modOk] = await Promise.all([
-      cdnReachable(ORT_CDN + 'ort-wasm-simd.wasm'),
-      cdnReachable(MOD_CDN + 'meta.json'),
+      cdnReachable(ORT_CDN + 'ort-wasm-simd.wasm', 8000),
+      /* the gh CDN may need a few seconds to pull the file from GitHub on a
+       * cold edge node, so give it a longer budget than the npm one */
+      cdnReachable(MOD_CDN + 'meta.json', 12000),
     ]);
     const MBASE = modOk ? MOD_CDN : 'models/';
 
