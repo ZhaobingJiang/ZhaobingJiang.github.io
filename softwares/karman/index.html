@@ -102,6 +102,19 @@
       padding: 1px 8px;
       white-space: nowrap;
     }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
     .guest-note {
       font-size: 13.5px;
       color: var(--muted-color);
@@ -200,14 +213,19 @@
         <h3>获取与运行</h3>
         <ol>
           <li>软件部署在作者本机（桌面本地版，数据不出本机）；本页面为软件介绍。</li>
-          <li>本机运行：在源码目录 <span class="run-code">LBM_KarmanDL</span> 执行
-              <span class="run-code">python web_app.py</span>，浏览器访问
-              <span class="run-code">http://127.0.0.1:8890/</span> 即可使用
+          <li>本机首次配置（一次性）：双击 <span class="run-code">LBM_KarmanDL\注册软件协议.reg</span>，
+              注册 <span class="run-code">karman://</span> 启动协议。</li>
+          <li>日常使用：直接点击下方按钮——本机启动器会自动启动服务并打开预测界面
+              （服务已在运行时直接打开界面）；也可双击
+              <span class="run-code">LBM_KarmanDL\启动软件.bat</span> 手动启动
               （依赖：Python 3.10+，numpy / torch / flask）。</li>
         </ol>
+        <a class="btn-local" id="btnOpen" href="karman://open">▶ 启动本地预测</a>
+        <div class="open-hint" id="openHint"></div>
         <div class="guest-note">
           说明：软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
-          欢迎通过本页了解软件功能，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+          访客点击“启动本地预测”通常没有反应，属于正常现象——欢迎通过本页了解软件功能，
+          或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
         </div>
       </div>
     </section>
@@ -229,5 +247,28 @@
       模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
     </p>
   </footer>
+
+  <script>
+    // 点击“启动本地预测”：经隐藏 iframe 唤起本机注册的 karman:// 协议，
+    // 由本机启动器（启动软件.bat）负责启动/复用服务并自动打开预测界面。
+    // 用 iframe 而非 location.href：即使协议未注册，主页面也不会被导航走。
+    // 页面与脚本均不包含本机服务地址；软件本体仅存在于作者电脑上。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.src = btn.getAttribute('href');
+        document.body.appendChild(f);
+        setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 8000);
+        hint.innerHTML = '已唤起本机启动器（浏览器弹出确认框时请选择“打开”）。<br>' +
+          '预测服务启动后会自动在新标签页打开界面；若长时间没有反应，' +
+          '请先完成上方第 2 步的一次性配置（注册协议）。';
+      });
+    })();
+  </script>
 </body>
 </html>
