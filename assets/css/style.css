@@ -428,6 +428,16 @@ html[lang="zh-CN"] .section > p.poem-pager {
   margin-top: 0.8em;
 }
 
+
+/* essay-body 内嵌诗行（如纪念诗作），行楷居中、不缩进 */
+.essay-body .poem-verse {
+  font-family: "STXingkai", "华文行楷", "Xingkai SC", "KaiTi", "楷体", "STKaiti", cursive;
+  font-size: 19px;
+  text-align: center;
+  text-indent: 0;
+  padding: 1px 0;
+}
+
 @media (max-width: 640px) {
   .essay-body {
     font-size: 15.5px;
