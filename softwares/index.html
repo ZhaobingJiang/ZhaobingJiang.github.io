@@ -170,6 +170,27 @@
           <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
         </p>
       </article>
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">4. LBM Karman Vortex Street DL Surrogate<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          An interactive surrogate for unsteady wake flows past 1&ndash;3 cylinders or
+          ellipses. Training data: 98 lattice-Boltzmann (D2Q9) simulations of the
+          K&aacute;rm&aacute;n vortex street at Re&nbsp;=&nbsp;80&ndash;200. The U-Net predicts the
+          time-mean velocity field and a five-member MLP ensemble predicts each
+          obstacle's drag coefficient, the lift RMS and the Strouhal number in
+          milliseconds &mdash; see the time-averaged wake evolve as you drag the
+          obstacles on the canvas.
+        </p>
+        <p class="soft-meta">
+          321 &times; 161 lattice &middot; Re 80&ndash;200 &middot; Strouhal within ~6% of
+          literature benchmarks &middot; U-Net + MLP-ensemble on PyTorch (CPU)
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./karman/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
     </section>
   </main>
 
