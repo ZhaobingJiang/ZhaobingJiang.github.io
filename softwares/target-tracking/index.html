@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="目标跟瞄图像仿真演示（桌面本地版）：粗电视 / 精电视 / 中波红外三通道成像退化链实时仿真，Johnson 准则探测识别评估与跟瞄过程演示。本页为软件介绍，软件本体在作者本机运行。">
+  <title>目标跟瞄图像仿真演示（本地版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页眉品牌栏：开发者 + 版权）---- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); } /* 文字列占满首行，版权胶囊换到第二行 */
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        目标跟瞄图像仿真演示
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">桌面本地版</span>
+      </h1>
+      <p class="affiliation">粗电视 / 精电视 / 中波红外三通道成像退化链实时仿真 —— 从理想图像到探测器画面，全过程可见、可调、可拆解。</p>
+    </div>
+
+    <p class="intro-lede">
+      本演示程序面向目标跟瞄（毁伤环境影响建模）系统，加载无人机三维模型（32,674 三角面 STL），
+      按<strong>粗电视（RTV）、精电视（PTV）、中波红外（MWIR）</strong>三套传感器参数，实时生成从理想图像到探测器画面的
+      完整成像退化链，并以 <strong>Johnson 准则</strong>实时给出探测 / 识别 / 辨识（DRI）概率与跟瞄过程演示。
+      2×2 画面布局（三维总览 + 三通道画面），距离、能见度、湍流、太阳高度角等工况参数即调即见；
+      成像链各环节可独立开关并标注对应算法编号，适合评审演示与原理讲解。软件以网页界面在本机运行，数据不出本机。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="目标跟瞄图像仿真演示主界面：2×2 布局，三维总览与粗电视 / 精电视 / 中波红外三通道画面，右侧为工况参数与跟瞄面板">
+    </div>
+    <p class="shot-cap">
+      演示主界面（“晴天远距”预设工况）：左上为三维总览（无人机模型与航路），其余三格为粗电视、精电视、
+      中波红外通道画面；面板提供工况预设、全局滑块、通道参数与成像链环节开关。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>三通道传感器成像</b> — 粗电视 640×512@50fps、精电视 1920×1080（视场 0.8° 可调）、中波红外 640×512 伪彩色标（铁红 / 白热 / 黑热），参数与项目算法文档一致。</div>
+        <div class="feat-item"><b>完整成像退化链</b> — 理想图像 → 大气衰减 → 光学 / 湍流模糊 → 像元采样 → 光子 / 读出 / FPN 噪声 → A/D 量化 → 电子消旋，七个环节逐级可开关、标注算法编号。</div>
+        <div class="feat-item"><b>Johnson 准则 DRI 评估</b> — 探测 / 识别 / 辨识概率实时显示，跟踪框按 DRI 等级分级变化，数值与模块化算法代码口径一致。</div>
+        <div class="feat-item"><b>跟瞄过程剧本</b> — 搜索 → 探测 → 识别 → 辨识 → 锁定全流程演示，十字丝、刻度、距离 / 方位 / SNR 演示值实时叠加。</div>
+        <div class="feat-item"><b>工况与场景交互</b> — 距离 0.5~15 km、能见度、湍流强度 Cn²、太阳高度角、目标速度滑块即调即见；晴天远距 / 雾霾近距 / 夜间红外 / 强湍流四种预设一键切换。</div>
+        <div class="feat-item"><b>纯前端零依赖</b> — Three.js 本地化，无后端、无外网依赖，拷贝即用；双击画面格可放大单通道观察细节。</div>
+      </div>
+      <p class="metric-line">
+        三通道 2×2 实时渲染 · 无人机模型 32,674 三角面 · 成像链 7 环节逐级开关 · 距离 0.5~15 km ·
+        大气衰减按能见度换算 · 湍流模糊随 Cn²·R 增长
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件部署在作者本机（桌面本地版，数据不出本机）；本页面为软件介绍。</li>
+          <li>本机首次配置（一次性）：双击 <span class="run-code">目标跟瞄系统\注册软件协议.reg</span>，
+              注册 <span class="run-code">target-tracking://</span> 启动协议。</li>
+          <li>日常使用：直接点击下方按钮——本机启动器会自动启动服务并打开演示界面
+              （服务已在运行时直接打开界面）；也可双击
+              <span class="run-code">目标跟瞄系统\启动演示.bat</span> 手动启动。</li>
+        </ol>
+        <a class="btn-local" id="btnOpen" href="target-tracking://open">▶ 启动本地演示</a>
+        <div class="open-hint" id="openHint"></div>
+        <div class="guest-note">
+          说明：软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
+          访客点击“启动本地演示”通常没有反应，属于正常现象——欢迎通过本页了解软件功能，
+          或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">算法依据与说明</h2>
+      <p>
+        本演示依据项目《算法详细说明文档》中的算法 2（大气辐射传输）、算法 13/14/15（粗电视 / 精电视 /
+        红外视频）、算法 21（传感器性能建模，界面以空域 PSF 近似，频域精确解算由算法服务层承担）与
+        算法 25（图像消旋）实现；DRI 数值与 Johnson 准则模块化算法代码保持一致。
+        大气透过率等定量环节配有独立的模块化计算代码与校核报告，可按需提供。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+
+  <script>
+    // 点击“启动本地演示”：经隐藏 iframe 唤起本机注册的 target-tracking:// 协议，
+    // 由本机启动器（启动演示.bat）负责启动/复用服务并自动打开演示界面。
+    // 用 iframe 而非 location.href：即使协议未注册，主页面也不会被导航走。
+    // 页面与脚本均不包含本机服务地址；软件本体仅存在于作者电脑上。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.src = btn.getAttribute('href');
+        document.body.appendChild(f);
+        setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 8000);
+        hint.innerHTML = '已唤起本机启动器（浏览器弹出确认框时请选择“打开”）。<br>' +
+          '演示服务启动后会自动在新标签页打开界面；若长时间没有反应，' +
+          '请先完成上方第 2 步的一次性配置（注册协议）。';
+      });
+    })();
+  </script>
+</body>
+</html>
