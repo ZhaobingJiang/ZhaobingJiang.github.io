@@ -124,6 +124,23 @@ body[data-theme="rich"] .item-list li::before {
   box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.12);
 }
 
+/* ---------- Poem cards ---------- */
+body[data-theme="rich"] .poem-card {
+  background: #f6f8fc;
+  border-color: #dfe6f3;
+  border-radius: 10px;
+}
+
+body[data-theme="rich"] .poem-card:hover {
+  border-color: #2a5298;
+  box-shadow: 0 6px 16px rgba(42, 82, 152, 0.16);
+}
+
+body[data-theme="rich"] .poem-card-tag {
+  color: #2a5298;
+  background: rgba(42, 82, 152, 0.08);
+}
+
 body[data-theme="rich"] .item-date {
   color: #1e3c72;
 }

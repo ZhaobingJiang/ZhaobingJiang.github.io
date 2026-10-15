@@ -243,6 +243,66 @@ html[lang="zh-CN"] .section > p.poem-pager {
   font-size: 14.5px;
 }
 
+/* ---------- Poem card grid (list pages) ---------- */
+.poem-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.poem-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 13px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: #fafafa;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.poem-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.poem-card-title {
+  font-weight: 600;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--heading-color);
+}
+
+.poem-card:hover .poem-card-title {
+  color: var(--accent-color);
+}
+
+.poem-card-tag {
+  align-self: flex-start;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 0 9px;
+  border-radius: 999px;
+  color: var(--accent-color);
+  background: rgba(3, 131, 169, 0.08);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .poem-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .poem-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .poem {
   margin-bottom: 34px;
   padding-bottom: 32px;
