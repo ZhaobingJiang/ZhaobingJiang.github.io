@@ -31,7 +31,7 @@
 
   function apply() {
     if (rich) {
-      link.href = dir + "style-rich.css?v=4";
+      link.href = dir + "style-rich.css?v=5";
       if (!link.parentNode) document.head.appendChild(link);
     } else if (link.parentNode) {
       link.parentNode.removeChild(link);
@@ -61,7 +61,7 @@
 
   // Preload rich stylesheet immediately if stored choice is rich (avoids flash)
   if (rich) {
-    link.href = dir + "style-rich.css?v=4";
+    link.href = dir + "style-rich.css?v=5";
     document.head.appendChild(link);
   }
 

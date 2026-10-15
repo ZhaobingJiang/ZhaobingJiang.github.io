@@ -215,3 +215,9 @@ body[data-theme="rich"] .theme-toggle-btn:hover {
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.5);
 }
+
+/* Card date */
+.poem-card-date {
+  margin-top: -5px;
+  color: #5b6b7f;
+}

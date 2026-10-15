@@ -522,3 +522,10 @@ html[lang="zh-CN"] .section > p.poem-pager {
     right: 16px;
   }
 }
+
+.poem-card-date {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted-color);
+  margin-top: -5px;
+}
