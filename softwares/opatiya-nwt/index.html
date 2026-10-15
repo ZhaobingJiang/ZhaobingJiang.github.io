@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Opatiya数值水池（CFD 求解图形界面，桌面本地版）：水池设定 → 自动网格生成 → 波浪与浮体参数 → 数值探针 → 并行求解 → VTK实时渲染，覆盖完整CFD工作流。本页为软件介绍，软件本体在作者本机运行。">
+  <title>Opatiya数值水池 CFD 求解图形界面（本地版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页头品牌栏：开发者 + 版权）--- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        Opatiya数值水池（CFD 求解图形界面）
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">桌面本地版</span>
+      </h1>
+      <p class="affiliation">水池设定 → 网格生成 → 波浪浮体 → 并行求解 → 实时渲染 —— 一条完整的数值水池CFD工作流。</p>
+    </div>
+
+    <p class="intro-lede">
+      本软件为面向数值波浪水池（NWT）仿真的CFD求解图形界面：
+      用户在界面中依次设定水池尺寸与水深、波浪类型与造消波参数、浮体运动与六自由度、网格加密区域与数值探针，
+      软件自动生成块结构网格、写入求解器配置文件，经<strong>MS-MPI</strong>多核并行完成求解；
+      计算过程中界面按保存间隔轮询结果文件，用内置<strong>VTK渲染窗口</strong>按level-set函数<em>&phi;</em>的符号自动区分水体与空气并实时着色，
+      全部中间量（进出口流量、体积守恒、时间步长、CFL数）同步输出到控制台。
+      软件在本机以桌面应用运行，数据不出本机。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="Opatiya数值水池主界面：左侧导航树与参数表单，右侧VTK渲染窗口显示规则波算例t=12s时刻的水面与空气场，底部输出控制台">
+    </div>
+    <p class="shot-cap">
+      软件主界面（演示算例：30 m&times;0.8 m二维水池、规则波H=0.02 m、&lambda;=1 m）：左侧为导航树与参数表单，
+      右侧为VTK实时渲染的求解结果——蓝色为水体（level-set函数&phi;&gt;0）、白色半透明为空气，图示为t=12 s时刻的规则波传播水面。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>七页式完整工作流</b> — 水池、波浪、浮体、模型参数、网格、数值探针、运行七个功能页按求解流程组织，参数即填即存（case-settings.json算例文件）。</div>
+        <div class="feat-item"><b>自动块结构网格</b> — 一键生成块结构网格，支持X/Y/Z三向独立加密（最小网格尺寸+中心+长度+扩展比率四参数控制），固定结构物STL直接导入参与划分。</div>
+        <div class="feat-item"><b>17种波浪类型</b> — 一阶/二阶规则波、孤立波、聚焦波、JONSWAP/P-M等不规则波谱共17种，松弛法或推板造波、阻尼层消波可任选组合。</div>
+        <div class="feat-item"><b>浮体六自由度动力学</b> — ASCII STL浮体导入，密度与三向平动/转动初速可设，X 11自由度掩码支持单自由度到全耦合的六种组合。</div>
+        <div class="feat-item"><b>MS-MPI并行求解</b> — mpiexec多核并行（核心数工具栏可调），stdout/stderr重定向到算例目录，运行页进度条按结果帧数实时推算完成度。</div>
+        <div class="feat-item"><b>VTK实时渲染</b> — 求解器输出的pvtu分片结果自动合并加载，水/气按&phi;符号着色且颜色透明度可调；表面/带边表面/网格线/点阵四种表示模式与六向正交视图一键切换。</div>
+        <div class="feat-item"><b>数值探针</b> — 波高探针同时输出计算值P 51与理论值P 50两路时间序列，压力探针按三维坐标布置，便于与波浪理论解交叉验证。</div>
+        <div class="feat-item"><b>ParaView一键后处理</b> — 自动扫描算例目录全部pvtu时间步、生成Python加载脚本并唤起本机ParaView，动画时间轴即点即看。</div>
+      </div>
+      <p class="metric-line">
+        演示算例30 m&times;0.8 m二维水池 · 规则波H=0.02 m、&lambda;=1 m · 8核MPI并行 · 12 s物理时间100 s内算完 · 25帧结果自动渲染
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件部署在作者本机（桌面本地版，数据不出本机）；本页面为软件介绍。</li>
+          <li>本机首次配置（一次性）：双击软件安装目录下的 <span class="run-code">注册软件协议.reg</span>，
+              注册 <span class="run-code">opatiya-nwt://</span> 启动协议。</li>
+          <li>日常使用：直接点击下方按钮——本机启动器会自动启动数值水池软件
+              （软件已在运行时自动将其窗口置前）；也可双击
+              <span class="run-code">启动软件.bat</span> 手动启动。</li>
+        </ol>
+        <a class="btn-local" id="btnOpen" href="opatiya-nwt://open">▶ 启动数值水池</a>
+        <div class="open-hint" id="openHint"></div>
+        <div class="guest-note">
+          说明：软件为桌面图形应用，仅安装于作者本机，不经互联网暴露，外部访客无法启动。
+          访客点击"启动数值水池"通常没有反应，属于正常现象——欢迎通过本页了解软件功能，
+          或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">算法依据与说明</h2>
+      <p>
+        求解内核采用有限差分CFD方法：level-set法捕捉自由液面，配合Ghost Cell Immersed Boundary方法处理复杂物面，
+        经MPI域分解实现大规模并行；网格划分为块结构网格，支持三向变分辨率加密。
+        图形界面由南京欧帕提亚信息科技有限公司开发（PySide6+VTK技术栈），负责参数管理、配置文件生成、
+        并行任务调度与结果可视化；界面与求解器通过标准输入文件（control.txt/ctrl.txt）与VTU结果文件解耦，
+        求解器升级不影响界面使用。演示算例的波高探针计算值与线性波理论值吻合良好，可作为验证参考。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+
+  <script>
+    // 点击"启动数值水池"：经隐藏 iframe 唤起本机注册的 opatiya-nwt:// 协议，
+    // 由本机启动器（启动软件.bat）负责启动软件或置前已运行的软件窗口。
+    // 用 iframe 而非 location.href：即使协议未注册，主页面也不会被导航走。
+    // 页面与脚本均不包含本机软件路径；软件本体仅存在于作者电脑上。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.src = btn.getAttribute('href');
+        document.body.appendChild(f);
+        setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 8000);
+        hint.innerHTML = '已唤起本机启动器（浏览器弹出确认框时请选择"打开"）。<br>' +
+          '数值水池软件启动后会显示主窗口；若长时间没有反应，' +
+          '请先完成上方第 2 步的一次性配置（注册协议）。';
+      });
+    })();
+  </script>
+</body>
+</html>
