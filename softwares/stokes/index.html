@@ -3,11 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Browser-side deep-learning surrogate for 2-D Stokes flow past circles and ellipses — trained on FastBEM data, runs fully offline in your browser.">
-  <title>二维 Stokes 流动代理模型 | Zhaobing Jiang</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta name="description" content="二维 Stokes 流动深度学习代理模型（桌面本地版）：几何设置实时显示、毫秒级流场与受力预测、FastBEM 实时对照与滚动再训练。本页为软件介绍，软件本体在作者本机运行。">
+  <title>二维 Stokes 流动代理模型（本地版） | Zhaobing Jiang</title>
   <link rel="stylesheet" href="../../assets/css/style.css">
-  <link rel="stylesheet" href="style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -24,104 +86,111 @@
     </nav>
   </header>
 
-  <main class="demo-wrap">
-    <h1 class="demo-title">
-      <img class="demo-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司">
-      <span>二维 Stokes 流动代理模型<span class="tag">浏览器内实时推理</span></span>
-    </h1>
-    <p class="lede">
-      通道内圆柱 / 椭圆障碍绕流的深度学习代理模型：用 FastBEM 边界元求解器批量计算的
-      2474 组算例训练，输入任意几何即可毫秒级预测全场流速与各障碍物受力。
-      本页面完全在您的浏览器中运行——模型经 ONNX Runtime Web (WASM) 本地推理，
-      不上传任何数据，也无需服务器。
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        二维 Stokes 流动深度学习代理模型
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">桌面本地版</span>
+      </h1>
+      <p class="affiliation">通道内圆柱 / 椭圆障碍绕流的实时代理软件 —— 几何随手画、受力毫秒出、边界元随时复核。<br>由南京欧帕提亚信息科技有限公司开发。</p>
+    </div>
+
+    <p class="intro-lede">
+      本软件以 <strong>FastBEM</strong>（南方科技大学 Y.&nbsp;J.&nbsp;Liu 教授的二维 Stokes 快速多极子边界元求解器）批量计算的
+      2,474 组算例为训练数据，构建了流场 U-Net 与五模型受力集成网络。在软件中用鼠标放置任意数量的圆 / 椭圆障碍，
+      即可在毫秒级得到全场流速分布与每个障碍物所受流体力的预测；同一几何还可一键交给 FastBEM 求解器实时复核，
+      并自动给出代理模型与边界元解的误差分析。软件在本机以网页界面运行，数据不出本机。
     </p>
-    <div class="badges" id="badges">
-      <span class="badge">模型加载中…</span>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="二维 Stokes 流动代理模型软件主界面：左侧几何设置与实时通道预览，右侧流场云图与受力表">
     </div>
+    <p class="shot-cap">
+      软件主界面：左侧为几何设置（4×1 通道实时预览，圆 / 椭圆数量不限，≤16 个），右侧为流场云图、
+      各障碍物受力表，以及 FastBEM 实时对照与误差分析。
+    </p>
 
-    <div class="app">
-      <section class="panel">
-        <h3>几何设置（通道 4 × 1，进出口抛物线驱动；圆 / 椭圆数量不限，≤ 16）</h3>
-        <canvas id="geom" width="620" height="140"></canvas>
-        <div class="shape-list" id="shapeList"></div>
-        <div class="btnrow">
-          <button id="btnCircle">＋ 圆</button>
-          <button id="btnEllipse">＋ 椭圆</button>
-          <button id="btnRandom">🎲 随机</button>
-          <button id="btnClear">清空</button>
-        </div>
-        <div class="btnrow">
-          <button id="btnPredict" class="primary" disabled>▶ 预测流场与受力</button>
-        </div>
-        <div class="case-select">
-          <label for="caseSel">载入留出测试算例的几何（载入后自动预测，可再行修改）</label>
-          <select id="caseSel"><option value="">正在加载算例目录…</option></select>
-        </div>
-        <div class="info-block">
-          <div class="info-title">模型信息（固定发布版）</div>
-          <div class="kv"><span>库中算例</span><b id="stTotal">—</b></div>
-          <div class="kv"><span>已完成训练轮次</span><b id="stRounds">—</b></div>
-          <div class="kv"><span>留出测试集</span><b id="stTest">—</b></div>
-          <div class="info-note">滚动再训练（新算例自动入库并微调模型）与 FastBEM 实时对照为本机版功能。</div>
-        </div>
-        <div class="warn" id="warn"></div>
-        <div class="kv metrics"><span>代理模型推理时间</span><b id="tInf">—</b></div>
-        <div class="kv metrics"><span>形状数（启用中）</span><b id="nf">—</b></div>
-        <p class="hint">
-          拖动滑块调整位置与尺寸（自动限制在通道内并拒绝重叠），改动即时显示在上方的通道预览中，
-          松手后自动重新预测；也可以直接用“随机”按训练分布生成 1–3 个圆 / 椭圆的组合。
-        </p>
-      </section>
-
-      <section class="panel">
-        <h3>预测结果</h3>
-        <div class="view-head">代理模型预测（U-Net 流场 + 力网络集成）</div>
-        <canvas id="field" width="1184" height="316"></canvas>
-        <div class="view-meta">
-          <span>网格 <b>112 × 28</b></span>
-          <span>力网络 <b id="nEns">5</b> 模型集成</span>
-          <span>颜色范围 <b>|u| ≤ 1.5 m/s</b></span>
-        </div>
-        <table class="forces" id="forceTab" style="display:none">
-          <thead>
-            <tr><th>障碍物</th><th>位置 (x, y)</th><th>Fx（x 向力）</th><th>Fy（y 向力）</th></tr>
-          </thead>
-          <tbody id="forceBody"></tbody>
-        </table>
-        <div class="local-note">
-          <b>关于在线演示版</b>：本页在浏览器内完成全部计算（不上传几何与数据）。
-          同一几何的 <b>FastBEM 实时对照</b>（边界元重算 + 误差分析）与 <b>滚动再训练</b>
-          属于本机版服务的功能（FastBEM_StokesDL），不在本静态页面中运行。
-        </div>
-      </section>
-    </div>
-
-    <section class="note">
-      <h2>关于本模型</h2>
-      <p>
-        流场由一个 U-Net（输入为障碍物掩膜与壁面距离场）预测，障碍物受力由一个
-        5 模型集成 MLP 预测，特征为各障碍物的位置与半轴长。训练数据来自
-        <strong>FastBEM</strong>（Y. J. Liu 的二维 Stokes FMM-BEM 求解器）对随机
-        圆 / 椭圆组合的批量计算，并随新算例持续滚动再训练。
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>几何设置与实时显示</b> — 在通道画布上添加圆形 / 椭圆障碍，拖动参数滑块即时重绘，所见即所算。</div>
+        <div class="feat-item"><b>重叠防错与自动寻位</b> — 障碍物间距自动校验，冲突修改自动回退；🎲 随机按钮在训练分布内一键生成算例。</div>
+        <div class="feat-item"><b>毫秒级预测</b> — U-Net 全场流速 + 五模型集成受力，单次推理约 3 ms，交互无等待。</div>
+        <div class="feat-item"><b>FastBEM 实时对照</b> — 同一几何自动交给边界元求解器独立求解，逐障碍物给出相对误差。</div>
+        <div class="feat-item"><b>滚动再训练</b> — 每个成功的对照算例自动入库，一键微调模型并热切换，越用越准。</div>
+        <div class="feat-item"><b>留出算例库</b> — 60 组未参与训练的测试算例，一键载入几何并自动预测，便于公平评估。</div>
+      </div>
+      <p class="metric-line">
+        112 × 28 计算网格 · 流场相对误差中位 2.2%（p90 3.7%）· 总阻力相对误差中位 3.4%（留出测试集）
+        · 代理推理约 3 ms vs 边界元约 550 ms（≈195× 加速）· 第 5 轮滚动训练
       </p>
-      <ul>
-        <li>流场相对 L2 误差中位数约 <b id="mField">2.2%</b>；总阻力误差中位数约 <b id="mDrag">2.6%</b>（留出测试集）。</li>
-        <li>通道几何：长 4 × 高 1（无量纲），边界条件为充分发展的进出口流动；单根圆柱下的阻力对
-          二维单位深度给出。</li>
-        <li>形态上支持任意位置的圆与轴对齐椭圆；训练分布内的精度最佳，界面上会给出分布判断提示。</li>
-        <li>模型与推理引擎（ONNX Runtime Web）随页面一同下载，之后可完全离线使用。</li>
-      </ul>
-      <p>配套论文与致谢：FastBEM 求解器由南方科技大学 Y. J. Liu 教授课题组提供；本代理模型与网页由
-        南京欧帕提亚信息科技有限公司开发。</p>
-      <p class="copyright">版权所有：南京欧帕提亚信息科技有限公司　开发者：江召兵 博士</p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件部署在作者本机（桌面本地版，数据不出本机）；本页面为软件介绍。</li>
+          <li>本机启动方法：双击 <span class="run-code">FastBEM_StokesDL\启动软件.bat</span>，
+              或在命令行执行 <span class="run-code">python web_app.py 8848</span>。</li>
+          <li>服务启动后，点击下方按钮进入软件。</li>
+        </ol>
+        <a class="btn-local" id="btnOpen" href="http://127.0.0.1:8848/">▶ 打开软件（http://127.0.0.1:8848/）</a>
+        <div class="open-hint" id="openHint"></div>
+        <div class="guest-note">
+          说明：<span class="run-code">127.0.0.1</span> 是本机回环地址，软件仅对作者本人的电脑开放，
+          不经互联网暴露。外部访客点击"打开软件"将看到"无法访问此网站"，属于正常现象——
+          欢迎通过本页了解软件功能，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">致谢与说明</h2>
+      <p>
+        生成训练数据与实时对照所用的 FastBEM 求解器由南方科技大学 Y.&nbsp;J.&nbsp;Liu 教授课题组开发，
+        依据其非商业学术授权使用，谨此致谢。本软件由南京欧帕提亚信息科技有限公司开发与维护。
+      </p>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 Zhaobing Jiang · Nanjing Opatiya Information Technology Co., Ltd.</p>
+    <p>
+      &copy; 2026 江召兵。本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。
+    </p>
   </footer>
 
-  <div id="veil">正在初始化：加载 ONNX 模型与推理引擎（约 12 MB，仅首次需要）…</div>
-  <script src="app.js"></script>
+  <script>
+    // 点击"打开软件"时先探测本机服务是否在线（no-cors fetch：在线 resolve / 离线 reject），
+    // 避免访客与未启动服务时直接跳到浏览器错误页。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var url = btn.getAttribute('href');
+        hint.textContent = '正在检测本机服务…';
+        var done = false;
+        var timer = setTimeout(function () {
+          if (!done) { done = true; fail(); }
+        }, 2500);
+        function fail() {
+          hint.innerHTML = '未检测到本机服务。请先在本机启动软件（双击 ' +
+            '<span class="run-code">FastBEM_StokesDL\\启动软件.bat</span> 或命令行 ' +
+            '<span class="run-code">python web_app.py 8848</span>），稍候再点击"打开软件"。';
+        }
+        fetch(url, { mode: 'no-cors', cache: 'no-store' })
+          .then(function () {
+            if (done) return; done = true; clearTimeout(timer);
+            hint.textContent = '服务在线，正在进入软件…';
+            window.location.href = url;
+          })
+          .catch(function () { if (!done) { done = true; clearTimeout(timer); fail(); } });
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -84,7 +84,7 @@
   <main class="container">
     <div class="title-section">
       <h1 class="name">软件</h1>
-      <p class="affiliation">江召兵与团队自主研发的数值求解器、深度学习代理模型与在线交互演示。所有浏览器端工具均在本机运行，无需安装、不上传任何数据。</p>
+      <p class="affiliation">江召兵与团队自主研发的数值求解器与深度学习代理模型。每个条目链接到对应的软件介绍页（含软件截图与运行说明）；软件本体在作者本机运行，数据不出本机。</p>
     </div>
 
     <section class="section">
@@ -93,18 +93,18 @@
       <!-- 新增软件：复制下面的 <article class="soft-card"> 卡片，修改标题、说明、指标与链接即可；最新发布的放在最前。 -->
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">1. 二维 Stokes 流动深度学习代理模型<span class="soft-tag">浏览器演示</span></h3>
+        <h3 class="soft-title">1. 二维 Stokes 流动深度学习代理模型<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           针对通道内圆柱／椭圆障碍绕流的实时代理模型。训练数据由 <strong>FastBEM</strong>（南方科技大学
           Y. J. Liu 教授的二维 Stokes 快速多极子边界元求解器）批量计算 2400 余组算例生成；模型可在约
           0.1 秒内预测全场流速与每个障碍物的受力（生成训练数据的机器上单次边界元求解约需 0.55 秒）。
-          流场 U-Net 与五模型受力集成网络已导出为 ONNX 格式，由 ONNX Runtime Web（WASM）在浏览器内
-          本地推理——无需服务器，首次访问后即可完全离线使用。
+          桌面本地版以网页界面在本机运行，除毫秒级代理预测外，还提供 <strong>FastBEM 实时对照</strong>（逐障碍物
+          误差分析）与<strong>滚动再训练</strong>：每个验证成功的算例自动入库微调模型，越用越准。
         </p>
         <p class="soft-meta">112 × 28 计算网格 · 流场相对误差中位 2.2% · 总阻力相对误差中位 2.6%（留出测试集）· 第 5 轮滚动训练</p>
         <p class="soft-actions">
-          <a class="soft-btn" href="../softwares/stokes/">打开交互演示 →</a>
-          <span class="soft-side">完全在浏览器内运行 · 无需安装</span>
+          <a class="soft-btn" href="../softwares/stokes/">软件介绍 →</a>
+          <span class="soft-side">介绍页含软件截图与运行说明 · 软件本体仅对作者本机开放</span>
         </p>
       </article>
     </section>

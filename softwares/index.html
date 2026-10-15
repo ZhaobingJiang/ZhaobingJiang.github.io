@@ -85,9 +85,10 @@
     <div class="title-section">
       <h1 class="name">Softwares</h1>
       <p class="affiliation">
-        Numerical solvers, deep-learning surrogate models and interactive demos developed by
-        Zhaobing Jiang and his team. Every browser-based tool runs entirely on your own device:
-        nothing is uploaded, and no installation is required.
+        Numerical solvers and deep-learning surrogate models developed by
+        Zhaobing Jiang and his team. Each entry below links to its introduction page with
+        screenshots and run instructions; the software itself runs locally on the author's
+        machine, so your data never leaves the author's computer either.
       </p>
     </div>
 
@@ -98,15 +99,16 @@
            the title, description, meta line and action link. Keep the newest entry first. -->
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">1. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">browser demo</span></h3>
+        <h3 class="soft-title">1. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An interactive surrogate model for Stokes flow past circles and ellipses in a channel.
           Trained on 2,400+ cases computed with <strong>FastBEM</strong> &mdash; the fast-multipole
           boundary-element solver for 2-D Stokes flow by Prof. Y. J. Liu (SUSTech) &mdash; the model
-          predicts the full velocity field and the drag force on every obstacle in about 0.1&nbsp;s.
-          The U-Net field model and the five-model force ensemble are exported to ONNX and evaluated
-          locally with ONNX Runtime Web (WASM): the demo needs no server, and after the first visit
-          it works fully offline.
+          predicts the full velocity field and the drag force on every obstacle in about 3&nbsp;ms.
+          The desktop edition runs as a local web interface and, beyond the millisecond surrogate
+          predictions, adds <strong>FastBEM real-time cross-checking</strong> with per-obstacle error
+          analysis and <strong>rolling re-training</strong>: every verified case is fed back to fine-tune
+          the models in place.
         </p>
         <p class="soft-meta">
           112 &times; 28 CFD grid &nbsp;&middot;&nbsp; velocity-field median relative error 2.2%
@@ -114,8 +116,8 @@
           &nbsp;&middot;&nbsp; round-5 rolling training
         </p>
         <p class="soft-actions">
-          <a class="soft-btn" href="./stokes/">Open the interactive demo &rarr;</a>
-          <span class="soft-side">Runs entirely in your browser &middot; demo interface in Chinese</span>
+          <a class="soft-btn" href="./stokes/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
         </p>
       </article>
     </section>
