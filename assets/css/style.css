@@ -381,17 +381,18 @@ html[lang="zh-CN"] .section > p.poem-pager {
   margin: 3px 0;
 }
 
-/* 赋（散文体）：段落左对齐、首行缩进 */
-.poem-body .poem-para {
+/* 赋/散文体段落：左对齐、首行缩进两字符（poem-body 与 essay-body 容器通用） */
+.poem-para {
   text-align: left;
   text-indent: 2em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.8em;
 }
 
 /* ---------- Prose pages (essays, reading notes, reviews, commentary) ---------- */
+/* 大篇幅文章：字号较默认大一号、行距与段距稍大，便于长文阅读 */
 .essay-body {
-  font-size: 16.5px;
-  line-height: 2;
+  font-size: 18px;
+  line-height: 2.15;
   text-align: justify;
   color: var(--text-color);
   max-width: 720px;
@@ -403,7 +404,7 @@ html[lang="zh-CN"] .section > p.poem-pager {
 }
 
 .essay-body p {
-  margin-bottom: 0.6em;
+  margin-bottom: 0.9em;
   text-indent: 2em;
 }
 
@@ -428,6 +429,17 @@ html[lang="zh-CN"] .section > p.poem-pager {
   margin-top: 0.8em;
 }
 
+/* essay-body 内图注：楷体小字、不缩进 */
+.essay-body .poem-note {
+  font-family: "KaiTi", "楷体", "STKaiti", serif;
+  text-align: left;
+  text-indent: 0;
+  font-size: 15px;
+  color: var(--muted-color);
+  line-height: 1.9;
+  margin: 3px 0;
+}
+
 
 /* essay-body 内嵌诗行（如纪念诗作），行楷居中、不缩进 */
 .essay-body .poem-verse {
@@ -440,7 +452,7 @@ html[lang="zh-CN"] .section > p.poem-pager {
 
 @media (max-width: 640px) {
   .essay-body {
-    font-size: 15.5px;
+    font-size: 17px;
     padding: 18px 16px;
   }
 }
