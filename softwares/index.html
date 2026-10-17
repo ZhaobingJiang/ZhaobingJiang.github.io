@@ -143,21 +143,24 @@
         </p>
       </article>
 
-      <article class="soft-card">
+<article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">3. LBM Karman Vortex Street DL Surrogate<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">3. LBM Karman Vortex Street Unsteady Surrogate<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
-          An interactive surrogate for unsteady wake flows past 1&ndash;3 cylinders or
-          ellipses. Training data: 98 lattice-Boltzmann (D2Q9) simulations of the
-          K&aacute;rm&aacute;n vortex street at Re&nbsp;=&nbsp;80&ndash;200. The U-Net predicts the
-          time-mean velocity field and a five-member MLP ensemble predicts each
-          obstacle's drag coefficient, the lift RMS and the Strouhal number in
-          milliseconds &mdash; see the time-averaged wake evolve as you drag the
-          obstacles on the canvas.
+          Interactive surrogate for the unsteady wake of a single cylinder at
+          Re&nbsp;=&nbsp;80&ndash;160. Training data: 50 lattice-Boltzmann (D2Q9) runs, each
+          with 16 warm-up + 8 sampled shedding cycles (vorticity and streamwise-velocity
+          frames plus lift/drag histories). Three models run side by side: a
+          POD-harmonic dual branch (analytic time synthesis), an end-to-end
+          physics-informed network (PINN), and a harmonic-enhanced PINN-v2
+          (Fourier features + harmonic coefficient fields + physics soft
+          constraints). Slide Re and switch algorithms to compare synchronised
+          vorticity / velocity animations, force histories and
+          St&nbsp;/&nbsp;Cd&nbsp;/&nbsp;CL<sub>rms</sub> live.
         </p>
         <p class="soft-meta">
-          321 &times; 161 lattice &middot; Re 80&ndash;200 &middot; Strouhal within ~6% of
-          literature benchmarks &middot; U-Net + MLP-ensemble on PyTorch (CPU)
+          321 &times; 161 lattice &middot; Re 80&ndash;160 &middot; vortex-street fidelity
+          0.90&ndash;0.95 (PINN-v2, held-out) &middot; PyTorch (CPU)
         </p>
         <p class="soft-actions">
           <a class="soft-btn" href="./karman/">Software details &rarr;</a>
