@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="南京欧帕提亚信息科技有限公司官方网站介绍页：细分行业数值仿真+AI解决方案，五板块结构（首页、案例中心、产品中心、数字资产、关于我们）与行业解决方案白皮书，Flask + waitress 本地网站服务，常驻作者本机运行。">
+  <title>欧帕提亚官网（本地网站服务）| Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页头品牌栏：开发者 + 版权）--- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件（网站服务）开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        欧帕提亚官网
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">本地网站服务</span>
+      </h1>
+      <p class="affiliation">南京欧帕提亚信息科技有限公司官方网站 —— 让数值仿真+AI 成为您的核心竞争力。</p>
+    </div>
+
+    <p class="intro-lede">
+      本网站是南京欧帕提亚信息科技有限公司的官方门户，面向细分行业提供
+      <strong>数值仿真 + AI</strong> 解决方案。站点由五个板块构成：首页、案例中心、
+      产品中心、数字资产与关于我们，并提供行业解决方案白皮书（PDF）。
+      网站以 <strong>Flask + waitress</strong> 本地服务形式常驻作者本机运行（Windows 登录自启动），
+      Jinja2 模板渲染、SQLite 数据存储，全部内容与数据在本机闭环，不出本机。
+      本页为网站介绍；网站本体仅在作者电脑上运行。
+    </p>
+
+    <div class="shot-frame">
+      <img src="shot_home.jpg" alt="欧帕提亚官网首页：主视觉标语“让数值仿真+AI 成为您的核心竞争力”，下方为能力板块与服务入口">
+    </div>
+    <p class="shot-cap">
+      官网首页：主视觉标语与能力板块入口。站内现有案例、产品、数字资产等栏目均可在导航栏直达。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">板块结构</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>首页</b> — 公司定位与能力总览：数值仿真 + AI 的技术主线、服务领域与代表成果入口。</div>
+        <div class="feat-item"><b>案例中心</b> — 细分行业工程案例库：按行业与问题类型组织，含示意图与结果解读。</div>
+        <div class="feat-item"><b>产品中心</b> — 自研软件与工具链介绍：求解器、代理模型与配套工具的能力与指标。</div>
+        <div class="feat-item"><b>数字资产</b> — 文档、图表与演示素材的集中入口，便于对内对外复用。</div>
+        <div class="feat-item"><b>关于我们</b> — 公司简介、团队与联系方式。</div>
+        <div class="feat-item"><b>行业解决方案白皮书</b> — PDF 形式的方案汇编，可由站内页面直接获取。</div>
+      </div>
+      <p class="metric-line">
+        五板块 · Flask + Jinja2 + SQLite + waitress · 登录自启动本地网站服务 · 数据不出本机
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">页面掠影</h2>
+      <div class="shot-frame">
+        <img src="shot_cases.jpg" alt="案例中心页面：行业案例卡片列表">
+      </div>
+      <p class="shot-cap">案例中心：按行业组织的工程案例列表。</p>
+      <div class="shot-frame">
+        <img src="shot_products.jpg" alt="产品中心页面：自研软件与工具链介绍">
+      </div>
+      <p class="shot-cap">产品中心：自研软件与工具链的能力介绍。</p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>网站部署在作者本机（本地网站服务，数据不出本机）；本页面为网站介绍。</li>
+          <li>网站服务随 Windows 登录自启动；亦可手动运行
+              <span class="run-code">opatiya-site\run_prod.py</span> 启动（Flask + waitress）。</li>
+          <li>服务就绪后，点击下方按钮在浏览器打开官网（默认本机 5000 端口）。</li>
+        </ol>
+        <a class="btn-local" id="btnOpen" href="http://127.0.0.1:5000">▶ 打开官网</a>
+        <div class="guest-note">
+          说明：网站仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
+          访客点击“打开官网”通常没有反应，属于正常现象——欢迎通过本页了解网站结构与功能，
+          或通过 <a href="../../">Home</a> 页与作者联系洽谈合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">方法与说明</h2>
+      <p>
+        网站基于 Flask 应用工厂 + Jinja2 模板构建，使用 waitress 作为生产服务器在本机常驻；
+        业务数据存储于本地 SQLite 数据库，页面内容（案例、产品、白皮书等）由结构化数据模块渲染生成，
+        便于持续更新。站点不依赖外部云服务，全部内容在本机闭环运行。
+      </p>
+      <p class="metric-line">
+        兼容性说明：网站服务同时被个人主页软件列表收录；本介绍页与软件列表中的其他软件采用同一版式，
+        方便访客在不连接本机的情况下了解网站内容与结构。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+</body>
+</html>
