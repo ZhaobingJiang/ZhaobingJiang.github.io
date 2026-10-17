@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="污染物扩散态势预报系统（桌面本地版）：13 城市场景、WRF 1 km 气象场驱动、SCIPUFF 与 Gaussian CPU 双扩散模型、源项参数化与地图选点、累计覆盖面积与影响人口评估、时序推演与离线回放。本页为软件介绍，软件本体在作者本机运行。">
+  <title>污染物扩散态势预报系统（本地版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页眉品牌栏：开发者 + 版权）---- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        污染物扩散态势预报系统
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">桌面本地版</span>
+      </h1>
+      <p class="affiliation">污染物扩散态势预报系统：13 城市场景 · WRF 1 km 气象场 · SCIPUFF / Gaussian CPU 双模型 · 源项可调与地图选点 · 覆盖面积与影响人口评估 · 时序推演与离线回放。</p>
+    </div>
+
+    <p class="intro-lede">
+      本系统面向突发大气污染事件的<strong>扩散态势预报</strong>：以 <strong>WRF 1 km 分辨率气象场</strong>驱动，
+      用<strong>原生 SCIPUFF</strong>（二阶闭合高斯烟团）与 <strong>Gaussian CPU</strong> 两套扩散模型做推演，
+      在卫星底图上以对数色标渲染浓度场，实时给出<strong>累计覆盖面积</strong>与<strong>累计影响人口</strong>，
+      并支持逐帧回放、扩散轨迹与多窗口投屏。软件为桌面本地版（Electron 交付，无需 Python / Node / 编译器），
+      内置<strong>北京、上海、台北、纽约、华盛顿、伦敦、巴黎、东京、长沙、迪拜、莫斯科、柏林、大阪</strong>
+      13 座城市的完整案例数据（约 25 GB，含气象场、人口栅格、行政边界、核心区建筑、卫星瓦片与预计算算例），
+      断网亦可演示与复盘。软件在本机运行，数据不出本机。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="污染物扩散态势预报系统主界面：华盛顿场景下的浓度场羽流、顶部 KPI 指标条、左侧场景与推演设置面板、右侧实时推演进度与数浓度图例、底部时间轴">
+    </div>
+    <p class="shot-cap">
+      主界面（华盛顿场景，推演进行中 51%）：中央为卫星底图上的浓度场羽流（对数色标 1e3–1e7 颗粒物/m³），
+      顶部为时间推进、累计覆盖面积、累计影响人口与显示高度四项指标；左侧为场景环境与推演设置，
+      右侧为推演进度、结果帧计数、计算资源与启停控制，底部为逐帧回放时间轴。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot_source.jpg" alt="推演完成状态与源项设置：初始高度 150 m AGL、初始直径 200 m、释放点经纬度与地图选点、警告阈值 1e3 #/m³ 中危、浓度色标上下限滑块">
+    </div>
+    <p class="shot-cap">
+      推演完成状态与源项设置：2 小时推演共 61 帧全部完成并已保存；释放点支持经纬度输入与地图点选，
+      可设初始高度（AGL）与初始直径、警告阈值分级（示例 1e3 #/m³ 中危）与浓度色标上下限。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>13 城市场景与全离线数据</b> — 每城自带 WRF 1 km 气象场（地面场 + 多层风场）、人口密度栅格、行政区边界、核心区建筑与卫星瓦片，数据包解压即用，无需联网。</div>
+        <div class="feat-item"><b>双扩散模型</b> — 原生 SCIPUFF（二阶闭合高斯烟团）用于高保真推演，Gaussian CPU 提供快速评估；8 线程 CPU 计算，结果逐帧输出。</div>
+        <div class="feat-item"><b>源项参数化</b> — 释放点经纬度可输入亦可<strong>地图点选</strong>，初始高度（150 m AGL）、初始直径（200 m）、污染物类型（颗粒物）与扩散模型均可配置。</div>
+        <div class="feat-item"><b>气象驱动与高度层</b> — WRF 1 km 风场按 UTC 时间对齐，可切换近地层平均等显示高度层，并叠加风场与人口图层。</div>
+        <div class="feat-item"><b>定量态势评估</b> — 按警告阈值统计累计覆盖面积（km²）与累计影响人口，随时间推进实时累积，直接服务应急指挥判读。</div>
+        <div class="feat-item"><b>风险阈值与色标</b> — 警告阈值分级可选（示例 1e3 #/m³ 中危），浓度色标上下限（1e3–1e7）可调，兼顾全局态势与羽流边缘分析。</div>
+        <div class="feat-item"><b>时序推演与回放</b> — 模拟总时长与输出帧间隔可设（示例 2 小时 / 2 分钟 = 61 帧），支持首帧、逐帧、自动播放（5 帧/秒）、扩散轨迹与当前范围定位。</div>
+        <div class="feat-item"><b>结果保存与多窗口</b> — 推演结果可保存并离线回放，支持多窗口展示与多屏设置，适合指挥中心大屏投放。</div>
+      </div>
+      <p class="metric-line">
+        13 城案例包 · 约 25 GB 离线数据 · 2 小时 / 61 帧推演 · WRF 1 km 风场 ·
+        SCIPUFF + Gaussian CPU · 8 线程计算 · 示例：累计覆盖 185.65 km² / 影响人口 210,203 人
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件安装并运行在作者本机（桌面本地版，数据不出本机）；本页面为软件介绍。</li>
+          <li>本机首次配置（一次性）：双击 <span class="run-code">污染物扩散态势预报系统\注册软件协议.reg</span>，
+              注册 <span class="run-code">pdd-demo://</span> 启动协议。</li>
+          <li>日常使用：直接点击下方按钮——浏览器会唤起本机启动器并打开软件界面；
+              也可双击 <span class="run-code">污染物扩散态势预报系统\启动软件.bat</span> 手动启动。</li>
+        </ol>
+        <a class="btn-local" id="btnOpen" href="pdd-demo://open">▶ 启动本机软件</a>
+        <div class="open-hint" id="openHint"></div>
+        <div class="guest-note">
+          说明：软件仅安装在作者本机，不通过互联网提供服务，外部访客无法运行。
+          访客点击“启动本机软件”通常没有反应，属于正常现象——欢迎通过本页了解系统能力，
+          或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">数据与说明</h2>
+      <p>
+        演示数据为 <strong>2026-03-09 起报的 WRF/GFS 1 km 气象场</strong>（UTC），各城市案例的时间窗、
+        高度层与分辨率以随包数据清单为准；浓度场、覆盖面积与影响人口会随气象时段、源项参数与警告阈值变化，
+        页面截图为华盛顿场景的示例结果。软件当前为 <strong>0.6.1 试用版</strong>（安装器约 177 MB，
+        数据包约 6.8 GB、解压后约 25 GB），支持离线结果播放、Gaussian CPU、原生 SCIPUFF 与多窗口展示；
+        具体功能范围以试用授权为准。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+
+  <script>
+    // 点击“启动本机软件”：经隐藏 iframe 唤起本机注册的 pdd-demo:// 协议，
+    // 由本机启动器（启动软件.bat）拉起桌面程序。用 iframe 而非 location.href：
+    // 即使协议未注册，主页面也不会被导航走。页面不含任何本机路径或地址。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.src = btn.getAttribute('href');
+        document.body.appendChild(f);
+        setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 8000);
+        hint.innerHTML = '已唤起本机启动器（浏览器弹出确认框时请选择“打开”）。<br>' +
+          '若没有反应，请先完成上方第 2 步的一次性配置（注册协议），或手动双击启动软件.bat。';
+      });
+    })();
+  </script>
+</body>
+</html>

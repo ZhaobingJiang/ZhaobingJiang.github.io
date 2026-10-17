@@ -120,7 +120,35 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">2. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">2. Pollutant Dispersion Situation Forecasting System<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          A desktop forecasting system for atmospheric pollutant dispersion, driven by
+          <strong>WRF 1&nbsp;km meteorological fields</strong> and solved with both
+          <strong>native SCIPUFF</strong> (second-order closure Gaussian puff) and a fast
+          <strong>Gaussian CPU</strong> model. Concentration fields are rendered on satellite
+          basemaps with a logarithmic scale, together with live <strong>cumulative covered
+          area</strong> and <strong>affected population</strong>; source terms (release point by
+          map picking or lon/lat, initial height and diameter), warning thresholds and the colour
+          range are all configurable. Ships with 13 offline city cases &mdash; Beijing, Shanghai,
+          Taipei, New York, Washington, London, Paris, Tokyo, Changsha, Dubai, Moscow, Berlin and
+          Osaka &mdash; including wind fields, population rasters, administrative boundaries,
+          buildings, tiles and pre-computed runs, so a full 2-hour, 61-frame simulation can be
+          played back frame by frame without network access.
+        </p>
+        <p class="soft-meta">
+          13 city cases &middot; ~25 GB offline data &middot; 2 h / 2 min &rarr; 61 frames &middot;
+          WRF 1 km &middot; SCIPUFF + Gaussian CPU &middot; 8-thread CPU solve &middot;
+          example: 185.65 km&sup2; covered / 210,203 people affected
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./pdd/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">3. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An interactive surrogate model for Stokes flow past circles and ellipses in a channel.
           Trained on 2,400+ cases computed with <strong>FastBEM</strong> &mdash; the fast-multipole
@@ -144,7 +172,7 @@
 
 <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">3. LBM Karman Vortex Street Unsteady Surrogate<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">4. LBM Karman Vortex Street Unsteady Surrogate<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           Interactive surrogate for the unsteady wake of a single cylinder at
           Re&nbsp;=&nbsp;80&ndash;160. Training data: 50 lattice-Boltzmann (D2Q9) runs, each
@@ -168,7 +196,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">4. Opatiya Numerical Wave Tank (CFD GUI)<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">5. Opatiya Numerical Wave Tank (CFD GUI)<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           A graphical front end for numerical-wave-tank CFD simulations,
           organising the complete workflow into seven form pages: tank
@@ -192,7 +220,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">5. PIER-VIBE Pier Safety Assessment System<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">6. PIER-VIBE Pier Safety Assessment System<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           A physics-chain assessment suite for bridge-pier safety in cross-sea environments.
           Equilibrium scour depth follows <strong>HEC-18</strong> with Melville-Coleman rate
@@ -215,7 +243,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">6. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">7. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An interactive demo suite for a target-tracking (damage-environment modeling) system,
           three linked pages in one local web app. The tracking-simulation page renders a UAV model
