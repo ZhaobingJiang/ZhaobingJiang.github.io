@@ -102,6 +102,19 @@
       padding: 1px 8px;
       white-space: nowrap;
     }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
     .guest-note {
       font-size: 13.5px;
       color: var(--muted-color);
@@ -239,15 +252,18 @@
         <h3>获取与运行</h3>
         <ol>
           <li>软件部署在作者本机（本地静态站点，全部计算在浏览器内完成，数据不出本机）；本页面为软件介绍。</li>
-          <li>本机启动：在平台目录执行 <span class="run-code">python -m http.server 8765</span>；
-              或在上级目录执行 <span class="run-code">python -m http.server 8765 --directory 城市点云CFD几何建模平台</span>。</li>
-          <li>浏览器访问 <span class="run-code">http://127.0.0.1:8765/</span>，用 <span class="run-code">?m=m4-building</span> 一类参数可直达指定模块。</li>
+          <li>本机首次配置（一次性）：双击 <span class="run-code">城市点云CFD几何建模平台\注册软件协议.reg</span>，
+              注册 <span class="run-code">pointcloud-cfd://</span> 启动协议。</li>
+          <li>日常使用：直接点击下方按钮——本机启动器会自动启动平台服务并打开界面
+              （服务已在运行时直接打开界面）；也可双击
+              <span class="run-code">城市点云CFD几何建模平台\启动软件.bat</span> 手动启动。</li>
         </ol>
+        <a class="btn-local" id="btnOpen" href="pointcloud-cfd://open">▶ 启动本地平台</a>
+        <div class="open-hint" id="openHint"></div>
         <div class="guest-note">
-          说明：平台必须通过 HTTP 访问——直接双击 <span class="run-code">index.html</span>（<span class="run-code">file://</span> 协议）时，
-          浏览器会拦截对数据文件的 <span class="run-code">fetch()</span>，页面会给出中文提示而不是静默失败。
-          同时，软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接；欢迎通过本页了解软件功能，
-          或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+          说明：平台仅通过作者本机的回环地址（<span class="run-code">http://127.0.0.1:8765/</span>）提供服务，
+          不经互联网暴露，外部访客无法连接。访客点击“启动本地平台”通常没有反应，属于正常现象——
+          欢迎通过本页了解平台功能，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
         </div>
       </div>
     </section>
@@ -271,5 +287,28 @@
       模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
     </p>
   </footer>
+
+  <script>
+    // 点击“启动本地平台”：经隐藏 iframe 唤起本机注册的 pointcloud-cfd:// 协议，
+    // 由本机启动器（启动软件.bat）拉起静态服务并自动打开平台界面。
+    // 用 iframe 而非 location.href：即使协议未注册，主页面也不会被导航走。
+    // 页面与脚本仅暴露回环地址，不包含本机文件路径。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.src = btn.getAttribute('href');
+        document.body.appendChild(f);
+        setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 8000);
+        hint.innerHTML = '已唤起本机启动器（浏览器弹出确认框时请选择“打开”）。<br>' +
+          '平台服务启动后会自动在新标签页打开界面；若长时间没有反应，' +
+          '请先完成上方第 2 步的一次性配置（注册协议），或手动双击启动软件.bat。';
+      });
+    })();
+  </script>
 </body>
 </html>
