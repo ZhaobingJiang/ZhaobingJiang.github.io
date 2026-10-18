@@ -243,7 +243,34 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">7. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">7. Urban Point Cloud CFD Geometry Modeling Platform<span class="soft-tag">local web app</span></h3>
+        <p class="soft-desc">
+          A browser-based demonstration platform that turns raw <strong>LiDAR point clouds</strong> and
+          <strong>GIS building footprints</strong> into CFD-ready city geometry, following the six stages of the
+          modelling workflow: multi-source data fusion, point-cloud pre-processing (statistical outlier removal
+          plus CSF cloth-simulation classification), DEM terrain reconstruction, building extraction with
+          footprint fitting and <strong>LoD1.2 / 1.3 / 2.2</strong> extrusion, CFD-oriented simplification, and
+          geometry cleaning with voxel volume-mesh generation. Five real city scenes ship with the platform
+          (TU Delft campus, Delft suburbs, Cologne, Zurich old town and Eugene), each sampled to 120,000
+          class-stratified points; every number on screen is recomputed live in the browser or taken from
+          measured offline pipeline records. Pure static site &mdash; <strong>HTML + CSS + native ES modules,
+          zero third-party JS/CSS, no build step, zero external requests</strong> &mdash; with a self-written
+          WebGL1 multi-layer 3D view and LaTeX-to-MathML formula rendering. All processing stays in the
+          browser; no point cloud or mesh is ever uploaded.
+        </p>
+        <p class="soft-meta">
+          6 stages &middot; 5 real city scenes (120,000 points each) &middot; 907 footprints / 722 buildings
+          rebuilt / 99.0% success (Zurich) &middot; 33 algorithms / 133 formulas / 34 technical figures
+          &middot; zero dependencies, no build step
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./pointcloud-cfd/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">8. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An interactive demo suite for a target-tracking (damage-environment modeling) system,
           three linked pages in one local web app. The tracking-simulation page renders a UAV model

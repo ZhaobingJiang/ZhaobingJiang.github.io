@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="城市点云 CFD 几何建模平台（网页演示版）：从 LiDAR 点云与 GIS 矢量到可计算 CFD 城市几何的六个环节——多源融合、点云预处理、地形建模、建筑提取、几何简化、网格准备；内置 5 个真实城市场景，浏览器内实时计算，零第三方依赖、数据不出本机。本页为软件介绍，软件本体在作者本机运行。">
+  <title>城市点云 CFD 几何建模平台（网页演示版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页眉品牌栏：开发者 + 版权）---- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 10px 0 22px; }
+    .data-table th, .data-table td { border: 1px solid var(--border-color); padding: 6px 9px; text-align: left; line-height: 1.6; }
+    .data-table th { color: var(--heading-color); background: var(--bg-color); font-weight: 600; }
+    .data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        城市点云 CFD 几何建模平台
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">网页演示版</span>
+      </h1>
+      <p class="affiliation">从 LiDAR 点云到可计算 CFD 城市几何：六个环节全程可在浏览器里演示 · 5 个真实城市场景 · 零第三方依赖</p>
+    </div>
+
+    <p class="intro-lede">
+      本平台把城市点云 CFD 几何建模的<strong>六个功能环节</strong>做成一个可在浏览器中直接演示的软件原型——
+      <strong>多源数据融合建模 → 点云预处理 → 地形模型生成 → 建筑物几何提取 → 面向 CFD 的几何简化 → 几何清理与网格准备</strong>。
+      每个环节对应一个演示模块，页面上的每一个数值都来自当前数据集的<strong>实时计算</strong>或场景清单中的离线实测记录，不使用硬编码假数据。
+      平台为纯静态站点（HTML + CSS + 原生 ES Module），<strong>零第三方 JS/CSS 依赖、无构建步骤、零外部网络请求</strong>，
+      全部处理在浏览器内完成，点云与网格<strong>不上传任何服务器</strong>。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot_fusion.jpg" alt="多源数据融合建模页：DEM 晕渲 + 建筑轮廓 + 地面点 / 建筑点 / 植被点 / 水体点分类投影，左侧为数据源贡献度与套合检查面板">
+    </div>
+    <p class="shot-cap">
+      多源数据融合建模（P3）：DEM 晕渲 + 建筑轮廓 + 分类点投影四层独立开关；右侧面板给出三类数据源的本场景实际用量、
+      逐轮廓套合检查（有效轮廓 / 空轮廓 / 覆盖率 / 平均每栋点数）与数据源贡献度。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot_lod.jpg" alt="建筑物几何提取页三维视图：单栋建筑点云与 LoD1.2 拉伸体块，读数浮层显示高度、底面面积、三角面数与 openEdges">
+    </div>
+    <p class="shot-cap">
+      建筑物几何提取（P4）：单体分割 + 最小二乘轮廓拟合（PCA 主轴 + 最小面积外接矩形 + 凸包），
+      按 LoD1.2 平屋顶 / LoD1.3 双坡屋顶 / LoD2.2 面片屋顶拉伸成型；三维视图实时给出高度、底面面积、
+      三角面数与 openEdges，并可逐栋导出 OBJ。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot_mesh.jpg" alt="几何清理与网格准备页：四步流水线（破面与缝隙检测、按距离合并顶点修复、法向量检查与统一、体网格生成与质量验证）">
+    </div>
+    <p class="shot-cap">
+      几何清理与网格准备（P6）：破面与缝隙检测 → 按距离合并顶点修复 → 法向量检查与统一 → 体网格生成与质量验证，
+      四步流水线给出边界边、非流形边、欧拉示性数、翻转面数与体网格规模，用于说明模型封闭性与网格可用性。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>多源数据融合与套合检查</b> — LiDAR 点云 / GIS 矢量 / 航空摄影测量三类数据源对照本场景实际用量；逐轮廓统计缓冲区内建筑点数，输出有效轮廓数、空轮廓数、覆盖率与平均每栋点数，并与场景实测重建失败栋数对照。</div>
+        <div class="feat-item"><b>点云预处理双路径</b> — 统计离群点滤波（SOR，k 近邻与 σ 倍数可调）给出原始 / 保留 / 剔除点数与剔除比例；CSF 布料模拟分类以「读取数据自带分类码」与「把类别视为未知几何重分类」双路径对照，输出一致率与混淆矩阵。重计算放在 Blob 内联 Web Worker 中，主线程不阻塞。</div>
+        <div class="feat-item"><b>地形模型生成</b> — 以地面点为唯一输入栅格化 DEM（格内取中位数抗噪），配晕渲、等高线与高程剖面；给出格网、有效格数、空洞率与 min/max/mean/relief，并与数据集内置 DEM 逐项对照。</div>
+        <div class="feat-item"><b>建筑物几何提取</b> — 单体分割与最小二乘轮廓拟合（PCA 主轴 + 最小面积外接矩形 + 凸包），LoD1.2 / 1.3 / 2.2 拉伸与几何有效性（openEdges、非流形边、欧拉示性数）；支持二维视图拖拽框选批量拉伸并合并导出 OBJ（单次最多 60 栋并如实提示）。</div>
+        <div class="feat-item"><b>面向 CFD 的几何简化</b> — A 按最小面积阈值去除次要构件、B 按方向与尺寸归并为特征族、C 植被圆柱 / 球体 / 多孔介质三种简化模式；D 简化前后总账（栋数、独特几何体数、三角面、顶点、5 m 体素体网格量、建筑外表面积），并给出「同口径 LoD1.2 体块」与「实测重建网格」两条基线。</div>
+        <div class="feat-item"><b>几何清理与网格准备</b> — 顶点焊接修复、边界边 / 非流形边 / 欧拉示性数统计、法向量检查与统一、体素体网格生成与质量验证（正交性、长宽比、面体比）；建筑层、地形层与全域三行分别统计，口径就地说明。</div>
+        <div class="feat-item"><b>真实数据导入</b> — 一键多选导入 <span class="run-code">.ply .xyz .txt .csv .las .geojson .json .obj</span>（单文件 ≤ 20 MB，LAS 点格式 0~5，点数上限 500 万自动抽样）；导入时按公共包围盒自动平移坐标以保护 WebGL 单精度精度，并如实记录平移量。</div>
+        <div class="feat-item"><b>算法说明卡（面向客户讲解）</b> — 每个模块页末尾附折叠的算法说明，逐条给出原理、公式、算法逻辑与接口；全平台共 <b>33 个算法、133 条公式、34 张技术支持图</b>（26 张手写 SVG + 8 张软件实测导出）。公式以 LaTeX 书写、由内置转换器转 MathML 原生排版，不引入任何第三方公式库。</div>
+        <div class="feat-item"><b>二维 / 三维一键切换</b> — 数据视图均为「二维平面（俯视）」与「三维」双视图：三维基于 WebGL1 自研多图层视图，带重置视角 / 俯视 / 等轴测 / 侧视 / 自动旋转 / 截图 / 全屏 / 网格 / 背景 / 线框工具条，状态徽标实时显示 FPS、图层数、三角形数与相机距离。</div>
+        <div class="feat-item"><b>零依赖、可审计、可离线</b> — 全站无第三方 JS/CSS、无打包器、无 sourcemap 偏差；评审方拿到的就是运行的那份代码。整目录拷到任意机器、用任意静态服务器即可运行，不受 CDN 与 npm 可用性影响。</div>
+      </div>
+      <p class="metric-line">
+        6 个演示模块（对应汇报提纲 P3–P6）· 5 个真实城市场景（每场景 12 万点）· 907 栋建筑轮廓 / 722 栋重建 / 成功率 99.0%（苏黎世老城）·
+        33 个算法 · 133 条公式 · 34 张技术图 · 数据 342 项校验 + Node 侧 120 项交叉校验全部通过
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">内置示范场景</h2>
+      <p style="font-size:14.5px; line-height:1.8;">
+        平台内置 5 个真实城市场景，均由离线管线从真实城市点云 / 矢量 / 网格源数据转换而来，点云按类别分层等距抽样至
+        每场景 12 万点（固定随机种子，可复现），场景指标为离线处理管线的实测值。
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>场景</th><th>城市</th><th>坐标系</th><th class="num">轮廓数</th><th class="num">重建栋数</th><th class="num">成功率</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>代尔夫特校园（TU Delft）</td><td>荷兰 代尔夫特</td><td>EPSG:28992</td><td class="num">1,529</td><td class="num">78</td><td class="num">79.6%</td></tr>
+          <tr><td>代尔夫特城郊</td><td>荷兰 代尔夫特</td><td>EPSG:28992</td><td class="num">338</td><td class="num">241</td><td class="num">100.0%</td></tr>
+          <tr><td>科隆城区</td><td>德国 科隆</td><td>EPSG:25832</td><td class="num">509</td><td class="num">96</td><td class="num">100.0%</td></tr>
+          <tr><td><b>苏黎世老城（默认）</b></td><td>瑞士 苏黎世</td><td>EPSG:2056</td><td class="num">907</td><td class="num">722</td><td class="num">99.0%</td></tr>
+          <tr><td>尤金城郊（autzen）</td><td>美国 俄勒冈州尤金</td><td>EPSG:2992（ftUS）</td><td class="num">69</td><td class="num">10</td><td class="num">55.6%</td></tr>
+        </tbody>
+      </table>
+      <p class="metric-line">
+        示范数据合计 28,105,856 字节（26.8 MB）；尤金场景成功率偏低（55.6%）的原因是建筑点云极稀疏（692 万点中建筑点仅 4.96%），
+        失败原因均为「轮廓缓冲区内没有归属点」——平台如实列出失败原因，不对指标做修饰。
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件部署在作者本机（本地静态站点，全部计算在浏览器内完成，数据不出本机）；本页面为软件介绍。</li>
+          <li>本机启动：在平台目录执行 <span class="run-code">python -m http.server 8765</span>；
+              或在上级目录执行 <span class="run-code">python -m http.server 8765 --directory 城市点云CFD几何建模平台</span>。</li>
+          <li>浏览器访问 <span class="run-code">http://127.0.0.1:8765/</span>，用 <span class="run-code">?m=m4-building</span> 一类参数可直达指定模块。</li>
+        </ol>
+        <div class="guest-note">
+          说明：平台必须通过 HTTP 访问——直接双击 <span class="run-code">index.html</span>（<span class="run-code">file://</span> 协议）时，
+          浏览器会拦截对数据文件的 <span class="run-code">fetch()</span>，页面会给出中文提示而不是静默失败。
+          同时，软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接；欢迎通过本页了解软件功能，
+          或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">技术依据与验证</h2>
+      <p>
+        平台技术依据为《城市CFD几何建模》汇报提纲与《城市点云 CFD 几何建模技术报告》，算法口径与报告同源；
+        交付文档包括主文档（功能、数据、导入、常见问题）、架构说明（分层、事件、数据集对象、二进制格式、生命周期与设计决策）
+        与验证记录（文件级 342 项数据校验、单元级 Node 断言、页面级无头浏览器 7 页验收、交互级 CDP 真实浏览器探针、视觉级像素分析）。
+        文档按源码的真实实现撰写，源码中的近似、抽样、上限保护与回退分支均写成明确局限——例如体素网格的正交性恒为 90°、
+        长宽比恒为 1.000 属理想化值，不能当作真实 CFD 网格质量指标；LoD2.2 在缺少屋顶面片数据时会回退到 LoD1.3。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+</body>
+</html>

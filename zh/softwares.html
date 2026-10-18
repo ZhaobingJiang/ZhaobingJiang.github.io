@@ -191,7 +191,25 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">7. 目标跟瞄系统演示<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">7. 城市点云 CFD 几何建模平台<span class="soft-tag">网页演示版</span></h3>
+        <p class="soft-desc">
+          面向城市风环境 CFD 前处理的网页演示平台：把 <strong>LiDAR 点云</strong>与 <strong>GIS 建筑轮廓</strong>
+          加工成可计算的 CFD 城市几何，完整覆盖六个环节——多源数据融合、点云预处理（统计离群点滤波 +
+          CSF 布料模拟分类）、地形 DEM 重建、建筑物提取（轮廓拟合 + <strong>LoD1.2 / 1.3 / 2.2</strong> 拉伸）、
+          面向 CFD 的几何简化、几何清理与体网格准备。内置<strong>5 个真实城市场景</strong>（代尔夫特校园、代尔夫特城郊、
+          科隆城区、苏黎世老城、尤金城郊），每场景 12 万点；页面上的每个数值都由浏览器内实时计算或取自离线管线实测记录。
+          纯静态站点，<strong>零第三方 JS/CSS 依赖、无构建步骤、零外部网络请求</strong>，三维视图为自研 WebGL1 多图层组件，
+          公式以 LaTeX 书写并转 MathML 原生排版；全部计算在浏览器内完成，点云与网格不上传任何服务器。
+        </p>
+        <p class="soft-meta">六环节 · 5 个真实城市场景（每场景 12 万点）· 苏黎世老城 907 栋轮廓 / 722 栋重建 / 成功率 99.0% · 33 个算法 / 133 条公式 / 34 张技术图 · 零依赖无构建</p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="../softwares/pointcloud-cfd/">软件介绍 →</a>
+          <span class="soft-side">介绍页含软件截图与运行说明 · 软件本体在作者本机运行</span>
+        </p>
+      </article>
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">8. 目标跟瞄系统演示<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向目标跟瞄（毁伤环境影响建模）系统的交互式演示套件，三页一体、同端口互跳。目标跟瞄仿真页：
           无人机三维模型由粗电视（640×512@50fps）、精电视（1920×1080）与中波红外（伪彩）三套传感器实时成像，
