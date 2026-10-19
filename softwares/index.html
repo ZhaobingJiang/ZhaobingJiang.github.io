@@ -273,7 +273,7 @@
         <h3 class="soft-title">8. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An interactive demo suite for a target-tracking (damage-environment modeling) system,
-          three linked pages in one local web app. The tracking-simulation page renders a UAV model
+          four linked pages in one local web app. The tracking-simulation page renders a UAV model
           through three simulated sensors &mdash; coarse TV (640&times;512@50fps), fine TV (1920&times;1080)
           and mid-wave infrared (false colour) &mdash; with the full imaging degradation chain
           (atmosphere, optics/turbulence blur, pixel sampling, noise, quantisation, electronic
@@ -283,11 +283,15 @@
           against the modular Python code with zero deviation on 45/45 items). The damage-assessment
           page builds a UAV damage tree (20 component-failure events aggregated through AND/OR/voting
           gates) for laser-induced thermal damage, with Monte-Carlo probability curves, minimal cut
-          sets, component importance and AHP-TOPSIS strike-option ranking.
+          sets and component importance. The strike-decision page ingests the damage results and
+          engagement geometry (range, line-of-sight, target attitude, visibility) to grade damage
+          difficulty, mark vulnerable components on the 3-D model, rank strike points with a
+          5-attribute AHP-TOPSIS model, and solve an energy/time-budgeted 0-1 strike plan, with
+          probability-dwell curves, effect-prediction surface and CSV/Markdown/JSON/PNG export.
         </p>
         <p class="soft-meta">
-          three linked pages &nbsp;&middot;&nbsp; 7-stage switchable degradation chain &nbsp;&middot;&nbsp;
-          damage tree with 20 basic events, Monte-Carlo N=2000 &nbsp;&middot;&nbsp; pure front-end, zero external dependencies
+          four linked pages &nbsp;&middot;&nbsp; 7-stage switchable degradation chain &nbsp;&middot;&nbsp;
+          damage tree with 20 basic events, Monte-Carlo N=2000 &nbsp;&middot;&nbsp; AHP-TOPSIS strike planning &nbsp;&middot;&nbsp; pure front-end, zero external dependencies
         </p>
         <p class="soft-actions">
           <a class="soft-btn" href="./target-tracking/">Software details &rarr;</a>
