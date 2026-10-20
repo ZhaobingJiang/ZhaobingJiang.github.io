@@ -298,6 +298,44 @@
           <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
         </p>
       </article>
+
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">9. FanAI Fan Optimization Agent<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          An end-to-end agent system for <strong>fan blade-profile optimization and efficiency
+          upgrading in thermal power plants</strong>, built on a curated library of
+          <strong>29 optimization cases</strong> (60&ndash;1000&nbsp;MW units: induced-draft / booster
+          fans, forced-draft fans, primary-air fans, air-cooled fans, flue and air ducts, blades
+          and guide vanes; every case carries plant and unit, equipment model, problem description,
+          root cause, solution, expected effect, quality score and verification status, plus
+          structured case parameters, solutions, effects and tags, and links to CFD cases / result
+          files, blade profiles and 3-D models). A diagnosis combines
+          <strong>case-based reasoning</strong>, <strong>GraphRAG retrieval</strong> (Neo4j knowledge
+          graph + LanceDB vector store) and <strong>natural-language SQL</strong> over the case
+          database, taking a plain-language problem statement and up to <strong>eight kinds of
+          engineering documents</strong> (3-D fan model, duct layout, DCS operating data, performance
+          curve, previous CFD report, equipment manual, site photos and blade parameters) as input.
+          The reasoning stream is pushed live to the page; the structured diagnosis is then expanded
+          into an <strong>HTML optimization-scheme report</strong> with automatically generated or
+          matched technical figures and exported to Word. A Neo4j-based
+          <strong>knowledge-graph editor</strong> supports graph browsing and editing with five
+          layouts. Front end Vue&nbsp;3 + Vite + Element Plus; business back end Spring Boot +
+          MyBatis-Plus (25 REST controllers, 30 tables); agent service FastAPI + GraphRAG. All
+          services run locally on the author's machine and data never leaves it.
+        </p>
+        <p class="soft-meta">
+          29 optimization cases (24 verified) &middot; 60&ndash;1000 MW units &middot;
+          8 engineering-document types &middot; CBR + GraphRAG diagnosis &middot;
+          HTML scheme report with figures + Word export &middot; knowledge-graph editor &middot;
+          25 REST controllers / 30 tables
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./fanai/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+
     </section>
   </main>
 

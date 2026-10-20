@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FanAI 风机优化智能体（本地版）：面向火电厂风机叶形优化与提能增效的全流程智能体系统——29 条优化案例库、CBR 相似案例检索、知识图谱检索（GraphRAG 双检索架构，向量库需配置额度）、8 类工程资料输入、智能诊断（实测 62–148 s）与方案配图、Word 报告导出、797 节点 / 932 关系知识图谱编辑器。本页为软件介绍与真实运行界面截图，软件本体在作者本机运行。">
+  <title>FanAI 风机优化智能体（本地版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页眉品牌栏：开发者 + 版权）---- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .shot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 20px;
+      margin: 6px 0 8px;
+    }
+    @media (max-width: 760px) { .shot-grid { grid-template-columns: 1fr; } }
+    .shot-grid .shot-frame { margin: 0 0 4px; }
+    .shot-grid .shot-cap { margin: 4px 0 18px; text-align: left; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 10px 0 22px; }
+    .data-table th, .data-table td { border: 1px solid var(--border-color); padding: 6px 9px; text-align: left; line-height: 1.6; }
+    .data-table th { color: var(--heading-color); background: var(--bg-color); font-weight: 600; }
+    .data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        FanAI 风机优化智能体
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">桌面本地版</span>
+      </h1>
+      <p class="affiliation">面向火电厂风机叶形优化与提能增效的全流程智能体系统 · 29 条优化案例 · CBR + 知识图谱双检索 · 智能诊断实测 62–148 s · 方案报告与配图生成 · 797 节点 / 932 关系知识图谱</p>
+    </div>
+
+    <p class="intro-lede">
+      FanAI 是面向<strong>火电厂风机叶形优化与提能增效</strong>的全流程智能体系统（工程内部名称：风机与管道优化案例智能体系统）：
+      以<strong>历史优化案例库</strong>与<strong>知识图谱</strong>为知识底座，串联
+      <strong>CBR 案例推理</strong>、<strong>知识图谱检索</strong>（GraphRAG 双检索架构，向量库需配置 embedding 额度后启用）
+      与<strong>多智能体协同</strong>，把工程师的问题描述与工程资料转化为<strong>可追溯的诊断结论</strong>与
+      <strong>可导出的优化方案报告</strong>。系统内置 <strong>29 条火电厂风机/烟风道优化案例</strong>
+      （覆盖 60–1000 MW 机组的引风机、送风机、一次风机、空冷风机及烟道/风道、叶片与导叶改造；其中 24 条已核验），
+      知识图谱当前含 <strong>797 个实体节点、932 条关系</strong>。诊断时以案例库自然语言转 SQL 检索
+      （MySQL + DeepSeek 大模型）为主、知识图谱检索为辅，推理过程实时可见；实测单次智能诊断
+      <strong>62–148 s</strong>，返回「问题分析 + 建议措施」两段式结论（示例约 754 字 / 990 字）并引用历史案例编号。
+      方案报告自动配图并支持一键导出 Word；另提供基于 Neo4j 的<strong>知识图谱编辑器</strong>。
+      软件为本地部署的 Web 应用（Vue 3 前端 + Spring Boot 后端 + FastAPI 智能体服务 + MySQL/Neo4j/LanceDB），
+      全部服务在作者本机运行，数据不出本机。
+    </p>
+
+    <!-- shot 1: 工作台总览（真实运行截图，1600 px 宽） -->
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="FanAI 工作台总览：左侧四个功能入口、五步工作流程、历史案例与项目关键指标、设备类型分布、常见问题类型与实时日志">
+    </div>
+    <p class="shot-cap">
+      工作台总览：左侧为四个功能入口（工作台 / 案例中心 / 知识图谱 / 诊断工坊），主区为五步工作流程
+      （问题描述 → 提交资料 → 智能诊断 → 生成方案 → 导出报告）、历史案例与项目关键指标、
+      设备类型分布、常见问题类型与实时日志。
+      <br><span style="font-size:12.5px">注：工作台统计卡为界面演示数据（156 / 142 / 48 / ¥2.8 千万），案例库实际入库 29 条（24 条已核验），详见下方案例库统计。</span>
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>火电厂风机优化案例库</b> — 29 条已入库案例（24 条标注已核验），覆盖 60–1000 MW 机组的引风机/增压风机、送风机、一次风机、空冷风机及烟道/风道、叶片与导叶改造；每条案例含电厂与机组、设备与风机型号、问题描述、根因、方案、预期效果、质量评分与核验状态，并关联案例参数、方案库、效果数据、标签，以及 CFD 案例与结果文件、叶片型线及性能、三维模型与版本等数据模型。</div>
+        <div class="feat-item"><b>相似案例检索（CBR）</b> — 用自然语言描述当前问题（如“660 MW 机组引风机深度调峰低负荷电流偏高、出口烟道压损比设计值高 15%”），系统自动匹配最相似的历史案例，给出相似案例卡片与匹配依据，可一键进入案例详情对照方案。</div>
+        <div class="feat-item"><b>智能诊断：案例库 + 知识图谱双检索</b> — 按「案例库 + 知识图谱」双检索架构组织证据：案例库<strong>自然语言转 SQL</strong>检索（MySQL + DeepSeek 大模型）为主检索，知识图谱/向量检索（<strong>GraphRAG 架构</strong>：Neo4j 实体关系 + LanceDB 向量库；向量库需配置 embedding 额度后启用，当前部署以案例库检索为主）为辅；两路证据交给大模型形成<strong>结构化诊断结论</strong>（问题分析 + 建议措施）。实测单次诊断 62–148 s，输出分析约 754 字、建议约 990 字并引用历史案例编号。</div>
+        <div class="feat-item"><b>工程资料上传</b> — 支持 8 类资料：风机三维模型（.stp/.igs/.stl）、管道系统图/布置图（.dwg/.pdf/.png）、DCS 运行数据（.csv/.xlsx）、风机性能曲线、历史 CFD 报告、设备说明书/技术协议、现场照片/巡检记录、叶轮/叶片参数；文件解析后一并进入诊断上下文。</div>
+        <div class="feat-item"><b>思考过程流式可见</b> — 诊断与方案生成的推理过程通过 WebSocket 实时推送到页面；诊断完成后返回“问题分析 + 处理建议”两段结构化结论，工程师可据此判断检索证据是否充分、结论是否可用。</div>
+        <div class="feat-item"><b>优化方案生成与自动配图</b> — 以诊断结论为输入，生成完整 HTML 优化方案报告（技术原理、CFD 仿真参数、实施步骤、风险与验证要求等章节），并按方案<strong>自动生成或匹配技术配图</strong>，图文同页交付。</div>
+        <div class="feat-item"><b>报告导出</b> — 方案报告一键导出 Word（.docx），可直接进入工程评审与归档流程；诊断与方案生成过程中的检索数据、模型回复与耗时同步记录在日志中，便于追溯。</div>
+        <div class="feat-item"><b>知识图谱编辑器</b> — 基于 Neo4j 的图谱浏览与编辑：节点/关系增删改、按名称或描述搜索、<strong>五种布局</strong>（力导向 / 网格 / 环形 / 层次 / 同心圆）、撤销重做、图谱一键导入与保存，节点与关系统计实时显示。</div>
+        <div class="feat-item"><b>工作台与案例中心</b> — 工作台汇总设备类型分布、常见问题类型、关键指标与最近案例，提供“开始诊断 / 浏览案例库”快捷入口；案例中心支持相似案例检索、案例浏览、新增案例与案例详情（基本信息、设备信息、问题描述、解决方案、关联数据、质量评估）。</div>
+        <div class="feat-item"><b>数据模型与接口完备</b> — Spring Boot + MyBatis-Plus 后端提供 <strong>25 个 REST 控制器</strong>，覆盖风机设备、项目、优化案例、案例参数-方案-效果、CFD 案例与结果文件、叶片型线及性能、三维模型-版本-参数、知识文档与分块、智能体任务-步骤-工具调用、管道、报告、用户与角色；智能体服务提供 6 个 REST 接口与 1 个 WebSocket 日志流。</div>
+      </div>
+      <p class="metric-line">
+        29 条优化案例（24 条已核验）· 60–1000 MW 机组 · 知识图谱 797 节点 / 932 关系 · 单次智能诊断 62–148 s ·
+        8 类工程资料 · 25 个 REST 控制器 / 30 张数据表 · 6 个智能体 REST 接口 + 1 个 WebSocket 日志流 ·
+        前端 Vue 3 + Vite + Element Plus
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">系统组成</h2>
+      <table class="data-table">
+        <thead>
+          <tr><th>组成</th><th>技术栈</th><th>职责</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>前端界面</td>
+            <td>Vue 3 + Vite + Element Plus（知识图谱基于 Cytoscape）</td>
+            <td>工作台 / 案例中心 / 诊断工坊 / 知识图谱编辑器四个功能入口</td>
+          </tr>
+          <tr>
+            <td>业务后端</td>
+            <td>Spring Boot + MyBatis-Plus</td>
+            <td>25 个 REST 控制器：案例、设备、项目、CFD、叶片、三维模型、报告、用户角色等业务数据接口</td>
+          </tr>
+          <tr>
+            <td>智能体服务</td>
+            <td>FastAPI + GraphRAG 架构（DeepSeek 对话模型 + 图像生成；向量检索需配置 embedding 额度）</td>
+            <td>智能诊断、方案与配图生成、图谱查询/导入、资料上传解析、思考过程推送</td>
+          </tr>
+          <tr>
+            <td>数据层</td>
+            <td>MySQL + Neo4j + LanceDB</td>
+            <td>案例与业务数据 / 知识图谱（797 节点 / 932 关系）/ 向量索引（GraphRAG 架构，需配置额度）</td>
+          </tr>
+          <tr>
+            <td>启动方式</td>
+            <td>本机一键启动脚本</td>
+            <td>按序拉起 MySQL → Neo4j → 业务后端 → 智能体服务 → 前端界面（约 1 分钟）</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">内置案例库</h2>
+      <p style="font-size:14.5px; line-height:1.8;">
+        案例库现收录 <strong>29 条</strong>火电厂风机与烟风道优化案例，覆盖 60–1000 MW 机组；其中 25 条标注机组容量、
+        24 条标注为已核验，5 条给出 8.8–9.5 的案例质量评分。问题类型涵盖效率低/能耗高、出力不足、阻力大/流场不均、
+        振动大、失速风险、深度调峰、选型裕量大、腐蚀/泄漏与调节性能差等。
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>设备 / 系统类别</th><th class="num">案例数</th><th>涉及机组容量</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>引风机 / 增压风机（含引增合一、前置导叶改造）</td><td class="num">12</td><td>135–1000 MW</td></tr>
+          <tr><td>送风机（含动叶可调轴流、双模态协同改造）</td><td class="num">8</td><td>60–660 MW</td></tr>
+          <tr><td>叶片 / 导叶（全三维气动优化、反预旋、前置导叶）</td><td class="num">3</td><td>320–660 MW</td></tr>
+          <tr><td>烟道 / 风道 / 管道（流场均匀性与降阻优化）</td><td class="num">2</td><td>300–330 MW</td></tr>
+          <tr><td>空冷风机、一次风机及其他（含进气格栅、离心风机）</td><td class="num">4</td><td>135–600 MW</td></tr>
+          <tr><td><b>合计</b></td><td class="num"><b>29</b></td><td><b>60–1000 MW</b>（25 条标注容量）</td></tr>
+        </tbody>
+      </table>
+      <p class="metric-line">
+        知识图谱当前含 797 个实体节点 / 932 条关系（Neo4j，实时日志实测查询耗时 0.06 秒）。
+        案例来源为公开文献与工程资料整理，案例字段与数值以原始资料及现场实测为准；诊断结论与方案报告中的数值为检索与生成结果，
+        工程应用前须由专业工程师复核。
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">运行界面</h2>
+      <!-- 真实运行截图（本次实测采集，1600 px 宽） -->
+
+      <div class="shot-frame">
+        <img src="screenshot_form.jpg" alt="诊断工坊输入界面：设备型号 Y5-47、机组容量 135 MW、运行工况与问题类型多选、问题描述、历史案例快捷套用与提交相关资料">
+      </div>
+      <p class="shot-cap">
+        诊断工坊（输入问题）：填写设备型号、机组容量与运行工况，多选问题类型（出力不足 / 效率下降 /
+        电流偏高 / 振动超标 / 噪声过大 / 磨损严重），输入问题描述；可一键套用历史案例
+        （Y5-47、G4-73、SAF26.6-17-2 等），并展开「提交相关资料」上传工程资料。
+      </p>
+
+      <div class="shot-frame">
+        <img src="screenshot_diag.jpg" alt="智能诊断结果界面：问题描述、问题分析（故障机理分条论证）与建议措施（分步骤可执行），实时日志显示诊断耗时 117.82 秒">
+      </div>
+      <p class="shot-cap">
+        智能诊断结果：上方为问题描述（引风机 Y5-47 水平振动 7.2 mm/s、超过 4.6 mm/s 报警值），
+        下方依次给出「问题分析」（故障机理分条论证）与「建议措施」（分步骤可执行），可直接进入方案生成；
+        实时日志显示知识图谱查询（14 节点 / 14 关系、0.05 秒）与「诊断生成完成，耗时 117.82 秒」。
+        实测单次诊断 62–148 s，输出分析约 754 字、建议约 990 字。
+      </p>
+
+      <div class="shot-frame">
+        <img src="screenshot_report.jpg" alt="案例中心：相似案例检索、共 29 个案例、检索与筛选、案例卡片（机组容量、设备类型、工况与问题标签、验证状态）">
+      </div>
+      <p class="shot-cap">
+        案例中心：内置 <strong>29 条</strong>火电厂风机与风道优化案例；上方「相似案例检索」按问题描述匹配
+        最相似历史案例，下方支持按名称/电厂/关键词搜索与工况、类型筛选；案例卡片给出机组容量、设备/风机类型、
+        工况与问题标签以及验证状态（实验验证通过 / 待验证）。
+      </p>
+
+      <div class="shot-frame">
+        <img src="screenshot_cfd.jpg" alt="知识图谱编辑器：力导向布局的实体关系图，节点 797、关系 932，左侧添加元素与视图控制，底部实时日志">
+      </div>
+      <p class="shot-cap">
+        知识图谱编辑器：Neo4j 图谱 <strong>797 个实体节点、932 条关系</strong>，力导向布局；
+        左侧可添加实体/关系、控制视图，顶部可一键导入、按名称或描述搜索、切换布局
+        （力导向 / 网格 / 环形 / 层次 / 同心圆）并保存；底部实时日志显示图谱查询耗时 0.06 秒。
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">内置案例资料</h2>
+      <p style="font-size:14.5px; line-height:1.8;">
+        案例库与诊断输出中使用的技术资料图示例（Y5-47 引风机三维模型、改造前后性能曲线、全压云图对比、
+        G4-73 送风机振动频谱分析），用于说明智能诊断与方案生成的证据形态。
+      </p>
+      <div class="shot-grid">
+        <div>
+          <div class="shot-frame">
+            <img src="screenshot_case_model.jpg" alt="Y5-47 离心通风机整机三维模型：叶轮、蜗壳、传动组与电机分色显示">
+          </div>
+          <p class="shot-cap">Y5-47 离心通风机整机三维模型（叶轮 / 蜗壳 / 传动组 / 电机分色），案例几何与设备信息来源。</p>
+        </div>
+        <div>
+          <div class="shot-frame">
+            <img src="screenshot_case_curve.jpg" alt="Y5-47 引风机改造前后性能曲线对比：设计线、改造前实测运行点与改造后性能曲线">
+          </div>
+          <p class="shot-cap">Y5-47 引风机改造前后性能曲线对比：设计性能线 / 改造前实测运行点 / 改造后性能曲线。</p>
+        </div>
+        <div>
+          <div class="shot-frame">
+            <img src="screenshot_case_cfd.jpg" alt="Y5-47 离心通风机全压云图对比：安装前置导叶（左）与原风机（右）">
+          </div>
+          <p class="shot-cap">安装前置导叶前后全压云图对比（左：安装前置导叶；右：原风机），流场与阻力论证依据。</p>
+        </div>
+        <div>
+          <div class="shot-frame">
+            <img src="screenshot_case_vibration.jpg" alt="G4-73 送风机振动频谱与高频包络分析：1 倍频主导、轴承故障特征与 ISO 10816-3 限值对照">
+          </div>
+          <p class="shot-cap">G4-73 送风机振动频谱与高频包络分析：1 倍频主导、轴承故障特征与 ISO 10816-3 限值对照。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件部署在作者本机（本地 Web 应用，全部服务在本机运行，数据不出本机）；本页面为软件介绍，
+              外部访客无法直接打开软件。</li>
+          <li>本机运行：由作者执行一键启动脚本，按序拉起 <span class="run-code">MySQL</span>、<span class="run-code">Neo4j</span>、
+              业务后端、智能体服务与前端界面（首次约 1 分钟）；服务就绪后在本机浏览器打开前端界面即可使用。</li>
+          <li>日常使用：前端界面四个功能入口——<strong>工作台</strong>、<strong>案例中心</strong>、<strong>诊断工坊</strong>、
+              <strong>知识图谱</strong>；诊断工坊内按「问题信息 → 工程资料 → 智能诊断 → 方案生成 → 导出报告」流程操作。</li>
+        </ol>
+        <div class="open-hint">
+          说明：软件需由作者在本机启动本地服务后方可使用；服务未启动时前端界面无法访问，属于正常现象。
+        </div>
+        <div class="guest-note">
+          说明：软件仅部署在作者本机，不通过互联网提供服务，外部访客无法运行。
+          欢迎通过本页了解系统能力，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">数据与说明</h2>
+      <p>
+        案例库数据（<strong>29 条火电厂风机/烟风道优化案例</strong>）来自公开文献与工程资料整理，
+        其中 24 条标注为已核验；案例中的机组容量、设备型号、问题与效果数值以原始资料与现场实测为准。
+        知识图谱由 GraphRAG 管线构建，当前含 <strong>797 个实体节点 / 932 条关系</strong>；
+        系统采用「案例库 + 知识图谱」双检索架构，当前部署环境因 embedding 额度受限，
+        <strong>向量检索暂未启用</strong>，智能诊断实际以 MySQL 案例库检索 + DeepSeek 大模型为主，
+        知识图谱浏览/编辑功能独立可用。诊断结论与优化方案由大模型结合检索证据生成，
+        生成内容用于辅助工程师分析与决策，<strong>不替代设计计算、CFD 仿真与现场试验</strong>，
+        工程应用前须经专业工程师复核。本页界面截图为本次系统真实运行的浏览器截图（1600 px 宽），
+        案例资料图为案例库技术资料示例；软件当前为内部演示版本，功能范围与数据覆盖以实际部署版本为准。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+</body>
+</html>
