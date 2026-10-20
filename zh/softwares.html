@@ -109,7 +109,31 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">2. 污染物扩散态势预报系统<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">2. FanAI 风机优化智能体<span class="soft-tag">桌面本地版</span></h3>
+        <p class="soft-desc">
+          面向火电厂风机叶形优化与提能增效的全流程智能体系统：以 <strong>29 条历史优化案例</strong>
+          （60–1000 MW 机组的引风机/增压风机、送风机、一次风机、空冷风机及烟道/风道、叶片与导叶改造；
+          每条含电厂与机组、设备型号、问题描述、根因、方案、效果、质量评分与核验状态，并关联案例参数、
+          方案、效果、标签以及 CFD 案例与结果文件、叶片型线、三维模型）为知识底座，
+          融合 <strong>CBR 案例推理</strong>、<strong>GraphRAG 检索增强</strong>（Neo4j 知识图谱 + LanceDB
+          向量库，实体/关系/社区报告）与案例库<strong>自然语言转 SQL</strong>查询；输入问题描述与
+          <strong>8 类工程资料</strong>（三维模型、管道系统图、DCS 运行数据、性能曲线、历史 CFD 报告、
+          设备说明书、现场照片、叶片参数）即可完成智能诊断（思考过程流式可见，输出问题分析与处理建议），
+          并生成含自动配图的优化方案报告、一键导出 Word；另带基于 Neo4j 的知识图谱编辑器（节点/关系编辑、
+          搜索、五种布局、一键导入）。前端 Vue 3 + Vite + Element Plus，后端 Spring Boot + MyBatis-Plus
+          （25 个 REST 控制器、30 张数据表），智能体服务 FastAPI + GraphRAG。全部服务在作者本机运行，
+          数据不出本机。
+        </p>
+        <p class="soft-meta">29 条优化案例（24 条已核验）· 60–1000 MW 机组 · 8 类工程资料 · CBR + GraphRAG 智能诊断 · 方案报告自动配图 + Word 导出 · 知识图谱编辑器 · 25 个 REST 控制器 / 30 张数据表</p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="../softwares/fanai/">软件介绍 →</a>
+          <span class="soft-side">介绍页含软件截图与运行说明 · 软件本体仅对作者本机开放</span>
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">3. 污染物扩散态势预报系统<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向突发大气污染事件的扩散态势预报桌面系统：以 <strong>WRF 1 km 气象场</strong>驱动，
           同时提供<strong>原生 SCIPUFF</strong>（二阶闭合高斯烟团）与 <strong>Gaussian CPU</strong>
@@ -129,7 +153,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">3. 二维 Stokes 流动深度学习代理模型<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">4. 二维 Stokes 流动深度学习代理模型<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           针对通道内圆柱／椭圆障碍绕流的实时代理模型。训练数据由 <strong>FastBEM</strong>（南方科技大学
           Y. J. Liu 教授的二维 Stokes 快速多极子边界元求解器）批量计算 2400 余组算例生成；模型可在约
@@ -146,7 +170,7 @@
 
 <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">4. LBM 卡门涡街非定常代理模型<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">5. LBM 卡门涡街非定常代理模型<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向单圆柱非定常尾流（Re = 80~160）的交互式代理模型。训练数据为 50 组
           D2Q9 格子 Boltzmann 非定常算例（每组 16 周期暖机 + 8 周期采样，同步存储
@@ -163,7 +187,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">5. Opatiya数值水池（CFD 求解图形界面）<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">6. Opatiya数值水池（CFD 求解图形界面）<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向数值波浪水池（NWT）仿真的CFD求解图形界面，将完整工作流组织为七个功能页：水池尺寸与水深、17种波浪类型与造消波参数、浮体六自由度运动、三向网格加密与数值波高探针在表单中即填即存。软件自动生成块结构网格、写入求解器配置，经<strong>MS-MPI</strong>多核并行求解；计算过程中内置VTK渲染窗口逐帧加载结果，按level-set函数符号实时区分水体与空气着色。波高探针同时输出计算值与理论值，便于与波浪理论解交叉验证。
         </p>
@@ -175,7 +199,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">6. PIER-VIBE 跨海大桥桥墩结构安全评估系统<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">7. PIER-VIBE 跨海大桥桥墩结构安全评估系统<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向跨海大桥桥墩的结构健康监测与安全评估软件，以物理机理链组织全部计算：
           HEC-18 平衡冲刷深度与 Melville-Coleman 冲刷速率推演冲刷发展；Morison 方程计算波浪力；
@@ -191,7 +215,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">7. 城市点云 CFD 几何建模平台<span class="soft-tag">网页演示版</span></h3>
+        <h3 class="soft-title">8. 城市点云 CFD 几何建模平台<span class="soft-tag">网页演示版</span></h3>
         <p class="soft-desc">
           面向城市风环境 CFD 前处理的网页演示平台：把 <strong>LiDAR 点云</strong>与 <strong>GIS 建筑轮廓</strong>
           加工成可计算的 CFD 城市几何，完整覆盖六个环节——多源数据融合、点云预处理（统计离群点滤波 +
@@ -209,7 +233,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">8. 目标跟瞄系统演示<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">9. 目标跟瞄系统演示<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向目标跟瞄（毁伤环境影响建模）系统的交互式演示套件，四页一体、同端口互跳。目标跟瞄仿真页：
           无人机三维模型由粗电视（640×512@50fps）、精电视（1920×1080）与中波红外（伪彩）三套传感器实时成像，
@@ -224,30 +248,6 @@
         <p class="soft-meta">四页一体（跟瞄仿真 / 传感器建模 / 毁伤评估 / 打击决策） · 成像链 7 环节逐级开关 · 毁伤树 20 底事件 · AHP-TOPSIS 打击决策 · 纯前端零依赖</p>
         <p class="soft-actions">
           <a class="soft-btn" href="../softwares/target-tracking/">软件介绍 →</a>
-          <span class="soft-side">介绍页含软件截图与运行说明 · 软件本体仅对作者本机开放</span>
-        </p>
-      </article>
-
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">9. FanAI 风机优化智能体<span class="soft-tag">桌面本地版</span></h3>
-        <p class="soft-desc">
-          面向火电厂风机叶形优化与提能增效的全流程智能体系统：以 <strong>29 条历史优化案例</strong>
-          （60–1000 MW 机组的引风机/增压风机、送风机、一次风机、空冷风机及烟道/风道、叶片与导叶改造；
-          每条含电厂与机组、设备型号、问题描述、根因、方案、效果、质量评分与核验状态，并关联案例参数、
-          方案、效果、标签以及 CFD 案例与结果文件、叶片型线、三维模型）为知识底座，
-          融合 <strong>CBR 案例推理</strong>、<strong>GraphRAG 检索增强</strong>（Neo4j 知识图谱 + LanceDB
-          向量库，实体/关系/社区报告）与案例库<strong>自然语言转 SQL</strong>查询；输入问题描述与
-          <strong>8 类工程资料</strong>（三维模型、管道系统图、DCS 运行数据、性能曲线、历史 CFD 报告、
-          设备说明书、现场照片、叶片参数）即可完成智能诊断（思考过程流式可见，输出问题分析与处理建议），
-          并生成含自动配图的优化方案报告、一键导出 Word；另带基于 Neo4j 的知识图谱编辑器（节点/关系编辑、
-          搜索、五种布局、一键导入）。前端 Vue 3 + Vite + Element Plus，后端 Spring Boot + MyBatis-Plus
-          （25 个 REST 控制器、30 张数据表），智能体服务 FastAPI + GraphRAG。全部服务在作者本机运行，
-          数据不出本机。
-        </p>
-        <p class="soft-meta">29 条优化案例（24 条已核验）· 60–1000 MW 机组 · 8 类工程资料 · CBR + GraphRAG 智能诊断 · 方案报告自动配图 + Word 导出 · 知识图谱编辑器 · 25 个 REST 控制器 / 30 张数据表</p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="../softwares/fanai/">软件介绍 →</a>
           <span class="soft-side">介绍页含软件截图与运行说明 · 软件本体仅对作者本机开放</span>
         </p>
       </article>

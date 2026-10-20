@@ -120,188 +120,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">2. Pollutant Dispersion Situation Forecasting System<span class="soft-tag">local app</span></h3>
-        <p class="soft-desc">
-          A desktop forecasting system for atmospheric pollutant dispersion, driven by
-          <strong>WRF 1&nbsp;km meteorological fields</strong> and solved with both
-          <strong>native SCIPUFF</strong> (second-order closure Gaussian puff) and a fast
-          <strong>Gaussian CPU</strong> model. Concentration fields are rendered on satellite
-          basemaps with a logarithmic scale, together with live <strong>cumulative covered
-          area</strong> and <strong>affected population</strong>; source terms (release point by
-          map picking or lon/lat, initial height and diameter), warning thresholds and the colour
-          range are all configurable. Ships with 13 offline city cases &mdash; Beijing, Shanghai,
-          Taipei, New York, Washington, London, Paris, Tokyo, Changsha, Dubai, Moscow, Berlin and
-          Osaka &mdash; including wind fields, population rasters, administrative boundaries,
-          buildings, tiles and pre-computed runs, so a full 2-hour, 61-frame simulation can be
-          played back frame by frame without network access.
-        </p>
-        <p class="soft-meta">
-          13 city cases &middot; ~25 GB offline data &middot; 2 h / 2 min &rarr; 61 frames &middot;
-          WRF 1 km &middot; SCIPUFF + Gaussian CPU &middot; 8-thread CPU solve &middot;
-          example: 185.65 km&sup2; covered / 210,203 people affected
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="./pdd/">Software details &rarr;</a>
-          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
-        </p>
-      </article>
-
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">3. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">local app</span></h3>
-        <p class="soft-desc">
-          An interactive surrogate model for Stokes flow past circles and ellipses in a channel.
-          Trained on 2,400+ cases computed with <strong>FastBEM</strong> &mdash; the fast-multipole
-          boundary-element solver for 2-D Stokes flow by Prof. Y. J. Liu (SUSTech) &mdash; the model
-          predicts the full velocity field and the drag force on every obstacle in about 3&nbsp;ms.
-          The desktop edition runs as a local web interface and, beyond the millisecond surrogate
-          predictions, adds <strong>FastBEM real-time cross-checking</strong> with per-obstacle error
-          analysis and <strong>rolling re-training</strong>: every verified case is fed back to fine-tune
-          the models in place.
-        </p>
-        <p class="soft-meta">
-          112 &times; 28 CFD grid &nbsp;&middot;&nbsp; velocity-field median relative error 2.2%
-          &nbsp;&middot;&nbsp; total-drag median relative error 2.6% (held-out test set)
-          &nbsp;&middot;&nbsp; round-5 rolling training
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="./stokes/">Software details &rarr;</a>
-          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
-        </p>
-      </article>
-
-<article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">4. LBM Karman Vortex Street Unsteady Surrogate<span class="soft-tag">local app</span></h3>
-        <p class="soft-desc">
-          Interactive surrogate for the unsteady wake of a single cylinder at
-          Re&nbsp;=&nbsp;80&ndash;160. Training data: 50 lattice-Boltzmann (D2Q9) runs, each
-          with 16 warm-up + 8 sampled shedding cycles (vorticity and streamwise-velocity
-          frames plus lift/drag histories). Three models run side by side: a
-          POD-harmonic dual branch (analytic time synthesis), an end-to-end
-          physics-informed network (PINN), and a harmonic-enhanced PINN-v2
-          (Fourier features + harmonic coefficient fields + physics soft
-          constraints). Slide Re and switch algorithms to compare synchronised
-          vorticity / velocity animations, force histories and
-          St&nbsp;/&nbsp;Cd&nbsp;/&nbsp;CL<sub>rms</sub> live.
-        </p>
-        <p class="soft-meta">
-          321 &times; 161 lattice &middot; Re 80&ndash;160 &middot; vortex-street fidelity
-          0.90&ndash;0.95 (PINN-v2, held-out) &middot; PyTorch (CPU)
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="./karman/">Software details &rarr;</a>
-          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
-        </p>
-      </article>
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">5. Opatiya Numerical Wave Tank (CFD GUI)<span class="soft-tag">local app</span></h3>
-        <p class="soft-desc">
-          A graphical front end for numerical-wave-tank CFD simulations,
-          organising the complete workflow into seven form pages: tank
-          geometry and water depth, 17 wave types with wave-generation and absorption options,
-          floating bodies with 6-DOF rigid-body dynamics, three-directional mesh refinement
-          and numerical wave gauges. The software builds the block-structured mesh
-          automatically, writes the solver input, and runs
-          <strong>MS-MPI</strong> multi-core parallel solving; while the solver runs, an
-          embedded <strong>VTK</strong> render window loads every result frame and colours
-          water and air by the sign of the level-set function in real time.
-        </p>
-        <p class="soft-meta">
-          7-page workflow &middot; 17 wave types &middot; 6-DOF floating bodies &middot;
-          MS-MPI parallel solving &middot; demo case: 30 m &times; 0.8 m 2-D tank, regular wave
-          H = 0.02 m, &lambda; = 1 m, 8-core MPI, 12 s of physical time in under 100 s
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="./opatiya-nwt/">Software details &rarr;</a>
-          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
-        </p>
-      </article>
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">6. PIER-VIBE Pier Safety Assessment System<span class="soft-tag">local app</span></h3>
-        <p class="soft-desc">
-          A physics-chain assessment suite for bridge-pier safety in cross-sea environments.
-          Equilibrium scour depth follows <strong>HEC-18</strong> with Melville-Coleman rate
-          evolution; wave loads use the <strong>Morison equation</strong>; fatigue accumulates
-          through B&ndash;E class S-N curves with Palmgren-Miner summation and Goodman
-          mean-stress correction; scour development maps directly onto the pier's fundamental
-          frequency, extracted by FFT from a reproducible 100&nbsp;s acceleration history.
-          The weighted <strong>BSHI</strong> index (scour 0.35 + fatigue 0.35 + drift 0.30)
-          returns a four-level safety signal with operation guidance &mdash; every intermediate
-          quantity visible, eleven physical parameters adjustable in real time.
-        </p>
-        <p class="soft-meta">
-          5-level mechanism chain &middot; 11 tunable parameters &middot; four-level BSHI verdict
-          &middot; default case BSHI &asymp; 0.88 (certified) &middot; millisecond evaluation
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="./pier-vibe/">Software details &rarr;</a>
-          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
-        </p>
-      </article>
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">7. Urban Point Cloud CFD Geometry Modeling Platform<span class="soft-tag">local web app</span></h3>
-        <p class="soft-desc">
-          A browser-based demonstration platform that turns raw <strong>LiDAR point clouds</strong> and
-          <strong>GIS building footprints</strong> into CFD-ready city geometry, following the six stages of the
-          modelling workflow: multi-source data fusion, point-cloud pre-processing (statistical outlier removal
-          plus CSF cloth-simulation classification), DEM terrain reconstruction, building extraction with
-          footprint fitting and <strong>LoD1.2 / 1.3 / 2.2</strong> extrusion, CFD-oriented simplification, and
-          geometry cleaning with voxel volume-mesh generation. Five real city scenes ship with the platform
-          (TU Delft campus, Delft suburbs, Cologne, Zurich old town and Eugene), each sampled to 120,000
-          class-stratified points; every number on screen is recomputed live in the browser or taken from
-          measured offline pipeline records. Pure static site &mdash; <strong>HTML + CSS + native ES modules,
-          zero third-party JS/CSS, no build step, zero external requests</strong> &mdash; with a self-written
-          WebGL1 multi-layer 3D view and LaTeX-to-MathML formula rendering. All processing stays in the
-          browser; no point cloud or mesh is ever uploaded.
-        </p>
-        <p class="soft-meta">
-          6 stages &middot; 5 real city scenes (120,000 points each) &middot; 907 footprints / 722 buildings
-          rebuilt / 99.0% success (Zurich) &middot; 33 algorithms / 133 formulas / 34 technical figures
-          &middot; zero dependencies, no build step
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="./pointcloud-cfd/">Software details &rarr;</a>
-          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
-        </p>
-      </article>
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">8. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
-        <p class="soft-desc">
-          An interactive demo suite for a target-tracking (damage-environment modeling) system,
-          four linked pages in one local web app. The tracking-simulation page renders a UAV model
-          through three simulated sensors &mdash; coarse TV (640&times;512@50fps), fine TV (1920&times;1080)
-          and mid-wave infrared (false colour) &mdash; with the full imaging degradation chain
-          (atmosphere, optics/turbulence blur, pixel sampling, noise, quantisation, electronic
-          de-rotation) switchable stage by stage, plus Johnson-criterion DRI probabilities and a
-          search-to-lock tracking scenario. The sensor-modelling page solves the per-channel MTF chain,
-          Nyquist sampling and Johnson detection/recognition/identification ranges (cross-checked
-          against the modular Python code with zero deviation on 45/45 items). The damage-assessment
-          page builds a UAV damage tree (20 component-failure events aggregated through AND/OR/voting
-          gates) for laser-induced thermal damage, with Monte-Carlo probability curves, minimal cut
-          sets and component importance. The strike-decision page ingests the damage results and
-          engagement geometry (range, line-of-sight, target attitude, visibility) to grade damage
-          difficulty, mark vulnerable components on the 3-D model, rank strike points with a
-          5-attribute AHP-TOPSIS model, and solve an energy/time-budgeted 0-1 strike plan, with
-          probability-dwell curves, effect-prediction surface and CSV/Markdown/JSON/PNG export.
-        </p>
-        <p class="soft-meta">
-          four linked pages &nbsp;&middot;&nbsp; 7-stage switchable degradation chain &nbsp;&middot;&nbsp;
-          damage tree with 20 basic events, Monte-Carlo N=2000 &nbsp;&middot;&nbsp; AHP-TOPSIS strike planning &nbsp;&middot;&nbsp; pure front-end, zero external dependencies
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="./target-tracking/">Software details &rarr;</a>
-          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
-        </p>
-      </article>
-
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">9. FanAI Fan Optimization Agent<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">2. FanAI Fan Optimization Agent<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An end-to-end agent system for <strong>fan blade-profile optimization and efficiency
           upgrading in thermal power plants</strong>, built on a curated library of
@@ -332,6 +151,187 @@
         </p>
         <p class="soft-actions">
           <a class="soft-btn" href="./fanai/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">3. Pollutant Dispersion Situation Forecasting System<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          A desktop forecasting system for atmospheric pollutant dispersion, driven by
+          <strong>WRF 1&nbsp;km meteorological fields</strong> and solved with both
+          <strong>native SCIPUFF</strong> (second-order closure Gaussian puff) and a fast
+          <strong>Gaussian CPU</strong> model. Concentration fields are rendered on satellite
+          basemaps with a logarithmic scale, together with live <strong>cumulative covered
+          area</strong> and <strong>affected population</strong>; source terms (release point by
+          map picking or lon/lat, initial height and diameter), warning thresholds and the colour
+          range are all configurable. Ships with 13 offline city cases &mdash; Beijing, Shanghai,
+          Taipei, New York, Washington, London, Paris, Tokyo, Changsha, Dubai, Moscow, Berlin and
+          Osaka &mdash; including wind fields, population rasters, administrative boundaries,
+          buildings, tiles and pre-computed runs, so a full 2-hour, 61-frame simulation can be
+          played back frame by frame without network access.
+        </p>
+        <p class="soft-meta">
+          13 city cases &middot; ~25 GB offline data &middot; 2 h / 2 min &rarr; 61 frames &middot;
+          WRF 1 km &middot; SCIPUFF + Gaussian CPU &middot; 8-thread CPU solve &middot;
+          example: 185.65 km&sup2; covered / 210,203 people affected
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./pdd/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">4. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          An interactive surrogate model for Stokes flow past circles and ellipses in a channel.
+          Trained on 2,400+ cases computed with <strong>FastBEM</strong> &mdash; the fast-multipole
+          boundary-element solver for 2-D Stokes flow by Prof. Y. J. Liu (SUSTech) &mdash; the model
+          predicts the full velocity field and the drag force on every obstacle in about 3&nbsp;ms.
+          The desktop edition runs as a local web interface and, beyond the millisecond surrogate
+          predictions, adds <strong>FastBEM real-time cross-checking</strong> with per-obstacle error
+          analysis and <strong>rolling re-training</strong>: every verified case is fed back to fine-tune
+          the models in place.
+        </p>
+        <p class="soft-meta">
+          112 &times; 28 CFD grid &nbsp;&middot;&nbsp; velocity-field median relative error 2.2%
+          &nbsp;&middot;&nbsp; total-drag median relative error 2.6% (held-out test set)
+          &nbsp;&middot;&nbsp; round-5 rolling training
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./stokes/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+
+<article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">5. LBM Karman Vortex Street Unsteady Surrogate<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          Interactive surrogate for the unsteady wake of a single cylinder at
+          Re&nbsp;=&nbsp;80&ndash;160. Training data: 50 lattice-Boltzmann (D2Q9) runs, each
+          with 16 warm-up + 8 sampled shedding cycles (vorticity and streamwise-velocity
+          frames plus lift/drag histories). Three models run side by side: a
+          POD-harmonic dual branch (analytic time synthesis), an end-to-end
+          physics-informed network (PINN), and a harmonic-enhanced PINN-v2
+          (Fourier features + harmonic coefficient fields + physics soft
+          constraints). Slide Re and switch algorithms to compare synchronised
+          vorticity / velocity animations, force histories and
+          St&nbsp;/&nbsp;Cd&nbsp;/&nbsp;CL<sub>rms</sub> live.
+        </p>
+        <p class="soft-meta">
+          321 &times; 161 lattice &middot; Re 80&ndash;160 &middot; vortex-street fidelity
+          0.90&ndash;0.95 (PINN-v2, held-out) &middot; PyTorch (CPU)
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./karman/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">6. Opatiya Numerical Wave Tank (CFD GUI)<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          A graphical front end for numerical-wave-tank CFD simulations,
+          organising the complete workflow into seven form pages: tank
+          geometry and water depth, 17 wave types with wave-generation and absorption options,
+          floating bodies with 6-DOF rigid-body dynamics, three-directional mesh refinement
+          and numerical wave gauges. The software builds the block-structured mesh
+          automatically, writes the solver input, and runs
+          <strong>MS-MPI</strong> multi-core parallel solving; while the solver runs, an
+          embedded <strong>VTK</strong> render window loads every result frame and colours
+          water and air by the sign of the level-set function in real time.
+        </p>
+        <p class="soft-meta">
+          7-page workflow &middot; 17 wave types &middot; 6-DOF floating bodies &middot;
+          MS-MPI parallel solving &middot; demo case: 30 m &times; 0.8 m 2-D tank, regular wave
+          H = 0.02 m, &lambda; = 1 m, 8-core MPI, 12 s of physical time in under 100 s
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./opatiya-nwt/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">7. PIER-VIBE Pier Safety Assessment System<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          A physics-chain assessment suite for bridge-pier safety in cross-sea environments.
+          Equilibrium scour depth follows <strong>HEC-18</strong> with Melville-Coleman rate
+          evolution; wave loads use the <strong>Morison equation</strong>; fatigue accumulates
+          through B&ndash;E class S-N curves with Palmgren-Miner summation and Goodman
+          mean-stress correction; scour development maps directly onto the pier's fundamental
+          frequency, extracted by FFT from a reproducible 100&nbsp;s acceleration history.
+          The weighted <strong>BSHI</strong> index (scour 0.35 + fatigue 0.35 + drift 0.30)
+          returns a four-level safety signal with operation guidance &mdash; every intermediate
+          quantity visible, eleven physical parameters adjustable in real time.
+        </p>
+        <p class="soft-meta">
+          5-level mechanism chain &middot; 11 tunable parameters &middot; four-level BSHI verdict
+          &middot; default case BSHI &asymp; 0.88 (certified) &middot; millisecond evaluation
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./pier-vibe/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">8. Urban Point Cloud CFD Geometry Modeling Platform<span class="soft-tag">local web app</span></h3>
+        <p class="soft-desc">
+          A browser-based demonstration platform that turns raw <strong>LiDAR point clouds</strong> and
+          <strong>GIS building footprints</strong> into CFD-ready city geometry, following the six stages of the
+          modelling workflow: multi-source data fusion, point-cloud pre-processing (statistical outlier removal
+          plus CSF cloth-simulation classification), DEM terrain reconstruction, building extraction with
+          footprint fitting and <strong>LoD1.2 / 1.3 / 2.2</strong> extrusion, CFD-oriented simplification, and
+          geometry cleaning with voxel volume-mesh generation. Five real city scenes ship with the platform
+          (TU Delft campus, Delft suburbs, Cologne, Zurich old town and Eugene), each sampled to 120,000
+          class-stratified points; every number on screen is recomputed live in the browser or taken from
+          measured offline pipeline records. Pure static site &mdash; <strong>HTML + CSS + native ES modules,
+          zero third-party JS/CSS, no build step, zero external requests</strong> &mdash; with a self-written
+          WebGL1 multi-layer 3D view and LaTeX-to-MathML formula rendering. All processing stays in the
+          browser; no point cloud or mesh is ever uploaded.
+        </p>
+        <p class="soft-meta">
+          6 stages &middot; 5 real city scenes (120,000 points each) &middot; 907 footprints / 722 buildings
+          rebuilt / 99.0% success (Zurich) &middot; 33 algorithms / 133 formulas / 34 technical figures
+          &middot; zero dependencies, no build step
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./pointcloud-cfd/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">9. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          An interactive demo suite for a target-tracking (damage-environment modeling) system,
+          four linked pages in one local web app. The tracking-simulation page renders a UAV model
+          through three simulated sensors &mdash; coarse TV (640&times;512@50fps), fine TV (1920&times;1080)
+          and mid-wave infrared (false colour) &mdash; with the full imaging degradation chain
+          (atmosphere, optics/turbulence blur, pixel sampling, noise, quantisation, electronic
+          de-rotation) switchable stage by stage, plus Johnson-criterion DRI probabilities and a
+          search-to-lock tracking scenario. The sensor-modelling page solves the per-channel MTF chain,
+          Nyquist sampling and Johnson detection/recognition/identification ranges (cross-checked
+          against the modular Python code with zero deviation on 45/45 items). The damage-assessment
+          page builds a UAV damage tree (20 component-failure events aggregated through AND/OR/voting
+          gates) for laser-induced thermal damage, with Monte-Carlo probability curves, minimal cut
+          sets and component importance. The strike-decision page ingests the damage results and
+          engagement geometry (range, line-of-sight, target attitude, visibility) to grade damage
+          difficulty, mark vulnerable components on the 3-D model, rank strike points with a
+          5-attribute AHP-TOPSIS model, and solve an energy/time-budgeted 0-1 strike plan, with
+          probability-dwell curves, effect-prediction surface and CSV/Markdown/JSON/PNG export.
+        </p>
+        <p class="soft-meta">
+          four linked pages &nbsp;&middot;&nbsp; 7-stage switchable degradation chain &nbsp;&middot;&nbsp;
+          damage tree with 20 basic events, Monte-Carlo N=2000 &nbsp;&middot;&nbsp; AHP-TOPSIS strike planning &nbsp;&middot;&nbsp; pure front-end, zero external dependencies
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./target-tracking/">Software details &rarr;</a>
           <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
         </p>
       </article>
