@@ -111,6 +111,18 @@
       padding: 1px 8px;
       white-space: nowrap;
     }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
     .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
     .guest-note {
       font-size: 13.5px;
@@ -349,18 +361,21 @@
       <div class="run-box">
         <h3>获取与运行</h3>
         <ol>
-          <li>软件部署在作者本机（本地 Web 应用，全部服务在本机运行，数据不出本机）；本页面为软件介绍，
-              外部访客无法直接打开软件。</li>
-          <li>本机运行：由作者执行一键启动脚本，按序拉起 <span class="run-code">MySQL</span>、<span class="run-code">Neo4j</span>、
-              业务后端、智能体服务与前端界面（首次约 1 分钟）；服务就绪后在本机浏览器打开前端界面即可使用。</li>
-          <li>日常使用：前端界面四个功能入口——<strong>工作台</strong>、<strong>案例中心</strong>、<strong>诊断工坊</strong>、
-              <strong>知识图谱</strong>；诊断工坊内按「问题信息 → 工程资料 → 智能诊断 → 方案生成 → 导出报告」流程操作。</li>
+          <li>软件部署在作者本机（本地 Web 应用，MySQL、Neo4j、业务后端、智能体服务与前端界面全部在本机运行，
+              数据不出本机），需由作者在本机启动；本页面为软件介绍，外部访客无法运行软件。</li>
+          <li><strong>一键启动（推荐）</strong>：点击下方「▶ 启动本地软件」——本机启动器会自动按序启动五项本地服务
+              （首次约 1 分钟；已在运行的服务自动复用），全部就绪后自动在新标签页打开软件界面。</li>
+          <li><strong>本机一次性配置</strong>：双击 <span class="run-code">风机优化智能体开发FanAI\注册软件协议.reg</span>，
+              注册 <span class="run-code">fanai://</span> 启动协议（写入当前用户注册表，无需管理员权限；
+              卸载用同目录「卸载软件协议.reg」）。</li>
+          <li><strong>备用方式</strong>：双击 <span class="run-code">风机优化智能体开发FanAI\启动软件.bat</span>，
+              效果与点击按钮相同。</li>
         </ol>
-        <div class="open-hint">
-          说明：软件需由作者在本机启动本地服务后方可使用；服务未启动时前端界面无法访问，属于正常现象。
-        </div>
+        <a class="btn-local" id="btnOpen" href="fanai://open">▶ 启动本地软件</a>
+        <div class="open-hint" id="openHint"></div>
         <div class="guest-note">
-          说明：软件仅部署在作者本机，不通过互联网提供服务，外部访客无法运行。
+          说明：软件仅部署在作者本机，不通过互联网提供服务，外部访客无法运行；本页也不包含任何本机地址。
+          访客点击「启动本地软件」通常没有反应（浏览器可能提示无法打开协议），属于正常现象——
           欢迎通过本页了解系统能力，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
         </div>
       </div>
@@ -389,6 +404,25 @@
       模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
     </p>
   </footer>
-  <script src="/assets/js/site-counter.js?v=2" defer></script>
+  <script>
+    // 点击「启动本地软件」：经隐藏 iframe 唤起本机注册的 fanai:// 协议，由启动器负责启动五项本地服务
+    // 并在就绪后自动打开软件界面。用 iframe 而非 location.href：即使协议尚未注册，主页面也不会被导航走。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.src = btn.getAttribute('href');
+        document.body.appendChild(f);
+        setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 8000);
+        hint.innerHTML = '已唤起本机启动器（浏览器弹出确认框时请选择“打开”）。<br>' +
+          '启动器会依次启动 MySQL、Neo4j、业务后端、智能体服务与前端界面（首次约 1 分钟），' +
+          '全部就绪后自动在新标签页打开软件界面；若长时间没有反应，请先完成上方第 3 步的一次性配置。';
+      });
+    })();
+  </script>
 </body>
 </html>
