@@ -1,21 +1,27 @@
 /* 全站访问量统计（site-wide page views）
  *
- * 用途：站点每个页面加载时都以“本页 URL”为 Referer 向不蒜子（busuanzi）
- * 上报一次 PV；首页页脚把全站累计访问量（site_pv，含论文/项目/诗词等
- * 所有页面）写入 #visit-counter。
+ * 口径：首页页脚显示 = 历史基数 BASELINE（2026-10-21 前的累计访问量）
+ *       + 不蒜子全站 PV（site_pv，含所有页面的访问）。
  *
- * 设计要点：
- * - 静态站（GitHub Pages）没有后端，采用不蒜子的 site_pv 做全站累计；
- *   只要本脚本在每个页面加载一次，任意页面的访问都会计入同一个总数。
- * - 不蒜子脚本通过隐藏的 #busuanzi_value_* 节点回填数据，本脚本轮询读取。
- * - 统计服务不可达时：首页回退显示本机上次记录值（title 注明），
- *   避免把旧值或 0 当作实时数据展示。
+ * 每个页面加载本脚本时都会向不蒜子上报一次本页 PV，因此访问任何页面
+ * （首页、论文、项目、诗词详情等）都会累加进同一个全站总数。
+ *
+ * 维护约束（由 scripts/verify_visit_counter.py 与
+ * .github/workflows/visit-counter-guard.yml 自动校验）：
+ * 1. BASELINE 只能调大，不能删除或调小；首页 span 的 data-base 必须与之一致。
+ * 2. 所有 HTML 页面都必须引入本脚本，且引用中的 ?v=N 版本号保持一致。
+ * 3. 修改本脚本后，把各页面引用里的 ?v= 版本号加一，确保浏览器取到新脚本。
+ *
+ * 统计服务不可达时：显示「历史基数 + 本机上次记录值」；无缓存则只显示历史基数。
  */
 (function () {
   "use strict";
 
   if (window.__jzbSiteCounter) return;
   window.__jzbSiteCounter = true;
+
+  /* 历史累计访问量（2026-10-21 之前）。只能调大，不能删除或调小。 */
+  var BASELINE = 2189;
 
   var BUSUANZI_SRC = "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
   var SINK_PREFIX = "busuanzi_value_";
@@ -26,16 +32,22 @@
 
   var labels = isZh
     ? {
-        total: "全站累计访问量（PV，含所有页面）",
-        uvPrefix: "；全站访客数（UV）：",
+        total: "全站累计访问量：",
+        breakdown: function (base, pv) {
+          return "（历史 " + format(base) + " + 实时 PV " + format(pv) + "）";
+        },
+        uv: "；全站访客数（UV）：",
         stale: "统计服务暂不可达，显示本机上次记录值",
-        unavailable: "统计服务暂不可达"
+        unavailable: "统计服务暂不可达，仅显示历史累计"
       }
     : {
-        total: "Total site visits (PV, all pages)",
-        uvPrefix: "; unique visitors (UV): ",
+        total: "Total site visits: ",
+        breakdown: function (base, pv) {
+          return " (baseline " + format(base) + " + live PV " + format(pv) + ")";
+        },
+        uv: "; unique visitors (UV): ",
         stale: "Counter service unreachable; showing the last value recorded on this device",
-        unavailable: "Counter service unreachable"
+        unavailable: "Counter service unreachable; showing the historical total only"
       };
 
   /* 供不蒜子脚本回填的隐藏节点（其脚本按固定 id 查找）。 */
@@ -72,6 +84,14 @@
     if (title) el.title = title;
   }
 
+  /* 历史基数：脚本常量与页面 data-base 取较大者，任一份保留即可不丢历史数据。 */
+  function baseline() {
+    var el = document.getElementById("visit-counter");
+    var fromDom = el ? parseInt(el.getAttribute("data-base"), 10) : 0;
+    if (isNaN(fromDom)) fromDom = 0;
+    return Math.max(BASELINE, fromDom);
+  }
+
   function readCache() {
     try {
       var obj = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
@@ -86,24 +106,26 @@
     } catch (e) {}
   }
 
-  function showStale() {
-    var cached = readCache();
-    if (cached === null) {
-      setCounter("—", labels.unavailable);
-    } else {
-      setCounter(format(cached), labels.stale);
-    }
-  }
-
   function showFresh() {
     var pv = readInt(SINK_PREFIX + "site_pv");
     if (pv === null) return false;
+    var base = baseline();
+    var title = labels.total + format(base + pv) + labels.breakdown(base, pv);
     var uv = readInt(SINK_PREFIX + "site_uv");
-    var title = labels.total;
-    if (uv !== null) title += labels.uvPrefix + format(uv);
-    setCounter(format(pv), title);
+    if (uv !== null) title += labels.uv + format(uv);
+    setCounter(format(base + pv), title);
     writeCache(pv);
     return true;
+  }
+
+  function showStale() {
+    var base = baseline();
+    var cached = readCache();
+    if (cached === null) {
+      setCounter(format(base), labels.unavailable);
+    } else {
+      setCounter(format(base + cached), labels.stale);
+    }
   }
 
   function loadCounter() {
@@ -126,7 +148,6 @@
     loadCounter();
     if (!document.getElementById("visit-counter")) return;
 
-    setCounter("…", labels.total);
     var waited = 0;
     var timer = setInterval(function () {
       if (showFresh()) {
