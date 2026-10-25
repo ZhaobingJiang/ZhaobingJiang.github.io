@@ -90,33 +90,10 @@
     <section class="section">
       <h2 class="section-title">已发布软件</h2>
 
-      <!-- 新增软件：复制下面的卡片块，修改标题、说明、指标与链接即可；最新发布的放在最前。 -->
-      <article class="soft-card">
-        <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">1. 嘴替 · 诊室版<span class="soft-tag">桌面本地版</span></h3>
-        <p class="soft-desc">
-          社区医院计免科窗口的语音回击助手。点一下开始，软件用电脑麦克风听对面说完，
-          约 <strong>1.5 秒</strong>后用东北口音的嗓门开口——<strong>先损一句定性，再断他退路，最后赶人</strong>，
-          学的不是教科书，是吉林公园那台会说东北话的机器人「猛子」：短句连打、反问加土味比喻，不讲大道理。
-          三档火力（轻损 / 猛子附体 / 公园执法）、<strong>14 个内置场景</strong>各配一条手写秒答与预生成语音、
-          五个音色与三档语速（默认小北·东北女声 +35%）。语音识别用 <strong>faster-whisper</strong> 在本机 CPU 上跑，
-          病人的话不出一台电脑；话术由 DeepSeek 流式生成、逐句合成播报。
-          界面是<strong>纯语音</strong>的：只有状态灯、延迟读数和声音，不显示任何对话文字。
-        </p>
-        <p class="soft-meta">
-          14 个场景 &middot; 秒答 0 ms &middot; 首字 0.5&ndash;0.8 s &middot; 本机识别 1.4&ndash;1.6 s &middot;
-          对方闭嘴到开口约 1.5&ndash;2.1 s &middot; faster-whisper small（int8, CPU）&middot;
-          edge-tts +35% 语速 &middot; 纯语音界面不显示文字
-        </p>
-        <p class="soft-actions">
-          <a class="soft-btn" href="../softwares/zuiti/">软件介绍 →</a>
-          <span class="soft-side">介绍页含软件截图、话术示例与运行说明 · 软件本体仅对作者本机开放</span>
-        </p>
-      </article>
-
+            <!-- 新增软件：复制下面的卡片块，修改标题、说明、指标与链接即可；条目顺序按需调整。 -->
 <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">2. 欧帕提亚官网<span class="soft-tag">本地网站服务</span></h3>
+        <h3 class="soft-title">1. 欧帕提亚官网<span class="soft-tag">本地网站服务</span></h3>
         <p class="soft-desc">
           南京欧帕提亚信息科技有限公司官方网站——细分行业数值仿真+AI解决方案，主打
           「让数值仿真+AI成为您的核心竞争力」。站点含五个板块：首页、案例中心、产品中心、
@@ -132,7 +109,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">3. FanAI 风机优化智能体<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">2. FanAI 风机优化智能体<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向火电厂风机叶形优化与提能增效的全流程智能体系统：以 <strong>29 条历史优化案例</strong>
           （60–1000 MW 机组的引风机/增压风机、送风机、一次风机、空冷风机及烟道/风道、叶片与导叶改造；
@@ -156,7 +133,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">4. 污染物扩散态势预报系统<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">3. 污染物扩散态势预报系统<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向突发大气污染事件的扩散态势预报桌面系统：以 <strong>WRF 1 km 气象场</strong>驱动，
           同时提供<strong>原生 SCIPUFF</strong>（二阶闭合高斯烟团）与 <strong>Gaussian CPU</strong>
@@ -176,7 +153,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">5. 二维 Stokes 流动深度学习代理模型<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">4. 二维 Stokes 流动深度学习代理模型<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           针对通道内圆柱／椭圆障碍绕流的实时代理模型。训练数据由 <strong>FastBEM</strong>（南方科技大学
           Y. J. Liu 教授的二维 Stokes 快速多极子边界元求解器）批量计算 2400 余组算例生成；模型可在约
@@ -193,7 +170,7 @@
 
 <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">6. LBM 卡门涡街非定常代理模型<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">5. LBM 卡门涡街非定常代理模型<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向单圆柱非定常尾流（Re = 80~160）的交互式代理模型。训练数据为 50 组
           D2Q9 格子 Boltzmann 非定常算例（每组 16 周期暖机 + 8 周期采样，同步存储
@@ -210,7 +187,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">7. Opatiya数值水池（CFD 求解图形界面）<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">6. Opatiya数值水池（CFD 求解图形界面）<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向数值波浪水池（NWT）仿真的CFD求解图形界面，将完整工作流组织为七个功能页：水池尺寸与水深、17种波浪类型与造消波参数、浮体六自由度运动、三向网格加密与数值波高探针在表单中即填即存。软件自动生成块结构网格、写入求解器配置，经<strong>MS-MPI</strong>多核并行求解；计算过程中内置VTK渲染窗口逐帧加载结果，按level-set函数符号实时区分水体与空气着色。波高探针同时输出计算值与理论值，便于与波浪理论解交叉验证。
         </p>
@@ -222,7 +199,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">8. PIER-VIBE 跨海大桥桥墩结构安全评估系统<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">7. PIER-VIBE 跨海大桥桥墩结构安全评估系统<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向跨海大桥桥墩的结构健康监测与安全评估软件，以物理机理链组织全部计算：
           HEC-18 平衡冲刷深度与 Melville-Coleman 冲刷速率推演冲刷发展；Morison 方程计算波浪力；
@@ -238,7 +215,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">9. 城市点云 CFD 几何建模平台<span class="soft-tag">网页演示版</span></h3>
+        <h3 class="soft-title">8. 城市点云 CFD 几何建模平台<span class="soft-tag">网页演示版</span></h3>
         <p class="soft-desc">
           面向城市风环境 CFD 前处理的网页演示平台：把 <strong>LiDAR 点云</strong>与 <strong>GIS 建筑轮廓</strong>
           加工成可计算的 CFD 城市几何，完整覆盖六个环节——多源数据融合、点云预处理（统计离群点滤波 +
@@ -256,7 +233,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">10. 目标跟瞄系统演示<span class="soft-tag">桌面本地版</span></h3>
+        <h3 class="soft-title">9. 目标跟瞄系统演示<span class="soft-tag">桌面本地版</span></h3>
         <p class="soft-desc">
           面向目标跟瞄（毁伤环境影响建模）系统的交互式演示套件，四页一体、同端口互跳。目标跟瞄仿真页：
           无人机三维模型由粗电视（640×512@50fps）、精电视（1920×1080）与中波红外（伪彩）三套传感器实时成像，
@@ -272,6 +249,29 @@
         <p class="soft-actions">
           <a class="soft-btn" href="../softwares/target-tracking/">软件介绍 →</a>
           <span class="soft-side">介绍页含软件截图与运行说明 · 软件本体仅对作者本机开放</span>
+        </p>
+      </article>
+
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">10. 嘴替 · 诊室版<span class="soft-tag">桌面本地版</span></h3>
+        <p class="soft-desc">
+          社区医院计免科窗口的语音回击助手。点一下开始，软件用电脑麦克风听对面说完，
+          约 <strong>1.5 秒</strong>后用东北口音的嗓门开口——<strong>先损一句定性，再断他退路，最后赶人</strong>，
+          学的不是教科书，是吉林公园那台会说东北话的机器人「猛子」：短句连打、反问加土味比喻，不讲大道理。
+          三档火力（轻损 / 猛子附体 / 公园执法）、<strong>14 个内置场景</strong>各配一条手写秒答与预生成语音、
+          五个音色与三档语速（默认小北·东北女声 +35%）。语音识别用 <strong>faster-whisper</strong> 在本机 CPU 上跑，
+          病人的话不出一台电脑；话术由 DeepSeek 流式生成、逐句合成播报。
+          界面是<strong>纯语音</strong>的：只有状态灯、延迟读数和声音，不显示任何对话文字。
+        </p>
+        <p class="soft-meta">
+          14 个场景 &middot; 秒答 0 ms &middot; 首字 0.5&ndash;0.8 s &middot; 本机识别 1.4&ndash;1.6 s &middot;
+          对方闭嘴到开口约 1.5&ndash;2.1 s &middot; faster-whisper small（int8, CPU）&middot;
+          edge-tts +35% 语速 &middot; 纯语音界面不显示文字
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="../softwares/zuiti/">软件介绍 →</a>
+          <span class="soft-side">介绍页含软件截图、话术示例与运行说明 · 软件本体仅对作者本机开放</span>
         </p>
       </article>
 
