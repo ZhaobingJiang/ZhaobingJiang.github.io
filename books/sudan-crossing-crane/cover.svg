@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+  <rect width="600" height="800" fill="#f4efe4"/>
+  <rect x="26" y="26" width="548" height="748" fill="none" stroke="#8c2f24" stroke-width="2"/>
+  <rect x="40" y="40" width="520" height="720" fill="none" stroke="#b9a98d" stroke-width="1"/>
+
+  <!-- 远山与云气 -->
+  <path d="M40 610 C120 560 180 590 240 570 C300 550 360 585 420 560 C480 535 530 570 560 555 L560 720 L40 720 Z" fill="#e8e0cf"/>
+  <path d="M40 640 C130 600 200 630 280 610 C360 590 440 625 560 600 L560 720 L40 720 Z" fill="#ded4bf"/>
+
+  <!-- 飞鹤 -->
+  <g fill="none" stroke="#3a3733" stroke-width="3" stroke-linecap="round">
+    <path d="M300 250 C282 232 258 228 240 240 C252 244 262 250 268 258 C252 256 238 262 230 274 C246 270 258 272 268 278 C258 288 256 302 262 314 C270 300 282 290 296 286"/>
+    <path d="M300 250 C318 232 342 228 360 240 C348 244 338 250 332 258 C348 256 362 262 370 274 C354 270 342 272 332 278 C342 288 344 302 338 314 C330 300 318 290 304 286"/>
+    <path d="M300 250 L300 232 M296 238 L304 238"/>
+  </g>
+  <text x="300" y="360" text-anchor="middle" font-family="KaiTi,STKaiti,serif" font-size="22" fill="#6b6257" letter-spacing="6">天下第十八福地</text>
+
+  <!-- 竖排书名 -->
+  <g font-family="Songti SC,SimSun,serif" font-size="92" fill="#23211e" text-anchor="middle">
+    <text x="300" y="470">苏</text>
+    <text x="300" y="562">耽</text>
+    <text x="300" y="654">跨</text>
+  </g>
+  <g font-family="Songti SC,SimSun,serif" font-size="92" fill="#23211e" text-anchor="middle">
+    <text x="300" y="746" opacity="0">鹤</text>
+  </g>
+
+  <!-- 右侧竖排：书名第四字与作者 -->
+  <g font-family="Songti SC,SimSun,serif" text-anchor="middle">
+    <text x="470" y="200" font-size="92" fill="#23211e">鹤</text>
+    <text x="470" y="300" font-size="26" fill="#5b5348" letter-spacing="4">章回体</text>
+    <text x="470" y="340" font-size="26" fill="#5b5348" letter-spacing="4">历史小说</text>
+    <text x="470" y="470" font-size="30" fill="#3a3733" letter-spacing="3">江召兵</text>
+    <text x="470" y="510" font-size="24" fill="#6b6257">著</text>
+  </g>
+
+  <!-- 印章 -->
+  <g>
+    <rect x="120" y="600" width="86" height="86" rx="6" fill="#8c2f24" opacity="0.92"/>
+    <text x="163" y="642" text-anchor="middle" font-family="Songti SC,SimSun,serif" font-size="30" fill="#f4efe4">苏</text>
+    <text x="163" y="676" text-anchor="middle" font-family="Songti SC,SimSun,serif" font-size="30" fill="#f4efe4">仙</text>
+  </g>
+
+  <text x="300" y="762" text-anchor="middle" font-family="KaiTi,STKaiti,serif" font-size="18" fill="#7a7063" letter-spacing="2">二〇二六　连载中</text>
+</svg>
