@@ -1,45 +1,330 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
-  <rect width="600" height="800" fill="#f4efe4"/>
-  <rect x="26" y="26" width="548" height="748" fill="none" stroke="#8c2f24" stroke-width="2"/>
-  <rect x="40" y="40" width="520" height="720" fill="none" stroke="#b9a98d" stroke-width="1"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2d9b0"/>
+      <stop offset="0.4" stop-color="#f9e9cc"/>
+      <stop offset="0.72" stop-color="#f7e5c6"/>
+      <stop offset="1" stop-color="#ead4ad"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fffdf2" stop-opacity="0.98"/>
+      <stop offset="0.5" stop-color="#ffe7b0" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffd185" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mtnFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a9c4bb"/><stop offset="1" stop-color="#d6e2d8"/>
+    </linearGradient>
+    <linearGradient id="mtnMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6f9587"/><stop offset="1" stop-color="#9fbaa9"/>
+    </linearGradient>
+    <linearGradient id="mtnNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#41655a"/><stop offset="1" stop-color="#63897a"/>
+    </linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b4739"/><stop offset="1" stop-color="#16281f"/>
+    </linearGradient>
+    <linearGradient id="river" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d8e6dc"/><stop offset="1" stop-color="#a9c6b6"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6dc" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#fff6dc" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <filter id="mist" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
 
-  <!-- 远山与云气 -->
-  <path d="M40 610 C120 560 180 590 240 570 C300 550 360 585 420 560 C480 535 530 570 560 555 L560 720 L40 720 Z" fill="#e8e0cf"/>
-  <path d="M40 640 C130 600 200 630 280 610 C360 590 440 625 560 600 L560 720 L40 720 Z" fill="#ded4bf"/>
+  <!-- 天 -->
+  <rect width="1200" height="1600" fill="url(#sky)"/>
+  <circle cx="790" cy="420" r="320" fill="url(#halo)"/>
+  <circle cx="790" cy="420" r="170" fill="url(#sun)"/>
+  <circle cx="790" cy="420" r="118" fill="#fff8e6" opacity="0.8"/>
 
-  <!-- 飞鹤 -->
-  <g fill="none" stroke="#3a3733" stroke-width="3" stroke-linecap="round">
-    <path d="M300 250 C282 232 258 228 240 240 C252 244 262 250 268 258 C252 256 238 262 230 274 C246 270 258 272 268 278 C258 288 256 302 262 314 C270 300 282 290 296 286"/>
-    <path d="M300 250 C318 232 342 228 360 240 C348 244 338 250 332 258 C348 256 362 262 370 274 C354 270 342 272 332 278 C342 288 344 302 338 314 C330 300 318 290 304 286"/>
-    <path d="M300 250 L300 232 M296 238 L304 238"/>
+  <!-- 祥云 -->
+  <g fill="#fdf1d8" opacity="0.9" filter="url(#soft)">
+    <path d="M-60 300 C120 258 240 320 380 296 C520 272 600 318 700 300 C820 278 900 318 1010 300 C1100 286 1160 306 1260 292 L1260 356 C1120 368 1020 348 900 362 C780 376 700 344 580 360 C460 376 340 344 220 362 C110 378 40 358 -60 372 Z"/>
+    <path d="M-80 510 C80 486 200 530 340 512 C480 494 580 534 700 518 C820 502 920 536 1060 518 C1150 506 1220 524 1280 512 L1280 556 C1140 570 1030 548 900 562 C770 576 660 548 540 562 C420 576 300 548 180 562 C80 574 20 558 -80 570 Z"/>
+    <path d="M-60 648 C100 628 220 664 360 648 C500 632 600 666 720 652 C840 638 940 668 1080 652 C1160 642 1230 658 1280 648 L1280 686 C1140 700 1030 678 900 692 C770 706 660 678 540 692 C420 706 300 678 180 692 C80 704 20 688 -60 700 Z" opacity="0.65"/>
   </g>
-  <text x="300" y="360" text-anchor="middle" font-family="KaiTi,STKaiti,serif" font-size="22" fill="#6b6257" letter-spacing="6">天下第十八福地</text>
 
-  <!-- 竖排书名 -->
-  <g font-family="Songti SC,SimSun,serif" font-size="92" fill="#23211e" text-anchor="middle">
-    <text x="300" y="470">苏</text>
-    <text x="300" y="562">耽</text>
-    <text x="300" y="654">跨</text>
-  </g>
-  <g font-family="Songti SC,SimSun,serif" font-size="92" fill="#23211e" text-anchor="middle">
-    <text x="300" y="746" opacity="0">鹤</text>
+  <!-- 远鹤三只 -->
+  <g stroke="#4c5a50" stroke-width="3" fill="none" opacity="0.55" stroke-linecap="round">
+    <path d="M300 200 C312 190 322 190 330 196 M330 196 C338 190 348 190 360 200"/>
+    <path d="M210 268 C219 260 227 260 233 265 M233 265 C239 260 247 260 256 268"/>
+    <path d="M980 240 C989 232 997 232 1003 237 M1003 237 C1009 232 1017 232 1026 240"/>
   </g>
 
-  <!-- 右侧竖排：书名第四字与作者 -->
-  <g font-family="Songti SC,SimSun,serif" text-anchor="middle">
-    <text x="470" y="200" font-size="92" fill="#23211e">鹤</text>
-    <text x="470" y="300" font-size="26" fill="#5b5348" letter-spacing="4">章回体</text>
-    <text x="470" y="340" font-size="26" fill="#5b5348" letter-spacing="4">历史小说</text>
-    <text x="470" y="470" font-size="30" fill="#3a3733" letter-spacing="3">江召兵</text>
-    <text x="470" y="510" font-size="24" fill="#6b6257">著</text>
+  <!-- 山 -->
+  <path d="M0 760 L90 700 L170 742 L260 672 L360 740 L450 690 L560 752 L660 700 L760 756 L860 706 L960 758 L1060 712 L1160 760 L1200 740 L1200 900 L0 900 Z" fill="url(#mtnFar)" opacity="0.8"/>
+  <path d="M0 850 L120 790 L220 836 L330 776 L430 840 L540 792 L650 846 L760 800 L870 850 L980 804 L1090 852 L1200 810 L1200 980 L0 980 Z" fill="url(#mtnMid)" opacity="0.9"/>
+  <path d="M0 960 L130 906 L250 952 L380 900 L500 956 L620 908 L740 958 L860 912 L980 960 L1100 918 L1200 958 L1200 1080 L0 1080 Z" fill="url(#mtnNear)"/>
+
+  <!-- 江与城 -->
+  <path d="M0 1076 C180 1060 300 1096 470 1078 C620 1062 720 1094 880 1078 C1010 1064 1110 1088 1200 1076 L1200 1116 C1080 1128 980 1106 850 1118 C700 1132 600 1104 450 1118 C300 1132 180 1108 0 1120 Z" fill="url(#river)" opacity="0.95"/>
+  <g fill="#3f5549" opacity="0.6">
+    <rect x="56" y="1006" width="250" height="68"/>
+    <path d="M56 1006 L88 984 L148 1006 L180 980 L242 1006 L272 986 L306 1006 Z"/>
+    <rect x="118" y="960" width="26" height="48"/>
+    <rect x="212" y="966" width="22" height="42"/>
+  </g>
+  <g stroke="#7c8f6d" stroke-width="3" fill="none" opacity="0.75">
+    <path d="M20 1116 C30 1066 40 1036 34 1006"/><path d="M60 1118 C70 1074 78 1044 72 1016"/>
+    <path d="M100 1116 C108 1070 118 1040 112 1010"/><path d="M1120 1108 C1128 1066 1136 1038 1130 1008"/>
+    <path d="M1160 1112 C1168 1070 1176 1042 1170 1012"/>
   </g>
 
-  <!-- 印章 -->
+  <!-- 山脚雾 -->
+  <g filter="url(#mist)" opacity="0.55">
+    <rect x="-40" y="1050" width="1300" height="46" fill="#f4ead2"/>
+    <rect x="80" y="1090" width="1100" height="34" fill="#f8f0dc"/>
+  </g>
+
+  <!-- 前景山 -->
+  <path d="M0 1176 C160 1136 300 1166 460 1146 C620 1126 760 1158 920 1142 C1050 1128 1130 1148 1200 1140 L1200 1600 L0 1600 Z" fill="url(#hill)"/>
+  <path d="M0 1206 C180 1172 320 1200 480 1182 C640 1164 780 1192 940 1178 C1070 1166 1140 1182 1200 1176 L1200 1600 L0 1600 Z" fill="#152b21" opacity="0.6"/>
+
+  <!-- 白鹿（左下） -->
+  <g transform="translate(170 1200)" fill="#efe9d8" stroke="#b7ab90" stroke-width="2.2">
+    <path d="M-58 30 C-58 12 -44 0 -22 -4 C-2 -8 18 -2 28 10 C34 18 34 26 30 32 Z"/>
+    <path d="M26 12 C40 2 48 -12 50 -26 C52 -34 60 -34 62 -28 C60 -14 54 2 44 16 C38 24 32 30 26 32 Z"/>
+    <path d="M58 -30 C62 -38 66 -42 70 -44 C68 -38 68 -34 70 -32 M62 -34 C64 -44 62 -50 60 -56 C66 -52 70 -46 72 -40"/>
+    <path d="M-52 30 L-56 46 M-36 30 L-40 46 M8 30 L12 46 M20 28 L26 44" stroke="#b7ab90" stroke-width="4"/>
+    <circle cx="66" cy="-34" r="2.6" fill="#2b2620" stroke="none"/>
+    <path d="M-44 8 C-38 4 -30 2 -22 2" stroke="#c7bda6" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- 白鹤与苏耽 -->
+  <g transform="translate(470 630)">
+    <ellipse cx="0" cy="-30" rx="340" ry="270" fill="#fff8e4" opacity="0.4" filter="url(#soft)"/>
+
+    <!-- 尾羽 -->
+    <path d="M-14 58 C-78 108 -132 148 -186 178 C-132 168 -78 148 -24 116 Z" fill="#f8f5eb"/>
+    <path d="M18 64 C-24 122 -64 162 -106 198 C-54 184 -8 162 34 124 Z" fill="#efeadd"/>
+
+    <!-- 双翼 -->
+    <path d="M-20 2 C-112 -72 -226 -122 -338 -142 C-264 -80 -192 -28 -120 18 C-90 36 -60 46 -30 48 Z" fill="#fcfaf3" stroke="#e2dac6" stroke-width="2"/>
+    <path d="M-34 12 C-124 -48 -234 -88 -338 -98 C-254 -42 -182 8 -110 50 C-84 64 -56 72 -30 72 Z" fill="#f1ecdd" opacity="0.92"/>
+    <path d="M20 2 C112 -72 226 -122 338 -142 C264 -80 192 -28 120 18 C90 36 60 46 30 48 Z" fill="#fcfaf3" stroke="#e2dac6" stroke-width="2"/>
+    <path d="M34 14 C124 -46 234 -86 338 -94 C254 -40 182 8 110 52 C84 66 56 74 30 74 Z" fill="#ebe5d4" opacity="0.92"/>
+    <path d="M-256 -120 C-296 -130 -326 -136 -346 -140 C-326 -122 -304 -110 -286 -102 Z" fill="#33312c"/>
+    <path d="M256 -120 C296 -130 326 -136 346 -140 C326 -122 304 -110 286 -102 Z" fill="#33312c"/>
+    <!-- 翼羽线 -->
+    <g stroke="#e0d8c3" stroke-width="2" fill="none" opacity="0.8">
+      <path d="M-120 6 C-160 -14 -200 -34 -240 -52"/><path d="M-100 20 C-140 0 -180 -20 -220 -38"/>
+      <path d="M120 6 C160 -14 200 -34 240 -52"/><path d="M100 20 C140 0 180 -20 220 -38"/>
+    </g>
+
+    <!-- 身 -->
+    <ellipse cx="0" cy="42" rx="88" ry="54" fill="#fdfbf4" stroke="#e4dcc8" stroke-width="2"/>
+    <!-- 颈 -->
+    <path d="M56 24 C88 -4 98 -58 92 -96 C88 -124 98 -142 120 -150" fill="none" stroke="#fdfbf4" stroke-width="28" stroke-linecap="round"/>
+    <path d="M56 24 C88 -4 98 -58 92 -96 C88 -124 98 -142 120 -150" fill="none" stroke="#efe8d5" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
+    <!-- 头 -->
+    <circle cx="124" cy="-154" r="20" fill="#fdfbf4"/>
+    <circle cx="121" cy="-172" r="7.5" fill="#c0392b"/>
+    <path d="M142 -157 L182 -150 L142 -143 Z" fill="#d9a441"/>
+    <circle cx="130" cy="-160" r="2.8" fill="#2b2620"/>
+    <!-- 腿 -->
+    <path d="M-32 88 C-56 120 -80 140 -104 152" stroke="#c9a24a" stroke-width="5" fill="none"/>
+    <path d="M-8 92 C-22 126 -38 150 -54 164" stroke="#c9a24a" stroke-width="5" fill="none"/>
+
+    <!-- 苏耽（骑者，水墨剪影） -->
+    <g transform="translate(2 -4)" fill="#1d2a23">
+      <!-- 腿 -->
+      <path d="M-8 -8 C10 -4 28 8 34 24 C36 32 30 38 22 36 C10 32 0 22 -10 10 Z"/>
+      <path d="M24 30 C32 36 34 46 30 54" stroke="#1d2a23" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <!-- 身与袍 -->
+      <path d="M-32 -14 C-40 -46 -22 -68 4 -68 C28 -68 42 -48 36 -18 C32 2 12 12 -4 8 C-18 4 -28 0 -32 -14 Z"/>
+      <path d="M-32 -18 C-56 -28 -76 -22 -92 -6 C-70 -12 -50 -10 -32 -10 Z" opacity="0.9"/>
+      <path d="M-34 -12 C-60 -16 -80 -6 -94 12 C-68 0 -48 -2 -32 -6 Z" opacity="0.8"/>
+      <!-- 前襟与袖 -->
+      <path d="M0 -64 C8 -46 10 -26 6 -8" stroke="#0e1712" stroke-width="3" fill="none" opacity="0.6"/>
+      <path d="M14 -46 C32 -48 46 -42 56 -30 C48 -22 32 -20 18 -24 Z"/>
+      <path d="M50 -34 C56 -38 62 -36 64 -32" stroke="#1d2a23" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- 头与发髻 -->
+      <circle cx="6" cy="-82" r="16"/>
+      <circle cx="2" cy="-101" r="7"/>
+      <path d="M22 -82 C26 -78 26 -72 23 -69" stroke="#1d2a23" stroke-width="4" fill="none"/>
+      <!-- 飘带 -->
+      <path d="M-34 -30 C-58 -40 -76 -34 -92 -20 C-70 -24 -50 -22 -34 -22" fill="#a8322a" opacity="0.95"/>
+      <path d="M-36 -24 C-60 -26 -78 -18 -92 -2 C-68 -12 -50 -12 -36 -16" fill="#8c2f24" opacity="0.85"/>
+      <!-- 手中缰绳 -->
+      <path d="M56 -30 C70 -20 74 -6 66 6" stroke="#6b5a45" stroke-width="3" fill="none" opacity="0.9"/>
+    </g>
+  </g>
+
+
+  <!-- 松枝（左上） -->
   <g>
-    <rect x="120" y="600" width="86" height="86" rx="6" fill="#8c2f24" opacity="0.92"/>
-    <text x="163" y="642" text-anchor="middle" font-family="Songti SC,SimSun,serif" font-size="30" fill="#f4efe4">苏</text>
-    <text x="163" y="676" text-anchor="middle" font-family="Songti SC,SimSun,serif" font-size="30" fill="#f4efe4">仙</text>
+    <path d="M0 84 C64 92 116 110 166 138" stroke="#2a3d31" stroke-width="8" fill="none"/>
+    <path d="M58 98 C80 74 98 56 122 42" stroke="#2a3d31" stroke-width="5" fill="none"/>
+    <g fill="#3b5a45">
+      <ellipse cx="124" cy="40" rx="34" ry="10" transform="rotate(-20 124 40)"/>
+      <ellipse cx="152" cy="52" rx="26" ry="8" transform="rotate(-6 152 52)"/>
+      <ellipse cx="170" cy="140" rx="40" ry="11" transform="rotate(10 170 140)"/>
+      <ellipse cx="136" cy="128" rx="26" ry="8" transform="rotate(-14 136 128)"/>
+      <ellipse cx="70" cy="96" rx="28" ry="9" transform="rotate(-8 70 96)"/>
+      <ellipse cx="24" cy="86" rx="22" ry="8" transform="rotate(4 24 86)"/>
+    </g>
   </g>
 
-  <text x="300" y="762" text-anchor="middle" font-family="KaiTi,STKaiti,serif" font-size="18" fill="#7a7063" letter-spacing="2">二〇二六　连载中</text>
+  <!-- 橘树与古井（右） -->
+  <g transform="translate(880 1206)">
+    <path d="M42 226 C38 180 28 152 10 124 C24 130 36 138 46 150 C48 120 52 98 62 78 C66 106 64 136 60 158 C76 140 90 126 108 116 C98 142 82 166 66 186 C70 202 72 214 74 226 Z" fill="#3a2c20"/>
+    <g fill="#2f523c">
+      <ellipse cx="62" cy="84" rx="88" ry="48"/>
+      <ellipse cx="6" cy="110" rx="58" ry="36"/>
+      <ellipse cx="124" cy="110" rx="62" ry="38"/>
+      <ellipse cx="66" cy="132" rx="80" ry="36"/>
+    </g>
+    <g fill="#3d6549" opacity="0.8">
+      <ellipse cx="40" cy="72" rx="36" ry="20"/>
+      <ellipse cx="104" cy="94" rx="30" ry="16"/>
+    </g>
+    <g fill="#d9822b">
+      <circle cx="24" cy="98" r="9"/><circle cx="58" cy="74" r="9"/><circle cx="98" cy="96" r="9"/>
+      <circle cx="44" cy="126" r="9"/><circle cx="88" cy="126" r="9"/><circle cx="124" cy="104" r="8"/>
+      <circle cx="72" cy="110" r="8"/>
+    </g>
+    <!-- 古井 -->
+    <g transform="translate(-150 156)">
+      <ellipse cx="0" cy="42" rx="66" ry="20" fill="#2d4038" opacity="0.7"/>
+      <path d="M-64 40 L-64 -6 C-64 -26 -36 -38 0 -38 C36 -38 64 -26 64 -6 L64 40 Z" fill="#87927f"/>
+      <path d="M-64 6 C-40 16 40 16 64 6" stroke="#6d7866" stroke-width="3" fill="none"/>
+      <path d="M-40 -22 L-40 20 M-8 -30 L-8 20 M24 -26 L24 20" stroke="#76816f" stroke-width="3" opacity="0.7"/>
+      <ellipse cx="0" cy="-6" rx="50" ry="16" fill="#22352c"/>
+      <ellipse cx="0" cy="-6" rx="43" ry="12" fill="#54725f"/>
+      <ellipse cx="0" cy="-8" rx="36" ry="9" fill="#2f4a3c" opacity="0.8"/>
+      <path d="M-58 -10 L-58 -46 M58 -10 L58 -46" stroke="#5a4632" stroke-width="9"/>
+      <path d="M-64 -50 L64 -50" stroke="#5a4632" stroke-width="9"/>
+      <path d="M-4 -50 L-4 -22" stroke="#a08a68" stroke-width="3"/>
+      <path d="M-4 -30 L14 -30 C18 -30 18 -22 14 -22 L-4 -22 Z" fill="#8c7758"/>
+    </g>
+  </g>
+
+  <!-- 仰望的百姓 -->
+  <g fill="#0f1f18">
+    <!-- 举手的老人 -->
+    <g transform="translate(120 1418)">
+      <path d="M-22 54 C-28 26 -24 4 -12 -8 C-4 -14 4 -14 12 -8 C24 4 28 26 22 54 Z"/>
+      <circle cx="0" cy="-26" r="13"/>
+      <path d="M-12 0 C-30 -14 -36 -34 -30 -50" stroke="#0f1f18" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M12 0 C30 -14 36 -34 30 -50" stroke="#0f1f18" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <circle cx="-30" cy="-53" r="5"/><circle cx="30" cy="-53" r="5"/>
+    </g>
+    <!-- 妇人 -->
+    <g transform="translate(196 1448)">
+      <path d="M-18 44 C-24 20 -20 2 -10 -8 C-4 -13 4 -13 10 -8 C20 2 24 20 18 44 Z"/>
+      <circle cx="0" cy="-22" r="11"/>
+      <path d="M0 -13 C-1 6 0 24 0 40" stroke="#0f1f18" stroke-width="3" opacity="0.5"/>
+    </g>
+    <!-- 抱子妇人 -->
+    <g transform="translate(268 1402)">
+      <path d="M-20 56 C-27 28 -22 4 -10 -8 C-3 -14 4 -14 10 -8 C22 4 27 28 20 56 Z"/>
+      <circle cx="0" cy="-26" r="12"/>
+      <circle cx="18" cy="-18" r="8"/>
+      <path d="M12 -12 C24 -6 28 6 24 20" stroke="#0f1f18" stroke-width="6" fill="none" stroke-linecap="round"/>
+    </g>
+    <!-- 童子 -->
+    <g transform="translate(330 1462)">
+      <path d="M-14 34 C-19 15 -15 0 -7 -8 C-3 -11 3 -11 7 -8 C15 0 19 15 14 34 Z"/>
+      <circle cx="0" cy="-19" r="9"/>
+    </g>
+    <!-- 跪拜者 -->
+    <g transform="translate(462 1482)">
+      <path d="M-46 20 C-46 0 -24 -14 0 -14 C26 -14 46 -2 46 18 L46 30 L-46 30 Z"/>
+      <circle cx="0" cy="-30" r="13"/>
+      <path d="M-30 8 C-50 2 -56 -10 -50 -18" stroke="#0f1f18" stroke-width="7" fill="none" stroke-linecap="round"/>
+    </g>
+    <!-- 合掌者 -->
+    <g transform="translate(556 1430)">
+      <path d="M-22 52 C-29 24 -24 2 -12 -8 C-4 -14 4 -14 12 -8 C24 2 29 24 22 52 Z"/>
+      <circle cx="0" cy="-26" r="12"/>
+      <path d="M-10 -4 L-2 -18 M10 -4 L2 -18" stroke="#0f1f18" stroke-width="6" fill="none" stroke-linecap="round"/>
+    </g>
+    <!-- 扶杖老翁 -->
+    <g transform="translate(646 1448)">
+      <path d="M-20 48 C-26 22 -21 2 -10 -8 C-4 -13 4 -13 10 -8 C21 2 26 22 20 48 Z"/>
+      <circle cx="0" cy="-24" r="11"/>
+      <path d="M24 -20 L30 48" stroke="#0f1f18" stroke-width="4"/>
+      <path d="M10 -2 C20 -6 26 -10 28 -16" stroke="#0f1f18" stroke-width="5" fill="none" stroke-linecap="round"/>
+    </g>
+    <!-- 少年 -->
+    <g transform="translate(722 1466)">
+      <path d="M-15 40 C-20 18 -16 0 -8 -8 C-3 -12 3 -12 8 -8 C16 0 20 18 15 40 Z"/>
+      <circle cx="0" cy="-21" r="10"/>
+    </g>
+    <!-- 妇人 -->
+    <g transform="translate(800 1442)">
+      <path d="M-18 46 C-24 22 -20 2 -10 -8 C-4 -13 4 -13 10 -8 C20 2 24 22 18 46 Z"/>
+      <circle cx="0" cy="-24" r="11"/>
+    </g>
+    <!-- 举手的汉子 -->
+    <g transform="translate(872 1470)">
+      <path d="M-18 42 C-24 20 -20 2 -10 -8 C-4 -12 4 -12 10 -8 C20 2 24 20 18 42 Z"/>
+      <circle cx="0" cy="-22" r="11"/>
+      <path d="M10 -2 C24 -12 28 -28 24 -40" stroke="#0f1f18" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <circle cx="23" cy="-42" r="4.5"/>
+    </g>
+    <!-- 抱婴者 -->
+    <g transform="translate(944 1450)">
+      <path d="M-20 48 C-26 22 -21 2 -10 -8 C-4 -13 4 -13 10 -8 C21 2 26 22 20 48 Z"/>
+      <circle cx="0" cy="-24" r="11"/>
+      <circle cx="-14" cy="-10" r="7"/>
+      <path d="M-8 -4 C-16 2 -18 10 -16 18" stroke="#0f1f18" stroke-width="5" fill="none" stroke-linecap="round"/>
+    </g>
+    <!-- 童子 -->
+    <g transform="translate(1012 1482)">
+      <path d="M-13 32 C-18 14 -14 0 -6 -7 C-2 -10 2 -10 6 -7 C14 0 18 14 13 32 Z"/>
+      <circle cx="0" cy="-18" r="8"/>
+    </g>
+    <!-- 跪者 -->
+    <g transform="translate(1072 1494)">
+      <path d="M-30 14 C-30 -2 -16 -12 0 -12 C16 -12 30 -2 30 12 L30 22 L-30 22 Z"/>
+      <circle cx="0" cy="-22" r="10"/>
+    </g>
+  </g>
+
+  <!-- 提灯与香烟 -->
+  <g opacity="0.85">
+    <circle cx="196" cy="1374" r="7" fill="#f2c14e"/>
+    <circle cx="872" cy="1408" r="6" fill="#f2c14e"/>
+    <circle cx="944" cy="1396" r="5" fill="#f2c14e"/>
+    <path d="M462 1414 C466 1378 458 1350 464 1322" stroke="#e8dcc0" stroke-width="3" fill="none" opacity="0.55"/>
+    <path d="M556 1382 C562 1352 554 1330 560 1306" stroke="#e8dcc0" stroke-width="3" fill="none" opacity="0.5"/>
+  </g>
+
+  <!-- 题签 -->
+  <g font-family="KaiTi, STKaiti, serif" fill="#241f19">
+    <text x="1076" y="148" font-size="116" text-anchor="middle">苏</text>
+    <text x="1076" y="288" font-size="116" text-anchor="middle">耽</text>
+    <text x="1076" y="428" font-size="116" text-anchor="middle">跨</text>
+    <text x="1076" y="568" font-size="116" text-anchor="middle">鹤</text>
+  </g>
+  <g font-family="KaiTi, STKaiti, serif" fill="#5a4a36" text-anchor="middle">
+    <text x="988" y="168" font-size="34">章</text>
+    <text x="988" y="210" font-size="34">回</text>
+    <text x="988" y="252" font-size="34">体</text>
+    <text x="988" y="294" font-size="34">历</text>
+    <text x="988" y="336" font-size="34">史</text>
+    <text x="988" y="378" font-size="34">传</text>
+    <text x="988" y="420" font-size="34">说</text>
+  </g>
+  <g font-family="KaiTi, STKaiti, serif" fill="#3a2f22" text-anchor="middle">
+    <text x="1076" y="686" font-size="42">江</text>
+    <text x="1076" y="736" font-size="42">召</text>
+    <text x="1076" y="786" font-size="42">兵</text>
+    <text x="1076" y="836" font-size="38">著</text>
+  </g>
+  <g transform="translate(1040 876)">
+    <rect width="74" height="74" rx="6" fill="#8c2f24" opacity="0.92"/>
+    <text x="37" y="33" font-family="KaiTi, STKaiti, serif" font-size="27" fill="#f6efe0" text-anchor="middle">苏</text>
+    <text x="37" y="64" font-family="KaiTi, STKaiti, serif" font-size="27" fill="#f6efe0" text-anchor="middle">仙</text>
+  </g>
+
+  <text x="600" y="1566" font-family="KaiTi, STKaiti, serif" font-size="25" fill="#d9c9a8" text-anchor="middle" letter-spacing="8">白鹿乳之　白鹤覆之　橘井泉香　跨鹤而去</text>
 </svg>
