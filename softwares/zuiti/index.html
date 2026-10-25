@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="嘴替·诊室版：社区医院计免科窗口的语音回击助手。点一下开始，软件听对面说完，约 1.5 秒后用东北口音把话怼回去；本地语音识别不出网，界面纯语音不显示文字。本页为软件介绍，软件本体在作者本机运行。">
+  <title>嘴替·诊室版（本地版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页眉品牌栏：开发者 + 版权）---- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.6; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; line-height: 1.7; }
+    .talk-box {
+      border-left: 3px solid var(--accent-color);
+      padding: 2px 0 2px 16px;
+      margin: 16px 0 8px;
+    }
+    .talk-q { font-size: 14px; color: var(--muted-color); margin: 12px 0 6px; }
+    .talk-a { font-size: 15px; line-height: 1.85; margin: 0 0 4px; }
+    .talk-a em { font-style: normal; color: var(--accent-color); font-weight: 600; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        嘴替 · 诊室版
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">桌面本地版</span>
+      </h1>
+      <p class="affiliation">计免科窗口的语音回击助手 —— 对面一停，约 1.5 秒后用东北口音把话怼回去。</p>
+    </div>
+
+    <p class="intro-lede">
+      社区医院预防接种门诊的窗口，最难的不是忙，是遇上插队、拍桌、拿投诉威胁的家长，医生还得穿着白大褂陪笑。
+      本软件的做法是替医生把这句话说出口：点一下开始，它用电脑麦克风听对面说完，约 1.5 秒后用东北口音接话——
+      <strong>先损一句定性，再断他退路，最后赶人</strong>。话术学的不是教科书，是吉林公园那台会说东北话的机器人「猛子」：
+      短句连打、反问加土味比喻，一句顶三句，从头到尾不讲大道理。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="嘴替·诊室版主界面：状态灯显示正在回击，下方是延迟读数与火力、音色、语速等控制项">
+    </div>
+    <p class="shot-cap">
+      主界面（对话进行中）：屏幕上不显示任何对话文字，只有状态灯、一行延迟读数（秒答 / 首字 / 识别 / 出声）
+      和控制项——旁边有人看屏幕也不会露怯。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>点一下就开始听</b> — 环形缓冲每 250 ms 切片，本地 VAD 自动判断对方说完没有，并留 750 ms 预卷，不吃掉第一个字。</div>
+        <div class="feat-item"><b>约 1.5 秒开口</b> — 场景命中先甩出本地秒答句（0 ms）并播放预生成语音，同时 DeepSeek 流式生成定制话术，逐句合成、逐句播报。</div>
+        <div class="feat-item"><b>猛子式话术</b> — 固定三层：损一句定性、断他退路（签字担责 / 记进档案 / 今天办不了）、一句话赶人；不背规范、不做思想工作。</div>
+        <div class="feat-item"><b>三档火力</b> — 轻损 / 猛子附体 / 公园执法，按现场火候切换，同一句话的硬度立刻不同。</div>
+        <div class="feat-item"><b>五个音色、三档语速</b> — 默认小北（东北女声）+35% 语速；另有晓伊（利索泼辣）、晓晓（稳重）、云健 / 云希（男声），可当场试听。</div>
+        <div class="feat-item"><b>本机识别，数据不出门</b> — faster-whisper small 以 int8 在本机 CPU 上跑，病人的话不经过任何服务器；只有话术生成走云端大模型。</div>
+        <div class="feat-item"><b>纯语音界面</b> — 不显示「对方说」「替您说」，不显示话术文本，只保留状态与延迟数字，避免屏幕泄露、也免得医生边看边说话。</div>
+        <div class="feat-item"><b>14 个内置场景</b> — 提前接种、发烧硬打、改接种记录、要开不能接种证明、不良反应索赔、插队、缺苗、威胁曝光……每个都配一条手写秒答与预生成语音。</div>
+      </div>
+      <p class="metric-line">
+        秒答 0 ms · 模型首字 0.5–0.8 s · 三行话术 0.8–1.1 s · 本机识别 1.4–1.6 s ·
+        从对方闭嘴到开口回击约 1.5–2.1 s · 14 段场景语音预生成 ·
+        识别 faster-whisper small（int8, CPU）· 合成 edge-tts +35% 语速 · 话术 DeepSeek 流式
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">话术示例</h2>
+      <div class="talk-box">
+        <p class="talk-q">对面：「我家孩子就差两天，你先给我打了，出了事我负责」</p>
+        <p class="talk-a">
+          秒答：<em>差两天？您家日历是抢跑版的啊。</em><br>
+          ① 行，写「后果自负」签名，我立马给您打，敢签吗？<br>
+          ② 不敢签就往边儿站，别堵着我窗口。
+        </p>
+        <p class="talk-q">对面：「就发点低烧，打了就没事，你别那么多事」</p>
+        <p class="talk-a">
+          ① 烧着还打？您这是给孩子打针还是上刑？<br>
+          ② 体温降下来再来，别拿孩子手气试针。<br>
+          ③ 您非打，我就写「家长坚持带病接种」，出事您自己兜。
+        </p>
+        <p class="talk-q">对面：「你什么态度，信不信我拍下来发网上投诉你」</p>
+        <p class="talk-a">
+          ① 拍，冲这儿拍，别回家再修图。<br>
+          ② 发出去让网友评评，插队骂人先骂谁。<br>
+          ③ 投诉走流程，骂人叫保安，别堵窗口。
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">手机上的样子</h2>
+      <div class="shot-frame">
+        <img src="screenshot_mobile.jpg" alt="手机窄屏下的界面：置顶版权条、状态、大麦克风按钮、火力与音色控制">
+      </div>
+      <p class="shot-cap">窄屏自适应：置顶为公司与版权信息，下面是状态、麦克风按钮和火力 / 音色 / 语速控制。</p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件部署在作者本机（桌面本地版，病人数据不出本机）；本页面为软件介绍。</li>
+          <li>本机启动：双击 <span class="run-code">zuiti\run.cmd</span>，或在该目录执行
+              <span class="run-code">python server.py</span>。</li>
+          <li>浏览器打开 <span class="run-code">http://127.0.0.1:8787</span> ——必须用本机回环地址，
+              浏览器只在 localhost 下授予麦克风权限；点大圆按钮开始。</li>
+          <li>首次启动会在后台加载语音识别模型并预生成 14 段场景语音（约 1 分钟），之后语音有缓存，重启即用。</li>
+        </ol>
+        <div class="guest-note">
+          说明：软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
+          需要现场演示、试用或定制话术库，欢迎通过 <a href="../../">Home</a> 页与作者联系
+          （owen9020@126.com）。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">边界与说明</h2>
+      <p>
+        这套东西的目的是把窗口秩序按回去、把事办成，不是比谁难听。因此提示词里写死了红线：
+        不骂脏字、不侮辱长相与疾病、不地域歧视、不辱骂家人、不威胁动手，也不编造法条与条文号、
+        不承诺医疗结果、不给出任何违反接种规范的建议（带病接种、提前接种、缩短间隔、涂改记录、无依据开证明）。
+        真正的杀伤力落在程序上——「敢不敢签字」「记不记档案」「医患办在二楼」。
+      </p>
+      <p>
+        话术只负责说清边界；真遇到辱骂、拍桌、威胁，处置还是靠人：叫医务科、叫保安，必要时报警。
+        接种专业判断永远按规范和说明书，软件不替医生做医学决定。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+
+  <script src="/assets/js/site-counter.js?v=2" defer></script>
+</body>
+</html>

@@ -96,9 +96,35 @@
       <h2 class="section-title">Released Software</h2>
 
       <!-- To add a new software, copy the card block below and edit the title, description, meta line and action link. Keep the newest entry first. -->
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">1. Zuiti &mdash; Voice Comeback Assistant for Immunization Clinics<span class="soft-tag">local app</span></h3>
+        <p class="soft-desc">
+          A voice assistant for the vaccination window of a community hospital. The doctor clicks once;
+          the app listens to the patient through the computer microphone and, about <strong>1.5&nbsp;s</strong>
+          after the patient stops, answers out loud in a clipped northeastern-Chinese register that goads
+          rather than argues: <strong>name the demand as out of line, hand the consequence straight back,
+          send them off</strong>. Three intensity levels (mild / full / park marshal),
+          <strong>14 built-in confrontations</strong> with zero-latency canned lines and pre-generated audio,
+          five voices and three speech rates (default: northeastern female at +35%). Speech recognition runs
+          <strong>locally on CPU with faster-whisper</strong>, so the patient's words never leave the machine;
+          replies stream from DeepSeek and are synthesized sentence by sentence. The interface deliberately
+          shows <strong>no transcript at all</strong> &mdash; status light, latency read-out and voice only.
+        </p>
+        <p class="soft-meta">
+          14 scenarios &middot; 0&nbsp;ms canned reply &middot; first token 0.5&ndash;0.8&nbsp;s &middot;
+          local ASR 1.4&ndash;1.6&nbsp;s &middot; &asymp;1.5&ndash;2.1&nbsp;s from silence to spoken retort &middot;
+          faster-whisper small (int8, CPU) &middot; edge-tts at +35% &middot; voice-only UI
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./zuiti/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs locally on the author's machine</span>
+        </p>
+      </article>
+
 <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">1. Opatiya Official Website<span class="soft-tag">web service</span></h3>
+        <h3 class="soft-title">2. Opatiya Official Website<span class="soft-tag">web service</span></h3>
         <p class="soft-desc">
           The official website of Nanjing Opatiya Information Technology Co., Ltd. &mdash;
           industry-specific numerical-simulation + AI solutions under the banner
@@ -120,7 +146,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">2. FanAI Fan Optimization Agent<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">3. FanAI Fan Optimization Agent<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An end-to-end agent system for <strong>fan blade-profile optimization and efficiency
           upgrading in thermal power plants</strong>, built on a curated library of
@@ -157,7 +183,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">3. Pollutant Dispersion Situation Forecasting System<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">4. Pollutant Dispersion Situation Forecasting System<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           A desktop forecasting system for atmospheric pollutant dispersion, driven by
           <strong>WRF 1&nbsp;km meteorological fields</strong> and solved with both
@@ -185,7 +211,7 @@
 
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">4. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">5. 2-D Stokes Flow Deep-Learning Surrogate<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An interactive surrogate model for Stokes flow past circles and ellipses in a channel.
           Trained on 2,400+ cases computed with <strong>FastBEM</strong> &mdash; the fast-multipole
@@ -209,7 +235,7 @@
 
 <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">5. LBM Karman Vortex Street Unsteady Surrogate<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">6. LBM Karman Vortex Street Unsteady Surrogate<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           Interactive surrogate for the unsteady wake of a single cylinder at
           Re&nbsp;=&nbsp;80&ndash;160. Training data: 50 lattice-Boltzmann (D2Q9) runs, each
@@ -233,7 +259,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">6. Opatiya Numerical Wave Tank (CFD GUI)<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">7. Opatiya Numerical Wave Tank (CFD GUI)<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           A graphical front end for numerical-wave-tank CFD simulations,
           organising the complete workflow into seven form pages: tank
@@ -257,7 +283,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">7. PIER-VIBE Pier Safety Assessment System<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">8. PIER-VIBE Pier Safety Assessment System<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           A physics-chain assessment suite for bridge-pier safety in cross-sea environments.
           Equilibrium scour depth follows <strong>HEC-18</strong> with Melville-Coleman rate
@@ -280,7 +306,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">8. Urban Point Cloud CFD Geometry Modeling Platform<span class="soft-tag">local web app</span></h3>
+        <h3 class="soft-title">9. Urban Point Cloud CFD Geometry Modeling Platform<span class="soft-tag">local web app</span></h3>
         <p class="soft-desc">
           A browser-based demonstration platform that turns raw <strong>LiDAR point clouds</strong> and
           <strong>GIS building footprints</strong> into CFD-ready city geometry, following the six stages of the
@@ -307,7 +333,7 @@
       </article>
       <article class="soft-card">
         <div class="soft-strip" aria-hidden="true"></div>
-        <h3 class="soft-title">9. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
+        <h3 class="soft-title">10. Target-Tracking System Demo<span class="soft-tag">local app</span></h3>
         <p class="soft-desc">
           An interactive demo suite for a target-tracking (damage-environment modeling) system,
           four linked pages in one local web app. The tracking-simulation page renders a UAV model
