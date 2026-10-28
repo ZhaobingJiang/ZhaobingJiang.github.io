@@ -221,3 +221,14 @@ body[data-theme="rich"] .theme-toggle-btn:hover {
   margin-top: -5px;
   color: #5b6b7f;
 }
+
+/* Contact QR codes */
+body[data-theme="rich"] .qr-card {
+  background: #f6f8fc;
+  border-color: #dfe6f3;
+  border-radius: 10px;
+}
+
+body[data-theme="rich"] .qr-card img {
+  border-color: #dfe6f3;
+}
