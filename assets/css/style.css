@@ -553,6 +553,21 @@ html[lang="zh-CN"] .section > p.poem-pager {
 }
 
 /* ---------- Contact QR codes ---------- */
+#contact p {
+  text-align: left;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+}
+
+.contact-sep {
+  color: var(--muted-color);
+}
+
 .qr-grid {
   display: flex;
   flex-wrap: wrap;
@@ -605,6 +620,10 @@ html[lang="zh-CN"] .section > p.poem-pager {
 }
 
 @media (max-width: 480px) {
+  .contact-sep {
+    display: none;
+  }
+
   .qr-grid {
     gap: 12px;
   }
