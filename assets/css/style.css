@@ -145,6 +145,11 @@ html[lang="zh-CN"] .section > p {
   text-indent: 2em;
 }
 
+/* 联系方式逐行排列，公司名/地址/邮箱三行统一齐左，不做首行缩进 */
+html[lang="zh-CN"] #contact > p {
+  text-indent: 0;
+}
+
 html[lang="zh-CN"] .section > p.poem-pager {
   text-indent: 0;
 }
