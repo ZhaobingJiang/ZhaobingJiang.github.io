@@ -3,7 +3,7 @@
 """校验全站访问量统计的完整性，防止后续改版丢失历史访问量或漏接页面。
 
 口径：首页页脚显示 = 历史基数 BASELINE（2189，2026-10-21 前的累计）
-      + 不蒜子全站 PV（每个页面上报一次，任意页面访问都会累加）。
+      + Vercount 全站 PV（每个页面加载上报一次，任意页面访问都会累加）。
 
 校验项：
 1. assets/js/site-counter.js 的 BASELINE 存在且不小于 2189（只能调大）。
@@ -39,8 +39,8 @@ else:
             errors.append(
                 f"assets/js/site-counter.js: BASELINE={js_base} 小于最小要求 {MIN_BASELINE}（历史访问量只能调大）"
             )
-    if "busuanzi" not in js:
-        errors.append("assets/js/site-counter.js: 未找到不蒜子（busuanzi）上报逻辑")
+    if "events.vercount.one" not in js:
+        errors.append("assets/js/site-counter.js: 未找到 Vercount（events.vercount.one）上报逻辑")
 
 pages = sorted(p for p in ROOT.rglob("*.html") if ".git" not in p.parts)
 missing = []

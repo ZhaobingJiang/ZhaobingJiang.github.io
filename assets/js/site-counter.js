@@ -1,10 +1,15 @@
 /* 全站访问量统计（site-wide page views）
  *
  * 口径：首页页脚显示 = 历史基数 BASELINE（2026-10-21 前的累计访问量）
- *       + 不蒜子全站 PV（site_pv，含所有页面的访问）。
+ *       + 全站 PV（site_pv，含所有页面的访问）。
  *
- * 每个页面加载本脚本时都会向不蒜子上报一次本页 PV，因此访问任何页面
+ * 每个页面加载本脚本时都会向统计服务上报一次本页 PV，因此访问任何页面
  * （首页、论文、项目、诗词详情等）都会累加进同一个全站总数。
+ *
+ * 数据来源：Vercount（不蒜子的替代服务，https://github.com/evannotfound/vercount）
+ *   POST https://events.vercount.one/api/v2/log
+ *   body: {"url": location.href, "isNewUv": 是否本站新访客}
+ *   返回: {"status":"success","data":{"site_pv":N,"page_pv":N,"site_uv":N}}
  *
  * 维护约束（由 scripts/verify_visit_counter.py 与
  * .github/workflows/visit-counter-guard.yml 自动校验）：
@@ -23,18 +28,17 @@
   /* 历史累计访问量（2026-10-21 之前）。只能调大，不能删除或调小。 */
   var BASELINE = 2189;
 
-  var BUSUANZI_SRC = "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
-  var SINK_PREFIX = "busuanzi_value_";
-  var CACHE_KEY = "jzb-site-pv-cache";
-  var POLL_MS = 200;
-  var TIMEOUT_MS = 8000;
+  var ENDPOINT = "https://events.vercount.one/api/v2/log";
+  var UV_COOKIE_PREFIX = "vercount_uv_";
+  var CACHE_KEY = "jzb-site-pv-cache-v2";
+  var REQUEST_TIMEOUT_MS = 6000;
   var isZh = /\/zh\//.test(location.pathname);
 
   var labels = isZh
     ? {
         total: "全站累计访问量：",
         breakdown: function (base, pv) {
-          return "（历史 " + format(base) + " + 实时 PV " + format(pv) + "）";
+          return "（历史 " + format(base) + " + 全站 PV " + format(pv) + "）";
         },
         uv: "；全站访客数（UV）：",
         stale: "统计服务暂不可达，显示本机上次记录值",
@@ -50,38 +54,16 @@
         unavailable: "Counter service unreachable; showing the historical total only"
       };
 
-  /* 供不蒜子脚本回填的隐藏节点（其脚本按固定 id 查找）。 */
-  function ensureSinks() {
-    if (document.getElementById(SINK_PREFIX + "site_pv")) return;
-    var box = document.createElement("div");
-    box.style.display = "none";
-    box.setAttribute("aria-hidden", "true");
-    ["site_pv", "site_uv", "page_pv"].forEach(function (key) {
-      var span = document.createElement("span");
-      span.id = SINK_PREFIX + key;
-      box.appendChild(span);
-    });
-    (document.body || document.documentElement).appendChild(box);
-  }
-
-  function readInt(id) {
-    var el = document.getElementById(id);
-    if (!el) return null;
-    var digits = (el.textContent || "").replace(/[^\d]/g, "");
-    if (!digits) return null;
-    var n = parseInt(digits, 10);
-    return isNaN(n) ? null : n;
-  }
-
   function format(n) {
     return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   function setCounter(text, title) {
     var el = document.getElementById("visit-counter");
-    if (!el) return;
+    if (!el) return false;
     el.textContent = text;
     if (title) el.title = title;
+    return true;
   }
 
   /* 历史基数：脚本常量与页面 data-base 取较大者，任一份保留即可不丢历史数据。 */
@@ -95,27 +77,22 @@
   function readCache() {
     try {
       var obj = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
-      if (obj && typeof obj.n === "number" && obj.n >= 0) return obj.n;
+      if (obj && typeof obj.pv === "number" && obj.pv >= 0) return obj;
     } catch (e) {}
     return null;
   }
 
-  function writeCache(n) {
+  function writeCache(pv, uv) {
     try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify({ n: n, at: Date.now() }));
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ pv: pv, uv: uv, at: Date.now() }));
     } catch (e) {}
   }
 
-  function showFresh() {
-    var pv = readInt(SINK_PREFIX + "site_pv");
-    if (pv === null) return false;
-    var base = baseline();
-    var title = labels.total + format(base + pv) + labels.breakdown(base, pv);
-    var uv = readInt(SINK_PREFIX + "site_uv");
-    if (uv !== null) title += labels.uv + format(uv);
-    setCounter(format(base + pv), title);
-    writeCache(pv);
-    return true;
+  function readCount(payload, key) {
+    if (!payload) return null;
+    var box = payload.data && typeof payload.data === "object" ? payload.data : payload;
+    var n = Number(box[key]);
+    return isFinite(n) && n >= 0 ? n : null;
   }
 
   function showStale() {
@@ -124,42 +101,78 @@
     if (cached === null) {
       setCounter(format(base), labels.unavailable);
     } else {
-      setCounter(format(base + cached), labels.stale);
+      setCounter(format(base + cached.pv), labels.stale);
     }
   }
 
-  function loadCounter() {
-    var scripts = document.getElementsByTagName("script");
-    for (var i = 0; i < scripts.length; i++) {
-      if (scripts[i].src && scripts[i].src.indexOf("busuanzi") !== -1) return;
+  function uvCookieName() {
+    var host = location.host || "unknown-host";
+    return UV_COOKIE_PREFIX + host.replace(/[^a-zA-Z0-9_-]/g, "_");
+  }
+
+  function isNewVisitor() {
+    var name = uvCookieName() + "=";
+    var parts = document.cookie ? document.cookie.split("; ") : [];
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].indexOf(name) === 0) return false;
     }
-    var s = document.createElement("script");
-    s.src = BUSUANZI_SRC;
-    s.async = true;
-    s.referrerPolicy = "no-referrer-when-downgrade";
-    s.onerror = function () {
-      if (document.getElementById("visit-counter")) showStale();
+    return true;
+  }
+
+  function markVisitor() {
+    document.cookie = uvCookieName() + "=1; path=/; max-age=31536000; samesite=lax";
+  }
+
+  function reportVisit() {
+    if (location.protocol.indexOf("http") !== 0 || !window.fetch) {
+      showStale();
+      return;
+    }
+    var isNewUv = isNewVisitor();
+    if (isNewUv) markVisitor();
+    var controller = typeof AbortController === "function" ? new AbortController() : null;
+    var timer = controller
+      ? setTimeout(function () {
+          controller.abort();
+        }, REQUEST_TIMEOUT_MS)
+      : null;
+    var options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: location.href, isNewUv: isNewUv }),
+      keepalive: true
     };
-    (document.head || document.documentElement).appendChild(s);
+    if (controller) options.signal = controller.signal;
+    fetch(ENDPOINT, options)
+      .then(function (resp) {
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+        return resp.json();
+      })
+      .then(function (payload) {
+        if (timer) clearTimeout(timer);
+        var pv = readCount(payload, "site_pv");
+        if (pv === null) throw new Error("bad payload");
+        var uv = readCount(payload, "site_uv");
+        writeCache(pv, uv);
+        if (!document.getElementById("visit-counter")) return;
+        var base = baseline();
+        var title = labels.total + format(base + pv) + labels.breakdown(base, pv);
+        if (uv !== null) title += labels.uv + format(uv);
+        setCounter(format(base + pv), title);
+      })
+      .catch(function () {
+        if (timer) clearTimeout(timer);
+        showStale();
+      });
   }
 
   function init() {
-    ensureSinks();
-    loadCounter();
-    if (!document.getElementById("visit-counter")) return;
-
-    var waited = 0;
-    var timer = setInterval(function () {
-      if (showFresh()) {
-        clearInterval(timer);
-        return;
-      }
-      waited += POLL_MS;
-      if (waited >= TIMEOUT_MS) {
-        clearInterval(timer);
-        if (!showFresh()) showStale();
-      }
-    }, POLL_MS);
+    var cached = readCache();
+    if (cached !== null && document.getElementById("visit-counter")) {
+      var base = baseline();
+      setCounter(format(base + cached.pv), labels.stale);
+    }
+    reportVisit();
   }
 
   if (document.readyState === "loading") {
