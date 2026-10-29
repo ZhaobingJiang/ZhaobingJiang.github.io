@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="周易研读——一个可离线打开的四层《周易》学习站：64 卦、384 爻、960 条经传、7,835 段注疏（45.0 万字）取自汉籍リポジトリ公版底本；含四书五经 64 条经典互证、25 个历史镜鉴、情境解读与本机 DeepSeek AI 助手。纯静态页面，file:// 可用，AI 需本机代理。">
+  <title>周易研读 · 四层《周易》学习站 | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页头品牌栏：开发者 + 版权）--- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .btn-local {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 26px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-local:hover { background: var(--accent-hover); text-decoration: none; }
+    .open-hint { font-size: 13.5px; color: var(--muted-color); margin-top: 10px; line-height: 1.7; }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+    .source-list { font-size: 14px; line-height: 1.85; }
+    .source-list li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">《周易研读》开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        周易研读
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">本地静态网站</span>
+      </h1>
+      <p class="affiliation">一个可离线打开的四层《周易》学习站 —— 从卦象到注疏，一层层读。</p>
+    </div>
+
+    <p class="intro-lede">
+      这是一个纯静态、零依赖、双击即可打开的《周易》研读网站。六十四卦每卦按
+      <strong>图例 → 简要 → 深入 → 权威原文</strong> 四层展开：先看见卦，再读懂一句话，
+      再看经传如何解释，最后回到汉唐注疏与四库原书。经传原文取自
+      <strong>汉籍リポジトリ（Kanripo）</strong> 的公版白文本，注疏取自四种四库全书本
+      （王弼注、孔颖达疏、程颐《伊川易传》、朱熹《周易本义》、李鼎祚《周易集解》），
+      每段标注卷次与页码，全部可回查。除四层读法外，站内还有
+      <strong>情境解读、历史镜鉴、四书五经经典互证、术语表、十翼全文、参考文献与本地开源库</strong>。
+      页面用原生 HTML/CSS/JS 写成，可直接以 <span class="run-code">file://</span> 打开；
+      可选的 AI 助手通过本机回环代理调用 DeepSeek，密钥只留在服务端。
+    </p>
+
+    <div class="shot-frame">
+      <img src="img/shot_home.jpg" alt="周易研读首页：毛边纸底色、宋体标题「从卦象到注疏，一层层读《易》」，右侧随机一卦卡片与四层功能入口">
+    </div>
+    <p class="shot-cap">
+      首页：每次打开随机抽取一卦作为入口；下方依次是四层读法、八个经卦与「以经解经」经典互证入口。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>四层读法</b> — L1 图例（六爻、上下卦、当位/得中/应、错/综/互、变卦）→ L2 简要（一句话主旨 + 学习要点）→ L3 深入（拿《彖》《象》原文逐项解释）→ L4 权威原文（经传白文 + 四家注疏，按卷页标注）。</div>
+        <div class="feat-item"><b>六十四卦与全文检索</b> — 按通行卦序浏览、按上下卦筛选；搜索卦名、卦辞、爻辞；每卦附卦序关系与「用时注意」短注。</div>
+        <div class="feat-item"><b>经典贯通</b> — 64 条四书五经原文与卦象/主爻逐字对应（《论语》24 条、《孟子》6 条、《大学》5 条、《中庸》7 条、《诗经》5 条、《尚书》5 条、《礼记》4 条、《左传》6 条、《孝经》2 条），每条标注 Kanripo 出处。</div>
+        <div class="feat-item"><b>情境解读</b> — 用 33 维处境标签做离线匹配，给出三卦候选与结构对照；可复制结构化 Prompt 交给任意 AI，或直接调用本机 DeepSeek 做逐卦解读与三卦对比。匹配只表示结构相似，不作吉凶预测。</div>
+        <div class="feat-item"><b>历史镜鉴</b> — 25 个可考史例（《左传》《史记》《战国策》《资治通鉴》等），按处置方式分为成功应对 / 失败教训 / 得失参半，并在情境解读结果里自动检索相似案例。</div>
+        <div class="feat-item"><b>文献库</b> — 7 个 Kanripo 开源仓、166 个文本文件（2.54 MB）已下载到本地，可按文件直接打开原文；清单含路径、卷次、叶数、SHA-256。</div>
+        <div class="feat-item"><b>AI 助手（可选）</b> — 站内 AI 页与卦页「AI 导读」通过本机回环代理调用 DeepSeek：模型可选 DeepSeek-V4.1-Flash 1017 / DeepSeek-V4-Pro，支持流式输出、三卦对比、引用对照；密钥不进入浏览器。</div>
+        <div class="feat-item"><b>工程与可用性</b> — 响应式（8 视口 × 14 路由无横向溢出）、打印样式（A4，注疏可展开）、键盘可操作、对比度检查、离线字体子集（OFL），并有 10 项自动审计与 83 条端到端断言。</div>
+      </div>
+      <p class="metric-line">
+        64 卦 · 384 爻 · 960 条经传 · 7,835 段注疏 · 449,591 字 · 64 条经典互证 / 9 部经典 · 25 个史例 ·
+        7 个 Kanripo 仓库 / 166 个文件 · 纯静态零依赖
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">页面掠影</h2>
+      <div class="shot-frame">
+        <img src="img/shot_classics.jpg" alt="经典贯通页：标题「以经解经 · 四书五经中的《易》」，统计 64 条互证 / 9 部经典 / 39 卦有对应 / 24 条论孟，下方为按经典筛选的引文卡片">
+      </div>
+      <p class="shot-cap">经典贯通：64 条四书五经引文逐条回查 Kanripo 原文，按经典与卦号双向筛选。</p>
+      <div class="shot-frame">
+        <img src="img/shot_case.jpg" alt="情境解读页：左侧输入现实处境与阶段目标，右侧说明匹配方法">
+      </div>
+      <p class="shot-cap">情境解读：先用离线标签匹配三卦，再把「处境 + 候选卦 + 原文材料」交给 AI 深读。</p>
+      <div class="shot-frame">
+        <img src="img/shot_gua.jpg" alt="卦页底部的「以经解经 · 与其它经典互证」区块，展示与坤卦相关的三条经典引文">
+      </div>
+      <p class="shot-cap">每卦底部的经典互证：同一处境在《论语》《孟子》《大学》等经典中的另一种说法。</p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>纯静态站点：双击
+              <span class="run-code">zhouyi-learning\index.html</span> 即可离线阅读（file:// 下 AI 不可用）。</li>
+          <li>也可启动本机服务：双击
+              <span class="run-code">zhouyi-learning\启动网站.bat</span>，或在项目目录运行
+              <span class="run-code">node scripts/ai-server.mjs</span>（默认端口 8788）。</li>
+          <li>服务就绪后，点击下方按钮在浏览器打开站点；AI 助手需要
+              <span class="run-code">config/deepseek.local.json</span> 中的本机 DeepSeek 密钥（该文件已加入 .gitignore，不会上传）。</li>
+        </ol>
+        <a class="btn-local" id="btnOpen" href="http://127.0.0.1:8788/" target="_blank" rel="noopener">▶ 启动周易研读</a>
+        <p class="open-hint">
+          如果按钮没有反应：说明本机服务尚未启动。请先双击
+          <span class="run-code">启动网站.bat</span>，或在项目目录执行
+          <span class="run-code">node scripts/ai-server.mjs</span>，再回到本页点击。
+        </p>
+        <div class="guest-note">
+          说明：站点通过作者本机的回环地址（127.0.0.1:8788）提供服务，不经互联网暴露，外部访客无法直接启动。
+          访客可先阅读本页的功能、截图与数据来源；如需源码或合作，请通过
+          <a href="../../">Home</a> 页联系作者。站点本身可完全离线打开，只有 AI 助手需要本机服务。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">数据来源与校验</h2>
+      <ul class="source-list">
+        <li><b>经传底本</b>：汉籍リポジトリ KR1a0001《周易》白文本（公版，逐卦分文件）。</li>
+        <li><b>注疏四种</b>：KR1a0007《周易注疏》（王弼注、唐孔颖达疏）、KR1a0016《伊川易传》（宋程颐）、KR1a0032《周易本义》（宋朱熹）、KR1a0008《周易集解》（唐李鼎祚），均为四库全书本影印数字底本。</li>
+        <li><b>四书五经互证</b>：论语、孟子、大学、中庸、诗经、尚书、礼记、左传、孝经共 9 个 Kanripo 仓，64 条引文逐字回查原文并标卷页。</li>
+        <li><b>自动校验</b>：经传 960 条逐字比对 64/64 通过；注疏 7,835 段按卷页回查 562/562 条引文通过；结构数理 448 项通过；布局 8 视口 × 14 路由无横向溢出；10 项审计脚本 + 83 条端到端断言全部通过。</li>
+        <li><b>使用边界</b>：本站用于学习研读，不作占断。白话释义与「以经解经」编者按为作者所撰，与经传原文分开标注；注明「编者所撰」的内容不代表任何注家原意。</li>
+      </ul>
+      <p class="metric-line">
+        兼容性说明：站点以纯静态文件分发，无后端依赖；AI 代理仅监听本机回环地址。
+        本介绍页与软件列表中的其他软件采用同一版式，方便未启动本机服务时了解软件内容。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建。版权与开发者信息见页首。
+    </p>
+  </footer>
+  <script src="/assets/js/site-counter.js?v=3" defer></script>
+</body>
+</html>
