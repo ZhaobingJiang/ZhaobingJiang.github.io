@@ -145,6 +145,31 @@
     .book-intro p:last-child { margin-bottom: 0; }
     .book-intro .closing { text-align: right; text-indent: 0; color: var(--accent-color); }
 
+    /* 引用格式（工程专著） */
+    .book-cite {
+      margin-top: 16px;
+      padding: 12px 16px 13px;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      background: #fafbfc;
+      text-align: left;
+    }
+    .book-cite .cite-label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent-color);
+    }
+    .book-cite .cite-text {
+      display: block;
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: var(--text-color);
+      word-break: break-word;
+    }
+
     @media (max-width: 720px) {
       .book-card,
       .book-card:nth-child(even) {
@@ -160,6 +185,7 @@
     @media (max-width: 480px) {
       .book-card { padding: 16px; }
       .book-intro p { font-size: 14.5px; }
+      .book-cite .cite-text { font-size: 13px; }
     }
 
     /* 富文本（rich）主题下避免卡片嵌套的双重描边 */
@@ -169,6 +195,7 @@
     }
     body[data-theme="rich"] .book-card:hover { border-color: #c5d3ec; }
     body[data-theme="rich"] .book-toc a { background: #fff; }
+    body[data-theme="rich"] .book-cite { background: #f2f5fb; border-color: #dbe3f2; }
   </style>
 </head>
 <body>
@@ -224,6 +251,10 @@
             <div class="book-intro">
               <p>本书由杜乃娟、江召兵合著，运用齐次矩阵方法对水上展开的典型浮基多体系统进行实体建模与动力学分析，内容包括多体动力学的齐次矩阵方法、浮基多体系统的动力学分析、пмм-2自行舟桥水上浮体系统的动力学建模、自行舟桥泛水展开的动力学分析与数值计算、波浪中展开的动力学响应分析，以及浮基摆杆试验验证。全书共八章，含前言与目录，156页。</p>
             </div>
+            <div class="book-cite">
+              <span class="cite-label">引用格式</span>
+              <span class="cite-text">杜乃娟, 江召兵. 浮基多体系统水上展开的稳定性计算与试验[M]. 北京: 国防工业出版社, 2020.</span>
+            </div>
           </div>
         </article>
 
@@ -252,6 +283,10 @@
             <div class="book-intro">
               <p>本书由沈庆教授、陈徐均教授、江召兵博士三人分工合作完成：沈庆撰写第一、二、三、四、七、八章，陈徐均撰写第五章，江召兵撰写第六、九、十章，最后由沈庆统稿。全书结合不同形式的浮体和浮式多体系统，经简化和线性化引出不同的理论分析框架和求解途径，从基本理论、数值模拟技术和动力响应特性等方面进行系统论述，内容涵盖刚体动力分析基础、流固耦合中的速度势问题、浮体水动力系数求解、时域动力分析等，可作为船舶与海洋工程、港口海岸及近海工程、作战工程保障和工程力学等交叉方向研究生与工程技术人员的参考书。</p>
               <p>本次提供书稿两部分：第1-7章（185页，含前言与目录）与第8-10章（73页），均提供PDF与Word两种格式。Word版中的插图已按显示尺寸重新压缩以便下载，正文、公式与版式未作改动。</p>
+            </div>
+            <div class="book-cite">
+              <span class="cite-label">引用格式</span>
+              <span class="cite-text">沈庆, 陈徐均, 江召兵. 浮体和浮式多体系统流固耦合动力分析[M]. 北京: 科学出版社, 2011.</span>
             </div>
           </div>
         </article>
