@@ -14,7 +14,6 @@
   .book-head .t { font-size: 2.4rem; letter-spacing: .5rem; margin: 0 0 .6rem; font-family: "Songti SC","SimSun",serif; }
   .book-head .s { color:var(--muted); letter-spacing:.25rem; font-size:.95rem; }
   .book-head .a { margin-top: .9rem; font-size:1.05rem; }
-  .book-head .a .seal { color:var(--seal); margin-left:.4rem; }
   .web-cover { width: 190px; max-width: 55%; display:block; margin: 0 auto 1.2rem; border:1px solid var(--line); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
   .notice { margin:1.2rem 0 0; padding:.9rem 1rem; background:#fff; border:1px solid var(--line); border-radius:8px; font-size:.92rem; color:var(--muted); line-height:1.75; }
   .notice b { color:var(--ink); }
@@ -25,8 +24,8 @@
   .front p.verse { text-indent:0; text-align:center; color:var(--muted); font-family:"Kaiti SC","KaiTi",serif; }
   .front p.center { text-indent:0; text-align:center; margin:.7rem 0; letter-spacing:.1em; }
   h2.section-h { margin:2.4rem 0 1rem; font-size:1.15rem; letter-spacing:.1rem; padding-left:.6rem; border-left:4px solid var(--seal); }
-  ol.toc { list-style:none; padding:0; margin:0; }
-  ol.toc li { padding:.5rem .2rem; border-bottom:1px dashed var(--line); }
+  ol.toc { list-style:none; padding:0; margin:0; column-count:2; column-gap:2.4rem; }
+  ol.toc li { padding:.5rem .2rem; border-bottom:1px dashed var(--line); break-inside:avoid; }
   ol.toc a { color:var(--ink); text-decoration:none; }
   ol.toc a:hover { color:var(--seal); }
   article.chapter { margin:3rem 0 0; padding-top:.6rem; border-top:1px solid var(--line); }
@@ -35,7 +34,7 @@
   .chapter-nav { display:flex; justify-content:space-between; align-items:center; margin:2.2rem 0 0; padding-top:1rem; border-top:1px dashed var(--line); font-size:.92rem; gap:.6rem; }
   .chapter-nav a { color:var(--seal); text-decoration:none; }
   footer.reader-foot { margin-top:3rem; padding-top:1.2rem; border-top:1px solid var(--line); color:var(--muted); font-size:.86rem; line-height:1.8; }
-  @media (max-width:640px) { .book-head .t { font-size:1.9rem; letter-spacing:.3rem; } article.chapter p { font-size:1.02rem; line-height:1.95; } }
+  @media (max-width:640px) { .book-head .t { font-size:1.9rem; letter-spacing:.3rem; } ol.toc { column-count:1; } article.chapter p { font-size:1.02rem; line-height:1.95; } }
 </style>
 </head>
 <body>
@@ -49,10 +48,10 @@
 
 <main class="reader">
   <div class="book-head">
-    <img class="web-cover" src="cover.jpg" alt="《杏花深处秣陵关》封面：江召兵著，现代长篇历史传说">
+    <img class="web-cover" src="cover.jpg?v=3" alt="《杏花深处秣陵关》封面：江召兵著，现代长篇历史传说">
     <h1 class="t">杏花深处秣陵关</h1>
     <div class="s">现代长篇历史传说</div>
-    <div class="a">江召兵　著<span class="seal">▢</span></div>
+    <div class="a">江召兵　著</div>
   </div>
 
   <div class="notice">
