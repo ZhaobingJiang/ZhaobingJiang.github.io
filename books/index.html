@@ -7,6 +7,196 @@
   <title>Books | Zhaobing Jiang</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <script src="../assets/js/theme.js?v=2"></script>
+<style>
+    /* ===== Books page: framed cards, image and text side by side ===== */
+    .book-toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 22px 0 8px;
+    }
+    .book-toc a {
+      display: inline-block;
+      padding: 4px 13px;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 13px;
+      line-height: 1.6;
+      text-decoration: none;
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+    .book-toc a:hover { color: var(--accent-color); border-color: var(--accent-color); }
+
+    .book-list { display: flex; flex-direction: column; gap: 24px; margin-top: 20px; }
+
+    .book-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 174px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+      padding: 26px 28px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--bg-color);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .book-card:hover {
+      border-color: #d2d2d2;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+    .book-card:nth-child(even) { grid-template-columns: minmax(0, 1fr) 174px; }
+    .book-card:nth-child(even) .book-figure { order: 2; }
+    .book-card:nth-child(even) .book-body { order: 1; }
+
+    .book-figure { margin: 0; }
+    .book-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #fff;
+    }
+    .book-figure figcaption {
+      margin-top: 9px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--muted-color);
+      text-align: center;
+    }
+
+    .book-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-bottom: 7px;
+    }
+    .book-no {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent-color);
+      font-variant-numeric: tabular-nums;
+    }
+    .book-title {
+      margin: 0 0 10px;
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--heading-color);
+    }
+    .book-tag {
+      padding: 1px 9px;
+      border: 1px solid var(--accent-color);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-color);
+      white-space: nowrap;
+    }
+    .book-meta {
+      margin: 0 0 12px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: var(--muted-color);
+    }
+    .book-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .book-links .part-label {
+      margin-right: 2px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    .bk-btn {
+      display: inline-block;
+      padding: 4px 13px;
+      border: 1px solid var(--accent-color);
+      border-radius: 999px;
+      color: var(--accent-color);
+      font-size: 13px;
+      line-height: 1.6;
+      text-decoration: none;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .bk-btn:hover { background: var(--accent-color); color: #fff; }
+
+    .book-intro {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border-color);
+    }
+    .book-intro p {
+      margin: 0 0 9px;
+      font-size: 15px;
+      line-height: 1.85;
+      text-align: justify;
+      text-indent: 2em;
+    }
+    .book-intro p:last-child { margin-bottom: 0; }
+    .book-intro .closing { text-align: right; text-indent: 0; color: var(--accent-color); }
+
+    /* Citation block for the engineering monographs */
+    .book-cite {
+      margin-top: 16px;
+      padding: 12px 16px 13px;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      background: #fafbfc;
+      text-align: left;
+    }
+    .book-cite .cite-label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent-color);
+    }
+    .book-cite .cite-text {
+      display: block;
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: var(--text-color);
+      word-break: break-word;
+    }
+
+    @media (max-width: 720px) {
+      .book-card,
+      .book-card:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 20px;
+      }
+      .book-card:nth-child(even) .book-figure { order: 0; }
+      .book-figure { max-width: 150px; }
+      .book-figure figcaption { text-align: left; }
+      .book-title { font-size: 17.5px; }
+    }
+    @media (max-width: 480px) {
+      .book-card { padding: 16px; }
+      .book-intro p { font-size: 14.5px; }
+      .book-cite .cite-text { font-size: 13px; }
+    }
+
+    /* Rich theme: avoid doubled outlines on nested cards */
+    body[data-theme="rich"] .book-card {
+      background: #f7f9fd;
+      border-color: #dfe6f3;
+    }
+    body[data-theme="rich"] .book-card:hover { border-color: #c5d3ec; }
+    body[data-theme="rich"] .book-toc a { background: #fff; }
+    body[data-theme="rich"] .book-cite { background: #f2f5fb; border-color: #dbe3f2; }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -26,178 +216,177 @@
   <main class="container">
     <div class="title-section">
       <h1 class="name">Books</h1>
-      <p class="affiliation">Beyond journal papers and engineering practice, Zhaobing Jiang writes long-form books for general readers, translating the economics and technology shifts of our time into judgements and actions that ordinary people can actually use. The manuscript below is published in full and free to read or download. He also writes historical legend in the Chinese <em>zhanghui</em> manner; the complete novel at the end of this page is free to read online.</p>
+      <p class="affiliation">Beyond journal papers and engineering practice, Zhaobing Jiang writes long-form books for general readers, translating the economics and technology shifts of our time into judgements and actions that ordinary people can actually use. All six works below are published in full and free to read or download: the two engineering monographs come first, and the remaining works follow in reverse order of completion. He also writes historical legend in the Chinese <em>zhanghui</em> manner; <em>Su Dan Riding a White Crane</em>, a complete novel in five volumes and forty chapters, is free to read online as well.</p>
     </div>
 
-    <section class="section">
-      <h2 class="section-title">Monographs</h2>
-      <ul class="item-list">
-        <li>
-          <strong>1. Survival Economics in Uncertain Times: A Guide to Observing and Acting in a Changing World</strong><br>
-          Zhaobing Jiang — third edition (expanded manuscript), 2026, 132 pages, about 131,000 Chinese characters, three parts and fifteen chapters, illustrated, with appendices A&ndash;C<br>
-          Chinese title: 《不确定年代的生存经济学——写给普通人的变局观察与行动指南》
-          <a class="pub-dl" href="./survival_economics_uncertain_times_v3_illustrated.pdf">[PDF]</a>
-          <a class="pub-dl" href="./survival_economics_uncertain_times_v3_illustrated.docx" download>[DOCX]</a>
-          <a class="pub-dl" href="./survival-economics/">[Web edition &mdash; read the whole book online]</a>
-        </li>
-        <li>
-          <strong>2. The Most Beautiful Mathematical Figures in History: Where Science Meets Art</strong><br>
-          Zhaobing Jiang — 2026, 228 pages, about 100,000 Chinese characters, seven parts and fifty chapters, 148 illustrations<br>
-          Chinese title: 《史上最美数学图形：科学与艺术的结合》
-          <a class="pub-dl" href="./most_beautiful_math_figures_science_and_art.pdf">[PDF]</a>
-          <a class="pub-dl" href="./most_beautiful_math_figures_science_and_art.docx" download>[DOCX]</a>
-          <a class="pub-dl" href="./math-figures/">[Web edition &mdash; all 148 figures, read online]</a>
-        </li>
-        <li>
-          <img class="book-cover" src="./floating_multibody_fsi_dynamics_cover.png" alt="Dynamic Analysis of Fluid-Structure Interaction in Floating Bodies and Floating Multi-Body Systems">
-          <strong>3. Dynamic Analysis of Fluid&ndash;Structure Interaction in Floating Bodies and Floating Multi-Body Systems</strong><br>
-          Qing Shen, Xujun Chen, Zhaobing Jiang — manuscript, 2019, two parts: Chapters 1&ndash;7 (185 pages) and Chapters 8&ndash;10 (73 pages)<br>
-          Chinese title: 《浮体和浮式多体系统流固耦合动力分析》
-          Part 1, Chapters 1&ndash;7:
-          <a class="pub-dl" href="./floating_multibody_fsi_dynamics_ch1_7.pdf">[PDF]</a>
-          <a class="pub-dl" href="./floating_multibody_fsi_dynamics_ch1_7.docx" download>[DOCX]</a><br>
-          Part 2, Chapters 8&ndash;10:
-          <a class="pub-dl" href="./floating_multibody_fsi_dynamics_ch8_10.pdf">[PDF]</a>
-          <a class="pub-dl" href="./floating_multibody_fsi_dynamics_ch8_10.docx" download>[DOCX]</a>
-        </li>
-        <li>
-          <img class="book-cover" src="./floating_base_multibody_water_deployment_stability_cover.png" alt="Stability Calculation and Experiment of a Floating-Base Multi-Body System During Water Deployment">
-          <strong>4. Stability Calculation and Experiment of a Floating-Base Multi-Body System During Water Deployment</strong><br>
-          Naijuan Du, Zhaobing Jiang — manuscript for National Defense Industry Press, 2020, 156 pages, eight chapters<br>
-          Chinese title: 《浮基多体系统水上展开的稳定性计算与试验》
-          <a class="pub-dl" href="./floating_base_multibody_water_deployment_stability.pdf">[PDF]</a>
-          <a class="pub-dl" href="./floating_base_multibody_water_deployment_stability.docx" download>[DOCX]</a>
-        </li>
-        <li>
-          <img class="book-cover" src="./luck_engineering_cover.jpg" alt="The Engineering of Luck: Foundations of a Discipline of Fortune">
-          <strong>5. The Engineering of Luck: Foundations of a Discipline of Fortune</strong><br>
-          Zhaobing Jiang — 2026, 264 pages, about 170,000 Chinese characters, seventeen chapters in four parts, with appendices A&ndash;G<br>
-          Chinese title: 《运气工程学》
-          <a class="pub-dl" href="./luck_engineering.pdf">[PDF]</a>
-          <a class="pub-dl" href="./luck_engineering.docx" download>[DOCX]</a>
-          <a class="pub-dl" href="./luck-engineering/">[Web edition &mdash; read the whole book online, formulas included]</a>
-        </li>
-      </ul>
-    </section>
+    <nav class="book-toc" aria-label="Books">
+      <a href="#book-1">01 Floating-Base Multi-Body</a>
+      <a href="#book-2">02 Fluid&ndash;Structure Interaction</a>
+      <a href="#book-3">03 Su Dan</a>
+      <a href="#book-4">04 Mathematical Figures</a>
+      <a href="#book-5">05 Engineering of Luck</a>
+      <a href="#book-6">06 Survival Economics</a>
+    </nav>
 
     <section class="section">
-      <h2 class="section-title">Fiction</h2>
-      <ul class="item-list">
-        <li>
-          <img class="book-cover" src="./sudan-crossing-crane/cover.jpg" alt="Su Dan Riding a White Crane: A Zhanghui-Form Historical Legend">
-          <strong>6. Su Dan Riding a White Crane: A Zhanghui-Form Historical Legend</strong><br>
-          Zhaobing Jiang — complete, 2026, five volumes and forty chapters (about 270,000 Chinese characters), all forty chapters online<br>
-          Chinese title: 《苏耽跨鹤》
-          <a class="pub-dl" href="./sudan-crossing-crane/">[Web edition &mdash; read the complete book online]</a>
-        </li>
-      </ul>
-      <p>
-        A historical legend written in the Ming&ndash;Qing <em>zhanghui</em> manner. It tells of Su Dan, a boy of Guiyang
-        Commandery in the early Western Han who was said to have been conceived from a five-coloured water plant, abandoned
-        in a mountain cave, suckled by a white deer and sheltered by a white crane, to have cured a plague with well water and
-        orange leaves, and at thirteen to have ridden a crane into the sky from Mount Niupi &mdash; the hill later renamed Suxian Ling (Suxian's Ridge) after him, still the city's landmark. In front of Chenzhou's railway station stands a statue of Su Dan riding the crane; the image has become the city's emblem and spiritual totem. The book tells the story of the people behind the totem. The legend makes the son a god; the book keeps its centre on the mother who would not explain herself &mdash;
-        on the shame, the silence and the daily labour that raised him, and on what it costs a woman to send her son away.
-        Around that centre it follows the two thousand years in which the legend was rewritten &mdash; Tang stele, Song
-        honours, the Three Wonders Stele, a Ming travelogue, Qing scepticism, and the present-day heritage site &mdash;
-        so that the question finally turns back on the legend itself: what is remembered, and by whom.
-        Behind the legend, there is a mother.</p>
-    </section>
+      <h2 class="section-title">All Works</h2>
 
-    <section class="section">
-      <h2 class="section-title">About the Books</h2>
-      <p><strong>1. Survival Economics in Uncertain Times (2026)</strong></p>
-      <p>
-        This book is written for ordinary people who feel the ground shifting under their feet. In the past few
-        years we have witnessed events that read like textbook cases: global inflation returning, a bank
-        collapsing within 48 hours, house prices ending their one-way rise, AI rewriting the prospects of
-        countless occupations within months, and delayed retirement moving from rumour to timetable. Behind
-        every headline are concrete questions for ordinary households: where should savings go when deposit
-        rates keep falling? Should a shrinking home be paid off early? What if a child graduates into a market
-        where three people compete for one post? Will a 35-year-old appear on the next layoff list?
-      </p>
-      <p>
-        The answers available today tend to sit at two extremes: academic narratives that are rigorous but far
-        from a household ledger, and traffic-driven anxiety that is intense but offers no defensible remedy.
-        This book stands on the ground between them: it uses Nobel-level economic theory to make sense of the
-        shift that is under way, then translates that theory into actions an ordinary person can realistically
-        take.
-      </p>
-      <p>
-        The book has three parts, each with five chapters of five sections. Part I, &quot;Shifting Ground&quot;,
-        answers what is happening: inflation and money, the mountain of debt, the retreat of globalization, the
-        AI revolution, and ageing with low growth &mdash; five main lines that form the coordinate system of our
-        time. Part II, &quot;Lenses&quot;, answers why: cycles, human nature, information, institutions, and risk
-        &mdash; five pairs of theory glasses tested by Nobel Prizes, which reveal the mechanism behind the
-        phenomenon. Part III, &quot;Playbook&quot;, answers what to do: a household balance-sheet checkup, career
-        and human-capital strategy, investment discipline, survival rules for small business owners, and stress
-        testing &mdash; five sets of tools that can be put to work directly. Every section follows the same logic:
-        story, mechanism, domestic relevance, theory, action.
-      </p>
-      <p>
-        Three things the book does not do: it makes no point-in-time forecasts, it uses no mathematical
-        formulas (all theory is explained through stories, analogies and charts), and it promises no shortcut to
-        sudden wealth. Its tone is stability before return, survival before prosperity, discipline before
-        cleverness. The domestic livelihood data it cites &mdash; graduate numbers, unemployment, foreclosed
-        homes, deposit rates, the delayed-retirement timetable &mdash; come from public reports and official
-        statistics as of mid-2026. Data ages; the mechanisms behind it do not.
-      </p>
-      <p><strong>2. The Most Beautiful Mathematical Figures in History (2026)</strong></p>
-      <p>
-        This book is an illustrated tour of fifty classical mathematical figures, from the Fibonacci spiral,
-        the golden rectangle and the cardioid to the Mandelbrot set, the Lorenz attractor, the Möbius strip,
-        the Klein bottle, Penrose tilings and the Ulam spiral. It opens with a prologue on why mathematics is
-        beautiful and proceeds through seven parts &mdash; golden ratios and spirals, the beauty of curves, the
-        world of fractals, the beauty of chaos, the beauty of space, symmetry and tessellation, and patterns
-        born from arithmetic &mdash; closing with an epilogue that treats mathematics and art as two languages of
-        one beauty.
-      </p>
-      <p>
-        Each chapter starts from a phenomenon in nature, art or everyday life, explains the mathematics behind
-        it, and plots the figure at high resolution: rabbit breeding and galaxy arms, nautilus shells and
-        sunflower seeds at 137.5 degrees, the three-body problem, Turing patterns, the seventeen wallpaper
-        groups, prime spirals and the digits of &pi;. Appendices gather further reading, image credits and an
-        index of the plotting code for every chapter, so that readers can reproduce each figure themselves.
-      </p>
-      <p><strong>3. Dynamic Analysis of Fluid&ndash;Structure Interaction in Floating Bodies and Floating Multi-Body Systems (2019 manuscript)</strong></p>
-      <p>
-        Written jointly by Qing Shen, Xujun Chen and Zhaobing Jiang: Shen wrote Chapters 1, 2, 3, 4, 7 and 8,
-        Chen wrote Chapter 5, and Jiang wrote Chapters 6, 9 and 10, with Shen preparing the final manuscript.
-        Starting from simplified and linearized models of different floating bodies and floating multi-body
-        systems, the text develops the corresponding theoretical frameworks and solution schemes, and gives a
-        systematic treatment of the underlying theory, numerical techniques and dynamic response
-        characteristics &mdash; rigid-body dynamics, velocity-potential problems in fluid&ndash;structure
-        interaction, hydrodynamic coefficients, and time-domain analysis of floating and floating-base
-        multi-body systems. It is intended as a reference for graduate students and engineers working in naval
-        architecture and ocean engineering, port, coastal and offshore engineering, combat engineering support
-        and engineering mechanics.
-      </p>
-      <p>
-        The manuscript is published here in two parts, Chapters 1&ndash;7 (185 pages, including preface and
-        contents) and Chapters 8&ndash;10 (73 pages), each available as PDF and Word. In the Word files the
-        illustrations were re-compressed to display resolution; the text, equations and layout are unchanged.
-      </p>
-      <p><strong>4. Stability Calculation and Experiment of a Floating-Base Multi-Body System During Water Deployment (2020 manuscript for National Defense Industry Press)</strong></p>
-      <p>
-        Co-authored by Naijuan Du and Zhaobing Jiang, the book applies the homogeneous matrix method to model
-        typical floating-base multi-body systems deployed on water and to analyse their dynamics: the
-        homogeneous matrix formulation of multi-body dynamics, dynamic analysis of floating-base multi-body
-        systems, modelling of the floating body system of a пмм-2 self-propelled pontoon bridge,
-        dynamic analysis and numerical computation of its launching and deployment on water, the dynamic
-        response of deployment in waves, and validation through a floating-base pendulum-rod test. The
-        manuscript runs to eight chapters over 156 pages, with a preface and table of contents.
-      </p>
-      <p><strong>5. The Engineering of Luck: Foundations of a Discipline of Fortune (2026)</strong></p>
-      <p>
-        The companion volume to Survival Economics turns in the opposite direction: instead of avoiding
-        formulas, it sets out to establish luck as a research object in its own right &mdash; postulates,
-        terminology, a taxonomy of five mechanisms across three scales, models, measurement schemes,
-        intervention tools and falsifiable acceptance propositions. A five-stage process loop (exposure,
-        recognition, conversion, amplification, convergence) links the argument together, and the same
-        logic is carried from the individual to the team and the platform. Appendices A&ndash;G give a
-        glossary and symbol table, a tool kit, reproducible worked examples, a map of the academic
-        conversation, a luck audit form, a case library and a quick-reference table of the twelve
-        tradition-mapped factors. 264 pages: preface, seventeen chapters in four parts, seven appendices.
-      </p>
+      <div class="book-list">
+        <article class="book-card" id="book-1">
+          <figure class="book-figure">
+            <img src="./floating_base_multibody_water_deployment_stability_cover.png" alt="Cover of Stability Calculation and Experiment of a Floating-Base Multi-Body System During Water Deployment" width="460" height="638">
+            <figcaption>2020 &middot; Manuscript for National Defense Industry Press</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">01</span>
+              <span class="book-tag">Engineering monograph</span>
+            </div>
+            <h3 class="book-title">Stability Calculation and Experiment of a Floating-Base Multi-Body System During Water Deployment</h3>
+            <p class="book-meta">Naijuan Du, Zhaobing Jiang &middot; 2020 &middot; 156 pages &middot; Eight chapters &middot; With preface and contents<br>Chinese title: 《浮基多体系统水上展开的稳定性计算与试验》</p>
+            <div class="book-links">
+              <a class="bk-btn" href="./floating_base_multibody_water_deployment_stability.pdf">PDF (full text)</a>
+              <a class="bk-btn" href="./floating_base_multibody_water_deployment_stability.docx" download>DOCX download</a>
+            </div>
+            <div class="book-intro">
+              <p>Co-authored by Naijuan Du and Zhaobing Jiang, the book applies the homogeneous matrix method to model typical floating-base multi-body systems deployed on water and to analyse their dynamics: the homogeneous matrix formulation of multi-body dynamics, dynamic analysis of floating-base multi-body systems, modelling of the floating body system of a пмм-2 self-propelled pontoon bridge, dynamic analysis and numerical computation of its launching and deployment on water, the dynamic response of deployment in waves, and validation through a floating-base pendulum-rod test. The manuscript runs to eight chapters over 156 pages, with a preface and table of contents.</p>
+            </div>
+            <div class="book-cite">
+              <span class="cite-label">Citation</span>
+              <span class="cite-text">Naijuan Du, Zhaobing Jiang. Stability Calculation and Experiment of a Floating-Base Multi-Body System During Water Deployment[M]. Beijing: National Defense Industry Press, 2020. (in Chinese)</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-2">
+          <figure class="book-figure">
+            <img src="./floating_multibody_fsi_dynamics_cover.png" alt="Cover of Dynamic Analysis of Fluid-Structure Interaction in Floating Bodies and Floating Multi-Body Systems" width="461" height="655">
+            <figcaption>2019 &middot; Manuscript, two parts</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">02</span>
+              <span class="book-tag">Engineering monograph</span>
+            </div>
+            <h3 class="book-title">Dynamic Analysis of Fluid&ndash;Structure Interaction in Floating Bodies and Floating Multi-Body Systems</h3>
+            <p class="book-meta">Qing Shen, Xujun Chen, Zhaobing Jiang &middot; 2019 manuscript &middot; Ten chapters<br>Chinese title: 《浮体和浮式多体系统流固耦合动力分析》</p>
+            <div class="book-links">
+              <span class="part-label">Part 1: Chapters 1&ndash;7 (185 pages)</span>
+              <a class="bk-btn" href="./floating_multibody_fsi_dynamics_ch1_7.pdf">PDF</a>
+              <a class="bk-btn" href="./floating_multibody_fsi_dynamics_ch1_7.docx" download>DOCX</a>
+            </div>
+            <div class="book-links">
+              <span class="part-label">Part 2: Chapters 8&ndash;10 (73 pages)</span>
+              <a class="bk-btn" href="./floating_multibody_fsi_dynamics_ch8_10.pdf">PDF</a>
+              <a class="bk-btn" href="./floating_multibody_fsi_dynamics_ch8_10.docx" download>DOCX</a>
+            </div>
+            <div class="book-intro">
+              <p>Written jointly by Qing Shen, Xujun Chen and Zhaobing Jiang: Shen wrote Chapters 1, 2, 3, 4, 7 and 8, Chen wrote Chapter 5, and Jiang wrote Chapters 6, 9 and 10, with Shen preparing the final manuscript. Starting from simplified and linearized models of different floating bodies and floating multi-body systems, the text develops the corresponding theoretical frameworks and solution schemes, and gives a systematic treatment of the underlying theory, numerical techniques and dynamic response characteristics &mdash; rigid-body dynamics, velocity-potential problems in fluid&ndash;structure interaction, hydrodynamic coefficients, and time-domain analysis of floating and floating-base multi-body systems. It is intended as a reference for graduate students and engineers working in naval architecture and ocean engineering, port, coastal and offshore engineering, combat engineering support and engineering mechanics.</p>
+              <p>The manuscript is published here in two parts, Chapters 1&ndash;7 (185 pages, including preface and contents) and Chapters 8&ndash;10 (73 pages), each available as PDF and Word. In the Word files the illustrations were re-compressed to display resolution; the text, equations and layout are unchanged.</p>
+            </div>
+            <div class="book-cite">
+              <span class="cite-label">Citation</span>
+              <span class="cite-text">Qing Shen, Xujun Chen, Zhaobing Jiang. Dynamic Analysis of Fluid&ndash;Structure Interaction in Floating Bodies and Floating Multi-Body Systems[M]. Beijing: Science Press, 2011. (in Chinese)</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-3">
+          <figure class="book-figure">
+            <img src="./sudan-crossing-crane/cover.jpg" alt="Cover of Su Dan Riding a White Crane: A Zhanghui-Form Historical Legend" width="1728" height="2304">
+            <figcaption>2026 &middot; Five volumes, forty chapters</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">03</span>
+              <span class="book-tag">Historical novel (zhanghui)</span>
+            </div>
+            <h3 class="book-title">Su Dan Riding a White Crane: A Zhanghui-Form Historical Legend</h3>
+            <p class="book-meta">Zhaobing Jiang &middot; Zhanghui-form historical legend &middot; 2026 &middot; Five volumes and forty chapters &middot; About 270,000 Chinese characters &middot; Complete online<br>Chinese title: 《苏耽跨鹤》</p>
+            <div class="book-links">
+              <a class="bk-btn" href="./sudan-crossing-crane/">Web edition &middot; read the complete book online</a>
+            </div>
+            <div class="book-intro">
+              <p>A historical legend written in the Ming&ndash;Qing <em>zhanghui</em> manner. It tells of Su Dan, a boy of Guiyang Commandery in the early Western Han who was said to have been conceived from a five-coloured water plant, abandoned in a mountain cave, suckled by a white deer and sheltered by a white crane, to have cured a plague with well water and orange leaves, and at thirteen to have ridden a crane into the sky from Mount Niupi &mdash; the hill later renamed Suxian Ling (Suxian's Ridge) after him, still the city's landmark. In front of Chenzhou's railway station stands a statue of Su Dan riding the crane; the image has become the city's emblem and spiritual totem. The book tells the story of the people behind the totem.</p>
+              <p>The legend makes the son a god; the book keeps its centre on the mother who would not explain herself &mdash; on the shame, the silence and the daily labour that raised him, and on what it costs a woman to send her son away. Around that centre it follows the two thousand years in which the legend was rewritten &mdash; Tang stele, Song honours, the Three Wonders Stele, a Ming travelogue, Qing scepticism, and the present-day heritage site &mdash; so that the question finally turns back on the legend itself: what is remembered, and by whom.</p>
+              <p class="closing">Behind the legend, there is a mother.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-4">
+          <figure class="book-figure">
+            <img src="./math-figures/img/fig-cover.jpg" alt="Cover of The Most Beautiful Mathematical Figures in History: Where Science Meets Art" width="560" height="840">
+            <figcaption>2026 &middot; Seven parts, fifty chapters</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">04</span>
+              <span class="book-tag">Popular science</span>
+            </div>
+            <h3 class="book-title">The Most Beautiful Mathematical Figures in History: Where Science Meets Art</h3>
+            <p class="book-meta">Zhaobing Jiang &middot; 2026 &middot; 228 pages &middot; About 100,000 Chinese characters &middot; Seven parts and fifty chapters &middot; 148 illustrations<br>Chinese title: 《史上最美数学图形：科学与艺术的结合》</p>
+            <div class="book-links">
+              <a class="bk-btn" href="./most_beautiful_math_figures_science_and_art.pdf">PDF (full text)</a>
+              <a class="bk-btn" href="./most_beautiful_math_figures_science_and_art.docx" download>DOCX download</a>
+              <a class="bk-btn" href="./math-figures/">Web edition &middot; all 148 figures, read online</a>
+            </div>
+            <div class="book-intro">
+              <p>This book is an illustrated tour of fifty classical mathematical figures, from the Fibonacci spiral, the golden rectangle and the cardioid to the Mandelbrot set, the Lorenz attractor, the Möbius strip, the Klein bottle, Penrose tilings and the Ulam spiral. It opens with a prologue on why mathematics is beautiful and proceeds through seven parts &mdash; golden ratios and spirals, the beauty of curves, the world of fractals, the beauty of chaos, the beauty of space, symmetry and tessellation, and patterns born from arithmetic &mdash; closing with an epilogue that treats mathematics and art as two languages of one beauty.</p>
+              <p>Each chapter starts from a phenomenon in nature, art or everyday life, explains the mathematics behind it, and plots the figure at high resolution: rabbit breeding and galaxy arms, nautilus shells and sunflower seeds at 137.5 degrees, the three-body problem, Turing patterns, the seventeen wallpaper groups, prime spirals and the digits of &pi;. Appendices gather further reading, image credits and an index of the plotting code for every chapter, so that readers can reproduce each figure themselves.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-5">
+          <figure class="book-figure">
+            <img src="./luck_engineering_cover.jpg" alt="Cover of The Engineering of Luck: Foundations of a Discipline of Fortune" width="460" height="643">
+            <figcaption>2026 &middot; Four parts, seventeen chapters</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">05</span>
+              <span class="book-tag">Popular science</span>
+            </div>
+            <h3 class="book-title">The Engineering of Luck: Foundations of a Discipline of Fortune</h3>
+            <p class="book-meta">Zhaobing Jiang &middot; 2026 &middot; 264 pages &middot; About 170,000 Chinese characters &middot; Four parts and seventeen chapters &middot; Appendices A&ndash;G<br>Chinese title: 《运气工程学》</p>
+            <div class="book-links">
+              <a class="bk-btn" href="./luck_engineering.pdf">PDF (full text)</a>
+              <a class="bk-btn" href="./luck_engineering.docx" download>DOCX download</a>
+              <a class="bk-btn" href="./luck-engineering/">Web edition &middot; read the whole book online</a>
+            </div>
+            <div class="book-intro">
+              <p>The companion volume to Survival Economics turns in the opposite direction: instead of avoiding formulas, it sets out to establish luck as a research object in its own right &mdash; postulates, terminology, a taxonomy of five mechanisms across three scales, models, measurement schemes, intervention tools and falsifiable acceptance propositions. A five-stage process loop (exposure, recognition, conversion, amplification, convergence) links the argument together, and the same logic is carried from the individual to the team and the platform. Appendices A&ndash;G give a glossary and symbol table, a tool kit, reproducible worked examples, a map of the academic conversation, a luck audit form, a case library and a quick-reference table of the twelve tradition-mapped factors. 264 pages: preface, seventeen chapters in four parts, seven appendices.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-6">
+          <figure class="book-figure">
+            <img src="./survival-economics/img/fig-cover.jpg" alt="Cover of Survival Economics in Uncertain Times: A Guide to Observing and Acting in a Changing World" width="560" height="782">
+            <figcaption>2026 &middot; Third edition, three parts and fifteen chapters</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">06</span>
+              <span class="book-tag">Popular science</span>
+            </div>
+            <h3 class="book-title">Survival Economics in Uncertain Times: A Guide to Observing and Acting in a Changing World</h3>
+            <p class="book-meta">Zhaobing Jiang &middot; Third edition (expanded manuscript) &middot; 2026 &middot; 132 pages &middot; About 131,000 Chinese characters &middot; Three parts and fifteen chapters &middot; Appendices A&ndash;C<br>Chinese title: 《不确定年代的生存经济学——写给普通人的变局观察与行动指南》</p>
+            <div class="book-links">
+              <a class="bk-btn" href="./survival_economics_uncertain_times_v3_illustrated.pdf">PDF (full text)</a>
+              <a class="bk-btn" href="./survival_economics_uncertain_times_v3_illustrated.docx" download>DOCX download</a>
+              <a class="bk-btn" href="./survival-economics/">Web edition &middot; read the whole book online</a>
+            </div>
+            <div class="book-intro">
+              <p>This book is written for ordinary people who feel the ground shifting under their feet. In the past few years we have witnessed events that read like textbook cases: global inflation returning, a bank collapsing within 48 hours, house prices ending their one-way rise, AI rewriting the prospects of countless occupations within months, and delayed retirement moving from rumour to timetable. Behind every headline are concrete questions for ordinary households: where should savings go when deposit rates keep falling? Should a shrinking home be paid off early? What if a child graduates into a market where three people compete for one post? Will a 35-year-old appear on the next layoff list?</p>
+              <p>The answers available today tend to sit at two extremes: academic narratives that are rigorous but far from a household ledger, and traffic-driven anxiety that is intense but offers no defensible remedy. This book stands on the ground between them: it uses Nobel-level economic theory to make sense of the shift that is under way, then translates that theory into actions an ordinary person can realistically take.</p>
+              <p>The book has three parts, each with five chapters of five sections. Part I, &quot;Shifting Ground&quot;, answers what is happening: inflation and money, the mountain of debt, the retreat of globalization, the AI revolution, and ageing with low growth &mdash; five main lines that form the coordinate system of our time. Part II, &quot;Lenses&quot;, answers why: cycles, human nature, information, institutions, and risk &mdash; five pairs of theory glasses tested by Nobel Prizes, which reveal the mechanism behind the phenomenon. Part III, &quot;Playbook&quot;, answers what to do: a household balance-sheet checkup, career and human-capital strategy, investment discipline, survival rules for small business owners, and stress testing &mdash; five sets of tools that can be put to work directly. Every section follows the same logic: story, mechanism, domestic relevance, theory, action.</p>
+              <p>Three things the book does not do: it makes no point-in-time forecasts, it uses no mathematical formulas (all theory is explained through stories, analogies and charts), and it promises no shortcut to sudden wealth. Its tone is stability before return, survival before prosperity, discipline before cleverness. The domestic livelihood data it cites &mdash; graduate numbers, unemployment, foreclosed homes, deposit rates, the delayed-retirement timetable &mdash; come from public reports and official statistics as of mid-2026. Data ages; the mechanisms behind it do not.</p>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
   </main>
 
