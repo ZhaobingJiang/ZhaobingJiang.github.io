@@ -3,10 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="江召兵专著">
+  <meta name="description" content="江召兵专著：浮基多体系统水上展开的稳定性计算与试验、浮体和浮式多体系统流固耦合动力分析、苏耽跨鹤、史上最美数学图形、运气工程学、不确定年代的生存经济学">
   <title>专著 | 江召兵</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <script src="../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ===== 专著页专用：线框卡片 + 图文混排 ===== */
+    .book-toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 22px 0 8px;
+    }
+    .book-toc a {
+      display: inline-block;
+      padding: 4px 13px;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 13px;
+      line-height: 1.6;
+      text-decoration: none;
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+    .book-toc a:hover { color: var(--accent-color); border-color: var(--accent-color); }
+
+    .book-list { display: flex; flex-direction: column; gap: 24px; margin-top: 20px; }
+
+    .book-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 174px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+      padding: 26px 28px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--bg-color);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .book-card:hover {
+      border-color: #d2d2d2;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+    .book-card:nth-child(even) { grid-template-columns: minmax(0, 1fr) 174px; }
+    .book-card:nth-child(even) .book-figure { order: 2; }
+    .book-card:nth-child(even) .book-body { order: 1; }
+
+    .book-figure { margin: 0; }
+    .book-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #fff;
+    }
+    .book-figure figcaption {
+      margin-top: 9px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--muted-color);
+      text-align: center;
+    }
+
+    .book-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-bottom: 7px;
+    }
+    .book-no {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent-color);
+      font-variant-numeric: tabular-nums;
+    }
+    .book-title {
+      margin: 0 0 10px;
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--heading-color);
+    }
+    .book-tag {
+      padding: 1px 9px;
+      border: 1px solid var(--accent-color);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-color);
+      white-space: nowrap;
+    }
+    .book-meta {
+      margin: 0 0 12px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: var(--muted-color);
+    }
+    .book-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .book-links .part-label {
+      margin-right: 2px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    .bk-btn {
+      display: inline-block;
+      padding: 4px 13px;
+      border: 1px solid var(--accent-color);
+      border-radius: 999px;
+      color: var(--accent-color);
+      font-size: 13px;
+      line-height: 1.6;
+      text-decoration: none;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .bk-btn:hover { background: var(--accent-color); color: #fff; }
+
+    .book-intro {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border-color);
+    }
+    .book-intro p {
+      margin: 0 0 9px;
+      font-size: 15px;
+      line-height: 1.85;
+      text-align: justify;
+      text-indent: 2em;
+    }
+    .book-intro p:last-child { margin-bottom: 0; }
+    .book-intro .closing { text-align: right; text-indent: 0; color: var(--accent-color); }
+
+    @media (max-width: 720px) {
+      .book-card,
+      .book-card:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 20px;
+      }
+      .book-card:nth-child(even) .book-figure { order: 0; }
+      .book-figure { max-width: 150px; }
+      .book-figure figcaption { text-align: left; }
+      .book-title { font-size: 17.5px; }
+    }
+    @media (max-width: 480px) {
+      .book-card { padding: 16px; }
+      .book-intro p { font-size: 14.5px; }
+    }
+
+    /* 富文本（rich）主题下避免卡片嵌套的双重描边 */
+    body[data-theme="rich"] .book-card {
+      background: #f7f9fd;
+      border-color: #dfe6f3;
+    }
+    body[data-theme="rich"] .book-card:hover { border-color: #c5d3ec; }
+    body[data-theme="rich"] .book-toc a { background: #fff; }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -26,148 +189,169 @@
   <main class="container">
     <div class="title-section">
       <h1 class="name">专著</h1>
-      <p class="affiliation">除期刊论文与工程实践之外，江召兵亦从事面向普通读者的长篇写作，尝试把经济学与科技变局的分析，翻译成普通人力所能及的行动。以下书稿公开全文，供在线阅读与下载。另作章回体历史传说《苏耽跨鹤》，全五卷四十回已完稿，全文公开供读者在线阅读。</p>
+      <p class="affiliation">除期刊论文与工程实践之外，江召兵亦从事面向普通读者的长篇写作，尝试把经济学与科技变局的分析，翻译成普通人力所能及的行动。以下六部作品全文公开，供在线阅读与下载；其中《浮基多体系统水上展开的稳定性计算与试验》与《浮体和浮式多体系统流固耦合动力分析》两部工程专著置前，其余按成稿时间倒序排列。另作章回体历史传说《苏耽跨鹤》，全五卷四十回已完稿，全文亦公开供读者在线阅读。</p>
     </div>
 
-    <section class="section">
-      <h2 class="section-title">专著作品</h2>
-      <ul class="item-list">
-        <li>
-          1、《不确定年代的生存经济学——写给普通人的变局观察与行动指南》<br>
-          江召兵 著 — 第三版·黄金标准扩写稿，2026年，132页，约13.1万字，三篇十五章，含插图与附录A、B、C
-          <a class="pub-dl" href="../books/survival_economics_uncertain_times_v3_illustrated.pdf">[PDF]</a>
-          <a class="pub-dl" href="../books/survival_economics_uncertain_times_v3_illustrated.docx" download>[DOCX]</a>
-          <a class="pub-dl" href="../books/survival-economics/">[网页版 · 在线阅读全文]</a>
-        </li>
-        <li>
-          2、《史上最美数学图形：科学与艺术的结合》<br>
-          江召兵 著 — 2026年，228页，约10万字，七篇五十章，含148幅插图
-          <a class="pub-dl" href="../books/most_beautiful_math_figures_science_and_art.pdf">[PDF]</a>
-          <a class="pub-dl" href="../books/most_beautiful_math_figures_science_and_art.docx" download>[DOCX]</a>
-          <a class="pub-dl" href="../books/math-figures/">[网页版 · 148 幅图形在线阅读]</a>
-        </li>
-        <li>
-          <img class="book-cover" src="../books/floating_multibody_fsi_dynamics_cover.png" alt="浮体和浮式多体系统流固耦合动力分析">
-          3、《浮体和浮式多体系统流固耦合动力分析》<br>
-          沈庆、陈徐均、江召兵 著 — 2019年书稿，分两部分：第1-7章（185页）、第8-10章（73页）<br>
-          第1-7章：
-          <a class="pub-dl" href="../books/floating_multibody_fsi_dynamics_ch1_7.pdf">[PDF]</a>
-          <a class="pub-dl" href="../books/floating_multibody_fsi_dynamics_ch1_7.docx" download>[DOCX]</a><br>
-          第8-10章：
-          <a class="pub-dl" href="../books/floating_multibody_fsi_dynamics_ch8_10.pdf">[PDF]</a>
-          <a class="pub-dl" href="../books/floating_multibody_fsi_dynamics_ch8_10.docx" download>[DOCX]</a>
-        </li>
-        <li>
-          <img class="book-cover" src="../books/floating_base_multibody_water_deployment_stability_cover.png" alt="浮基多体系统水上展开的稳定性计算与试验">
-          4、《浮基多体系统水上展开的稳定性计算与试验》<br>
-          杜乃娟、江召兵 著 — 国防工业出版社书稿，2020年，156页，八章，含前言与目录
-          <a class="pub-dl" href="../books/floating_base_multibody_water_deployment_stability.pdf">[PDF]</a>
-          <a class="pub-dl" href="../books/floating_base_multibody_water_deployment_stability.docx" download>[DOCX]</a>
-        </li>
-        <li>
-          <img class="book-cover" src="../books/luck_engineering_cover.jpg" alt="运气工程学">
-          5、《运气工程学》<br>
-          江召兵 著 — 2026年，264页，约17万字，四篇十七章，附附录A–G
-          <a class="pub-dl" href="../books/luck_engineering.pdf">[PDF]</a>
-          <a class="pub-dl" href="../books/luck_engineering.docx" download>[DOCX]</a>
-          <a class="pub-dl" href="../books/luck-engineering/">[网页版 · 在线阅读全文]</a>
-        </li>
-      </ul>
-    </section>
+    <nav class="book-toc" aria-label="作品目录">
+      <a href="#book-1">01 浮基多体系统</a>
+      <a href="#book-2">02 浮体流固耦合</a>
+      <a href="#book-3">03 苏耽跨鹤</a>
+      <a href="#book-4">04 数学图形</a>
+      <a href="#book-5">05 运气工程学</a>
+      <a href="#book-6">06 生存经济学</a>
+    </nav>
 
     <section class="section">
-      <h2 class="section-title">小说</h2>
-      <ul class="item-list">
-        <li>
-          <img class="book-cover" src="../books/sudan-crossing-crane/cover.jpg" alt="《苏耽跨鹤》封面">
-          6、《苏耽跨鹤》<br>
-          江召兵 著 — 章回体历史传说，2026年，全五卷四十回、约二十七万字，已全部上线
-          <a class="pub-dl" href="../books/sudan-crossing-crane/">[网页版 · 在线阅读全文]</a>
-        </li>
-      </ul>
-      <p>
-        以明清章回体例重写西汉桂阳郡苏耽事：江边感孕、桃花洞弃婴、白鹿乳之、白鹤覆之、橘井活人、跨鹤升仙、化鹤题楼。苏仙岭即古牛脾山，传说苏耽就在此山跨鹤；山随人名，至今为郴州地标。
-        郴州火车站站前广场上，苏耽跨骑白鹤的雕像已经立了多年，是这座城市的精神图腾；
-        本书写的，正是这个图腾背后的人。
-        传说把儿子写成了神，本书却把重心放在那位不肯解释自己的母亲身上：她怎样在耻笑与流言里把儿子养大，
-        怎样在被神化的儿子面前守住“他只是我儿子”这一句，又怎样亲手送他离开——孝感动天的另一面，是一个女人一生的代价。
-        由此再写此后两千年传说的层累：唐碑、宋封、三绝碑、徐霞客、清人考据、今日非遗，
-        让故事最终回到传说本身：谁在记，记的是谁。
-         传说的背后，是一位母亲。
-      </p>
-    </section>
+      <h2 class="section-title">全部作品</h2>
 
-    <section class="section">
-      <h2 class="section-title">内容简介</h2>
-      <p><strong>1、《不确定年代的生存经济学——写给普通人的变局观察与行动指南》（2026年）</strong></p>
-      <p>
-        本书写给感到焦虑的普通人。过去几年，我们目睹了太多"教科书级"的事件：全球大通胀卷土重来，
-        银行在48小时内倒闭，房价告别只涨不跌的神话，AI在几个月内改写了无数职业的前景，延迟退休
-        从传闻变成时间表。每一个新闻标题背后，都是千万个普通家庭具体的困惑：存款利率一降再降，
-        钱放哪里？房子缩水了，要不要提前还贷？孩子毕业即遇"三人抢一岗"，怎么办？35岁的裁员名单，
-        会不会有一天轮到自己？
-      </p>
-      <p>
-        市面上回应这些焦虑的声音大致有两种：一种是学院派的宏大叙事，理论严谨却离你的账本太远；
-        另一种是流量驱动的贩卖焦虑，情绪浓烈却给不出经得起推敲的对策。本书试图站在两者之间的
-        空地上：用诺贝尔奖级的经济学理论看懂正在发生的变局，再把理论翻译成普通人力所能及的行动。
-      </p>
-      <p>
-        全书分为三篇，每篇五章，每章五节。上篇"变局"回答"发生了什么"：通胀与货币、债务大山、
-        全球化退潮、AI革命、老龄化——五条主线构成我们身处时代的坐标系。中篇"透镜"回答"为什么"：
-        周期、人性、信息、制度、风险——五副经过诺奖检验的理论眼镜，让你看见现象背后的机制。
-        下篇"应对"回答"怎么办"：家庭报表体检、职业策略、投资纪律、小企业生存、压力测试——五套
-        可以直接上手的工具。每一节都按照"故事→机制→国内关切→理论→行动"的逻辑展开。
-      </p>
-      <p>
-        有三件事本书不做：不做具体时点的预测，不使用任何数学公式（所有理论都用故事、类比与图表
-        讲清），不许诺任何暴富捷径。全书的基调是稳健优先于收益，生存优先于繁荣，纪律优先于聪明。
-        书中引用的国内民生数据——毕业生人数、失业率、法拍房、存款利率、延迟退休时间表——均来自
-        公开报道与官方统计，截至2026年年中。数据会过时，但机制长存：这正是本书希望留给读者的
-        东西——一套在不确定年代安身立命的思维工具与行动纪律。
-      </p>
-      <p><strong>2、《史上最美数学图形：科学与艺术的结合》（2026年）</strong></p>
-      <p>
-        本书以五十个经典数学图形为线索，从斐波那契螺旋、黄金矩形与黄金分割、心形线、玫瑰线，
-        讲到曼德勃罗集、朱利亚集、科赫雪花与L系统，再到洛伦兹吸引子、逻辑斯蒂分岔图、双摆与三体，
-        以及柏拉图多面体、莫比乌斯带、克莱因瓶、Hopf纤维、极小曲面，直至正多边形与双曲镶嵌、
-        埃舍尔与彭罗斯镶嵌、万花筒与十七种壁纸群、帕斯卡三角、乌拉姆素数螺旋、傅里叶级数绘图
-        与圆周率之美。全书另有序章"为什么数学是美的"与尾声"数学与艺术：两种语言，一种美"，
-        共七篇五十章，配148幅程序绘制的高分辨率插图。
-      </p>
-      <p>
-        每章都从自然界、艺术或日常生活中的现象入手——兔子的繁殖与星系旋臂、鹦鹉螺的生长曲线、
-        向日葵籽盘上137.5°的排布、车轮滚出的摆线——再讲清其背后的数学机制，并给出可直接复现的
-        绘图方法。书末附延伸阅读、图源与各章绘图代码总索引，读者可据此复现书中每一幅图形。
-      </p>
-      <p><strong>3、《浮体和浮式多体系统流固耦合动力分析》（2019年书稿）</strong></p>
-      <p>
-        本书由沈庆教授、陈徐均教授、江召兵博士三人分工合作完成：沈庆撰写第一、二、三、四、七、八章，
-        陈徐均撰写第五章，江召兵撰写第六、九、十章，最后由沈庆统稿。全书结合不同形式的浮体和浮式多体
-        系统，经简化和线性化引出不同的理论分析框架和求解途径，从基本理论、数值模拟技术和动力响应
-        特性等方面进行系统论述，内容涵盖刚体动力分析基础、流固耦合中的速度势问题、浮体水动力系数
-        求解、时域动力分析等，可作为船舶与海洋工程、港口海岸及近海工程、作战工程保障和工程力学等
-        交叉方向研究生与工程技术人员的参考书。
-      </p>
-      <p>
-        本次提供书稿两部分：第1-7章（185页，含前言与目录）与第8-10章（73页），均提供PDF与Word两种
-        格式。Word版中的插图已按显示尺寸重新压缩以便下载，正文、公式与版式未作改动。
-      </p>
-      <p><strong>4、《浮基多体系统水上展开的稳定性计算与试验》（2020年书稿，国防工业出版社）</strong></p>
-      <p>
-        本书由杜乃娟、江召兵合著，运用齐次矩阵方法对水上展开的典型浮基多体系统进行实体建模与
-        动力学分析，内容包括多体动力学的齐次矩阵方法、浮基多体系统的动力学分析、пмм-2自行舟桥
-        水上浮体系统的动力学建模、自行舟桥泛水展开的动力学分析与数值计算、波浪中展开的动力学
-        响应分析，以及浮基摆杆试验验证。全书共八章，含前言与目录，156页。
-      </p>
-      <p><strong>5、《运气工程学》（2026年）</strong></p>
-      <p>
-        本书与《不确定年代的生存经济学》互为姊妹篇，取向则相反：不再回避公式，而是尝试把"运气"正式
-        立为可研究的对象——给出公设、术语、分类法（五机制与个人/团队/平台三尺度）、模型、测量方案、
-        干预工具与可验收命题。全书以"暴露→识别→转化→放大→收敛"五段过程闭环贯通，并把同一套逻辑从
-        个人推行到团队与平台。附录A–G给出术语与符号表、工具包、数据与可复现算例、学术对话表、运气
-        审计表、案例库与十二要素参数速查表。全书264页：前言、四篇十七章与七个附录。
-      </p>
+      <div class="book-list">
+        <article class="book-card" id="book-1">
+          <figure class="book-figure">
+            <img src="../books/floating_base_multibody_water_deployment_stability_cover.png" alt="《浮基多体系统水上展开的稳定性计算与试验》封面" width="460" height="638">
+            <figcaption>2020 · 国防工业出版社书稿</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">01</span>
+              <span class="book-tag">工程专著</span>
+            </div>
+            <h3 class="book-title">《浮基多体系统水上展开的稳定性计算与试验》</h3>
+            <p class="book-meta">杜乃娟、江召兵 著 · 2020年 · 156页 · 八章 · 含前言与目录</p>
+            <div class="book-links">
+              <a class="bk-btn" href="../books/floating_base_multibody_water_deployment_stability.pdf">PDF 全文</a>
+              <a class="bk-btn" href="../books/floating_base_multibody_water_deployment_stability.docx" download>DOCX 下载</a>
+            </div>
+            <div class="book-intro">
+              <p>本书由杜乃娟、江召兵合著，运用齐次矩阵方法对水上展开的典型浮基多体系统进行实体建模与动力学分析，内容包括多体动力学的齐次矩阵方法、浮基多体系统的动力学分析、пмм-2自行舟桥水上浮体系统的动力学建模、自行舟桥泛水展开的动力学分析与数值计算、波浪中展开的动力学响应分析，以及浮基摆杆试验验证。全书共八章，含前言与目录，156页。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-2">
+          <figure class="book-figure">
+            <img src="../books/floating_multibody_fsi_dynamics_cover.png" alt="《浮体和浮式多体系统流固耦合动力分析》封面" width="461" height="655">
+            <figcaption>2019 · 书稿，分两部分</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">02</span>
+              <span class="book-tag">工程专著</span>
+            </div>
+            <h3 class="book-title">《浮体和浮式多体系统流固耦合动力分析》</h3>
+            <p class="book-meta">沈庆、陈徐均、江召兵 著 · 2019年书稿 · 共十章</p>
+            <div class="book-links">
+              <span class="part-label">第1-7章（185页）</span>
+              <a class="bk-btn" href="../books/floating_multibody_fsi_dynamics_ch1_7.pdf">PDF</a>
+              <a class="bk-btn" href="../books/floating_multibody_fsi_dynamics_ch1_7.docx" download>DOCX</a>
+            </div>
+            <div class="book-links">
+              <span class="part-label">第8-10章（73页）</span>
+              <a class="bk-btn" href="../books/floating_multibody_fsi_dynamics_ch8_10.pdf">PDF</a>
+              <a class="bk-btn" href="../books/floating_multibody_fsi_dynamics_ch8_10.docx" download>DOCX</a>
+            </div>
+            <div class="book-intro">
+              <p>本书由沈庆教授、陈徐均教授、江召兵博士三人分工合作完成：沈庆撰写第一、二、三、四、七、八章，陈徐均撰写第五章，江召兵撰写第六、九、十章，最后由沈庆统稿。全书结合不同形式的浮体和浮式多体系统，经简化和线性化引出不同的理论分析框架和求解途径，从基本理论、数值模拟技术和动力响应特性等方面进行系统论述，内容涵盖刚体动力分析基础、流固耦合中的速度势问题、浮体水动力系数求解、时域动力分析等，可作为船舶与海洋工程、港口海岸及近海工程、作战工程保障和工程力学等交叉方向研究生与工程技术人员的参考书。</p>
+              <p>本次提供书稿两部分：第1-7章（185页，含前言与目录）与第8-10章（73页），均提供PDF与Word两种格式。Word版中的插图已按显示尺寸重新压缩以便下载，正文、公式与版式未作改动。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-3">
+          <figure class="book-figure">
+            <img src="../books/sudan-crossing-crane/cover.jpg" alt="《苏耽跨鹤》封面" width="1728" height="2304">
+            <figcaption>2026 · 全五卷四十回</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">03</span>
+              <span class="book-tag">章回体历史小说</span>
+            </div>
+            <h3 class="book-title">《苏耽跨鹤》</h3>
+            <p class="book-meta">江召兵 著 · 章回体历史传说 · 2026年 · 全五卷四十回 · 约二十七万字 · 已全部上线</p>
+            <div class="book-links">
+              <a class="bk-btn" href="../books/sudan-crossing-crane/">网页版 · 在线阅读全文</a>
+            </div>
+            <div class="book-intro">
+              <p>以明清章回体例重写西汉桂阳郡苏耽事：江边感孕、桃花洞弃婴、白鹿乳之、白鹤覆之、橘井活人、跨鹤升仙、化鹤题楼。苏仙岭即古牛脾山，传说苏耽就在此山跨鹤；山随人名，至今为郴州地标。郴州火车站站前广场上，苏耽跨骑白鹤的雕像已经立了多年，是这座城市的精神图腾；本书写的，正是这个图腾背后的人。</p>
+              <p>传说把儿子写成了神，本书却把重心放在那位不肯解释自己的母亲身上：她怎样在耻笑与流言里把儿子养大，怎样在被神化的儿子面前守住“他只是我儿子”这一句，又怎样亲手送他离开——孝感动天的另一面，是一个女人一生的代价。由此再写此后两千年传说的层累：唐碑、宋封、三绝碑、徐霞客、清人考据、今日非遗，让故事最终回到传说本身：谁在记，记的是谁。</p>
+              <p class="closing">传说的背后，是一位母亲。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-4">
+          <figure class="book-figure">
+            <img src="../books/math-figures/img/fig-cover.jpg" alt="《史上最美数学图形：科学与艺术的结合》封面" width="560" height="840">
+            <figcaption>2026 · 七篇五十章</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">04</span>
+              <span class="book-tag">科普专著</span>
+            </div>
+            <h3 class="book-title">《史上最美数学图形：科学与艺术的结合》</h3>
+            <p class="book-meta">江召兵 著 · 2026年 · 228页 · 约10万字 · 七篇五十章 · 含148幅插图</p>
+            <div class="book-links">
+              <a class="bk-btn" href="../books/most_beautiful_math_figures_science_and_art.pdf">PDF 全文</a>
+              <a class="bk-btn" href="../books/most_beautiful_math_figures_science_and_art.docx" download>DOCX 下载</a>
+              <a class="bk-btn" href="../books/math-figures/">网页版 · 148 幅图形在线阅读</a>
+            </div>
+            <div class="book-intro">
+              <p>本书以五十个经典数学图形为线索，从斐波那契螺旋、黄金矩形与黄金分割、心形线、玫瑰线，讲到曼德勃罗集、朱利亚集、科赫雪花与L系统，再到洛伦兹吸引子、逻辑斯蒂分岔图、双摆与三体，以及柏拉图多面体、莫比乌斯带、克莱因瓶、Hopf纤维、极小曲面，直至正多边形与双曲镶嵌、埃舍尔与彭罗斯镶嵌、万花筒与十七种壁纸群、帕斯卡三角、乌拉姆素数螺旋、傅里叶级数绘图与圆周率之美。全书另有序章"为什么数学是美的"与尾声"数学与艺术：两种语言，一种美"，共七篇五十章，配148幅程序绘制的高分辨率插图。</p>
+              <p>每章都从自然界、艺术或日常生活中的现象入手——兔子的繁殖与星系旋臂、鹦鹉螺的生长曲线、向日葵籽盘上137.5°的排布、车轮滚出的摆线——再讲清其背后的数学机制，并给出可直接复现的绘图方法。书末附延伸阅读、图源与各章绘图代码总索引，读者可据此复现书中每一幅图形。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-5">
+          <figure class="book-figure">
+            <img src="../books/luck_engineering_cover.jpg" alt="《运气工程学》封面" width="460" height="643">
+            <figcaption>2026 · 四篇十七章</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">05</span>
+              <span class="book-tag">科普专著</span>
+            </div>
+            <h3 class="book-title">《运气工程学》</h3>
+            <p class="book-meta">江召兵 著 · 2026年 · 264页 · 约17万字 · 四篇十七章 · 附录A–G</p>
+            <div class="book-links">
+              <a class="bk-btn" href="../books/luck_engineering.pdf">PDF 全文</a>
+              <a class="bk-btn" href="../books/luck_engineering.docx" download>DOCX 下载</a>
+              <a class="bk-btn" href="../books/luck-engineering/">网页版 · 在线阅读全文</a>
+            </div>
+            <div class="book-intro">
+              <p>本书与《不确定年代的生存经济学》互为姊妹篇，取向则相反：不再回避公式，而是尝试把"运气"正式立为可研究的对象——给出公设、术语、分类法（五机制与个人/团队/平台三尺度）、模型、测量方案、干预工具与可验收命题。全书以"暴露→识别→转化→放大→收敛"五段过程闭环贯通，并把同一套逻辑从个人推行到团队与平台。附录A–G给出术语与符号表、工具包、数据与可复现算例、学术对话表、运气审计表、案例库与十二要素参数速查表。全书264页：前言、四篇十七章与七个附录。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="book-card" id="book-6">
+          <figure class="book-figure">
+            <img src="../books/survival-economics/img/fig-cover.jpg" alt="《不确定年代的生存经济学——写给普通人的变局观察与行动指南》封面" width="560" height="782">
+            <figcaption>2026 · 第三版 · 三篇十五章</figcaption>
+          </figure>
+          <div class="book-body">
+            <div class="book-head">
+              <span class="book-no">06</span>
+              <span class="book-tag">科普专著</span>
+            </div>
+            <h3 class="book-title">《不确定年代的生存经济学——写给普通人的变局观察与行动指南》</h3>
+            <p class="book-meta">江召兵 著 · 第三版·黄金标准扩写稿 · 2026年 · 132页 · 约13.1万字 · 三篇十五章 · 含插图与附录A、B、C</p>
+            <div class="book-links">
+              <a class="bk-btn" href="../books/survival_economics_uncertain_times_v3_illustrated.pdf">PDF 全文</a>
+              <a class="bk-btn" href="../books/survival_economics_uncertain_times_v3_illustrated.docx" download>DOCX 下载</a>
+              <a class="bk-btn" href="../books/survival-economics/">网页版 · 在线阅读全文</a>
+            </div>
+            <div class="book-intro">
+              <p>本书写给感到焦虑的普通人。过去几年，我们目睹了太多"教科书级"的事件：全球大通胀卷土重来，银行在48小时内倒闭，房价告别只涨不跌的神话，AI在几个月内改写了无数职业的前景，延迟退休从传闻变成时间表。每一个新闻标题背后，都是千万个普通家庭具体的困惑：存款利率一降再降，钱放哪里？房子缩水了，要不要提前还贷？孩子毕业即遇"三人抢一岗"，怎么办？35岁的裁员名单，会不会有一天轮到自己？</p>
+              <p>市面上回应这些焦虑的声音大致有两种：一种是学院派的宏大叙事，理论严谨却离你的账本太远；另一种是流量驱动的贩卖焦虑，情绪浓烈却给不出经得起推敲的对策。本书试图站在两者之间的空地上：用诺贝尔奖级的经济学理论看懂正在发生的变局，再把理论翻译成普通人力所能及的行动。</p>
+              <p>全书分为三篇，每篇五章，每章五节。上篇"变局"回答"发生了什么"：通胀与货币、债务大山、全球化退潮、AI革命、老龄化——五条主线构成我们身处时代的坐标系。中篇"透镜"回答"为什么"：周期、人性、信息、制度、风险——五副经过诺奖检验的理论眼镜，让你看见现象背后的机制。下篇"应对"回答"怎么办"：家庭报表体检、职业策略、投资纪律、小企业生存、压力测试——五套可以直接上手的工具。每一节都按照"故事→机制→国内关切→理论→行动"的逻辑展开。</p>
+              <p>有三件事本书不做：不做具体时点的预测，不使用任何数学公式（所有理论都用故事、类比与图表讲清），不许诺任何暴富捷径。全书的基调是稳健优先于收益，生存优先于繁荣，纪律优先于聪明。书中引用的国内民生数据——毕业生人数、失业率、法拍房、存款利率、延迟退休时间表——均来自公开报道与官方统计，截至2026年年中。数据会过时，但机制长存：这正是本书希望留给读者的东西——一套在不确定年代安身立命的思维工具与行动纪律。</p>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
   </main>
 
