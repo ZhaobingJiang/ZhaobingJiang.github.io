@@ -187,7 +187,7 @@ def build():
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/weiyang/">
 <meta property="og:title" content="未央 · 长篇科幻历史小说">
 <meta property="og:description" content="一个求不死的人，最后学会了怎么死。五卷七十章，约二十六万字。">
-<meta property="og:image" content="https://ZhaobingJiang.github.io/books/weiyang/cover.jpg?v=2">
+<meta property="og:image" content="https://ZhaobingJiang.github.io/books/weiyang/cover.jpg?v=3">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
@@ -248,7 +248,7 @@ def build():
 
 <main class="reader">
   <div class="book-head">
-    <img class="web-cover" src="cover.jpg?v=2" alt="《未央》封面：江召兵著，长篇科幻历史小说" width="640" height="960">
+    <img class="web-cover" src="cover.jpg?v=3" alt="《未央》封面：江召兵著，长篇科幻历史小说" width="640" height="960">
     <h1 class="t">未 央</h1>
     <div class="s">历史与未来并存 · 长生共孤独同在</div>
     <div class="a">江召兵　著</div>
