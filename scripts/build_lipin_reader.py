@@ -225,7 +225,7 @@ def build():
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/lipin-jinling/">
 <meta property="og:title" content="丽品金陵 · 长篇历史小说">
 <meta property="og:description" content="灯船照夜，眉楼藏画；兵火来时，各自白头。四卷三十二章，附《板桥杂记》原文。">
-<meta property="og:image" content="https://ZhaobingJiang.github.io/books/lipin-jinling/cover.jpg?v=1">
+<meta property="og:image" content="https://ZhaobingJiang.github.io/books/lipin-jinling/cover.jpg?v=2">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
@@ -284,7 +284,7 @@ def build():
 
 <main class="reader">
   <div class="book-head">
-    <img class="web-cover" src="cover.jpg?v=1" alt="《丽品金陵》封面：江召兵著，长篇历史小说" width="640" height="960">
+    <img class="web-cover" src="cover.jpg?v=2" alt="《丽品金陵》封面：江召兵著，长篇历史小说" width="640" height="960">
     <h1 class="t">丽 品 金 陵</h1>
     <div class="s">秦淮旧院 · 十二钗传</div>
     <div class="a">江召兵　著</div>
@@ -353,6 +353,7 @@ __ARTS__
 
 if __name__ == "__main__":
     build()
+
 
 
 
