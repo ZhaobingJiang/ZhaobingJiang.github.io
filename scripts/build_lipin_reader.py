@@ -225,7 +225,7 @@ def build():
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/lipin-jinling/">
 <meta property="og:title" content="丽品金陵 · 长篇历史小说">
 <meta property="og:description" content="灯船照夜，眉楼藏画；兵火来时，各自白头。四卷三十二章，附《板桥杂记》原文。">
-<meta property="og:image" content="https://ZhaobingJiang.github.io/books/lipin-jinling/cover.jpg?v=2">
+<meta property="og:image" content="https://ZhaobingJiang.github.io/books/lipin-jinling/cover.jpg?v=3">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
@@ -284,7 +284,7 @@ def build():
 
 <main class="reader">
   <div class="book-head">
-    <img class="web-cover" src="cover.jpg?v=2" alt="《丽品金陵》封面：江召兵著，长篇历史小说" width="640" height="960">
+    <img class="web-cover" src="cover.jpg?v=3" alt="《丽品金陵》封面：江召兵著，长篇历史小说" width="640" height="960">
     <h1 class="t">丽 品 金 陵</h1>
     <div class="s">秦淮旧院 · 十二钗传</div>
     <div class="a">江召兵　著</div>
@@ -316,7 +316,7 @@ def build():
     </ul>
     <h2>作者简介</h2>
     <p>江召兵，1979年3月生，湖南郴州永兴人，博士，教授，南京欧帕提亚信息科技有限公司创始人、董事长，兼任西北工业大学、南京航空航天大学、西安交通大学外聘导师。1998年至2008年就读于中国人民解放军理工大学，先后获应用气象学学士、流体力学硕士、桥梁与隧道工程博士学位；其后在上海交通大学从事博士后研究，并赴英国南安普顿大学访学。2017年自主择业，先后创办南京欧帕提亚信息科技有限公司、湖南云数仿真信息技术有限公司和南京驭风数智科技有限公司等。</p>
-    <p>长期从事人工智能、流固耦合仿真、船舶与海洋工程及军事装备技术研究，主持国家自然科学基金面上项目等国家级项目 4 项、江苏省基金项目 1 项、科研院所外协项目 20 余项；参与南沙岛礁建设、大榭岛浮桥建设、舟山连岛大桥防撞系统等重大工程。出版专著《浮体和浮式多体系统流固耦合动力分析》《浮基多体系统水上展开的稳定性计算与试验》，发表论文 60 余篇；另著有《不确定年代的生存经济学》《史上最美数学图形》《运气工程学》，长篇小说《未央》《人形》《欧冶冲》《玫瑰山庄》，与这部据《板桥杂记》敷演的长篇历史小说《丽品金陵》。</p>
+    <p>长期从事人工智能、流固耦合仿真、船舶与海洋工程及军事装备技术研究，主持国家自然科学基金面上项目等国家级项目 4 项、江苏省基金项目 1 项、科研院所外协项目 20 余项；参与南沙岛礁建设、大榭岛浮桥建设、舟山连岛大桥防撞系统等重大工程。出版专著《浮体和浮式多体系统流固耦合动力分析》《浮基多体系统水上展开的稳定性计算与试验》，发表论文 60 余篇；另著有《不确定年代的生存经济学》《史上最美数学图形》《运气工程学》，长篇小说《未央》《人形》《欧冶冲》《玫瑰山庄》，与这部据《板桥杂记》演义的长篇历史小说《丽品金陵》。</p>
   </section>
 
   <h2 class="section-h" id="toc">目录</h2>
