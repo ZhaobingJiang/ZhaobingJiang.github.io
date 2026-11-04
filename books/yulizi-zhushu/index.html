@@ -22,8 +22,9 @@
   --bg:#f2ecdf; --paper:#fffdf6; --ink:#2a251d; --ink2:#4e463a; --muted:#8a7f6d;
   --gold:#9a6b2f; --gold-soft:#c8a878; --line:#e4dac6; --accent:#8a4a2c;
   --note-bg:#faf5e8; --trans-bg:#f7f3e9; --shadow:0 10px 30px rgba(60,45,25,.10);
-  --fs:19px; --serif:"Songti SC","Noto Serif CJK SC","Source Han Serif SC","STSong","SimSun",serif;
-  --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+  --fs:19px; --serif:"SimSun","SimSun-ExtB","STSong","Songti SC",serif;
+  --serif-title:"STSong","Songti SC","SimSun","SimSun-ExtB","Noto Serif CJK SC",serif;
+  --sans:"Microsoft YaHei","Noto Sans CJK SC","PingFang SC","Hiragino Sans GB",sans-serif;
 }
 body[data-theme="warm"]{--bg:#efe3cc;--paper:#fffaf0;--ink:#332a1e;--line:#e0cfae;--note-bg:#f8edd6;--trans-bg:#f6eedb;}
 body[data-theme="night"]{--bg:#15120f;--paper:#1d1a16;--ink:#e8dfd0;--ink2:#c9bfae;--muted:#9b9081;--gold:#d9b77e;--gold-soft:#8f7a54;--line:#332c24;--note-bg:#231f19;--trans-bg:#211d18;--shadow:0 10px 30px rgba(0,0,0,.45);}
@@ -85,10 +86,14 @@ a{color:var(--gold);}
 #mask.on{opacity:1;pointer-events:auto;}
 
 /* 正文 */
-.wrap{max-width:48rem;margin:0 auto;padding:28px 22px 90px;}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 22px 90px;display:grid;grid-template-columns:minmax(0,1fr) 358px;gap:38px;align-items:start;}
+#content{min-width:0;max-width:48rem;margin-left:auto;}
+body.notes-off .wrap{grid-template-columns:minmax(0,1fr);max-width:920px;}
+body.notes-off #content{margin:0 auto;}
+body.notes-off #side{display:none;}
 .bookhead{text-align:center;padding:20px 0 26px;border-bottom:1px solid var(--line);margin-bottom:8px;}
 .bookhead .vol{font-family:var(--sans);font-size:12px;letter-spacing:.3em;color:var(--gold);}
-.bookhead h1{font-size:2.15rem;letter-spacing:.28em;margin:14px 0 10px;font-weight:600;}
+.bookhead h1{font-family:var(--serif-title);font-size:2.15rem;letter-spacing:.28em;margin:14px 0 10px;font-weight:600;}
 .bookhead .sub{font-family:var(--sans);font-size:12.5px;color:var(--muted);letter-spacing:.1em;}
 .bookhead .alt{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.2em;margin-top:6px;}
 .chapter{margin-top:34px;}
@@ -99,9 +104,13 @@ a{color:var(--gold);}
 .chapter-head .trad{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.08em;}
 .chapter-meta{font-family:var(--sans);font-size:12px;color:var(--muted);margin:10px 0 0;letter-spacing:.05em;}
 .sec{margin-top:30px;}
-.sec h3{font-size:1.05rem;margin:0 0 14px;font-weight:600;color:var(--accent);letter-spacing:.1em;display:flex;align-items:center;gap:10px;}
+.sec h3{font-family:var(--serif-title);font-size:1.05rem;margin:0 0 14px;font-weight:600;color:var(--accent);letter-spacing:.1em;display:flex;align-items:center;gap:10px;}
 .sec h3 .sn{font-family:var(--sans);font-size:11px;color:var(--gold);border:1px solid var(--gold-soft);border-radius:4px;padding:1px 6px;letter-spacing:0;}
-.para{margin:0 0 26px;}
+.para{margin:0 0 26px;position:relative;}
+.para.active .orig{background:linear-gradient(transparent 90%,rgba(200,168,120,.22) 90%);}
+.pchip{position:absolute;right:0;top:-19px;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--note-bg);color:var(--muted);border-radius:999px;padding:1px 9px;font-family:var(--sans);font-size:10.5px;letter-spacing:.06em;cursor:pointer;opacity:.9;}
+.pchip:hover{border-color:var(--gold-soft);color:var(--gold);}
+.pchip b{color:var(--gold);font-weight:600;}
 .para .orig{font-size:var(--fs);line-height:2.02;text-align:justify;text-indent:2em;margin:0 0 10px;letter-spacing:.012em;}
 .para .orig ruby{ruby-position:over;}
 .para .orig rt{font-size:.5em;color:var(--gold);font-family:var(--sans);letter-spacing:0;user-select:none;}
@@ -113,17 +122,26 @@ body:not(.no-py) .para .orig{line-height:2.18;}
 .para .trans{font-size:.93em;line-height:1.95;color:var(--ink2);background:var(--trans-bg);border-left:3px solid var(--gold-soft);
   padding:10px 14px;border-radius:0 6px 6px 0;margin:0 0 10px;text-align:justify;text-indent:2em;}
 body.hide-trans .para .trans{display:none;}
-.para .pnotes{margin:2px 0 0;}
-.nchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--note-bg);color:var(--ink2);
-  border-radius:999px;padding:3px 11px;font-family:var(--sans);font-size:11.5px;cursor:pointer;letter-spacing:.05em;}
-.nchip:hover{border-color:var(--gold-soft);color:var(--gold);}
-.nchip b{color:var(--gold);font-weight:600;}
-.nlist{display:none;margin:12px 0 0;padding:0;list-style:none;}
-.para.open .nlist{display:block;}
-body.notes-on .nlist{display:block;}
-.nlist li{background:var(--note-bg);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:0 0 10px;
-  font-size:.9em;line-height:1.9;text-align:justify;}
+/* ---------- 右栏注疏 ---------- */
+#side{position:sticky;top:74px;max-height:calc(100vh - 96px);overflow:auto;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;box-shadow:var(--shadow);padding:15px 15px 20px;font-family:var(--sans);font-size:12.5px;line-height:1.8;scrollbar-width:thin;}
+.side-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 4px;}
+.side-head b{font-size:13.5px;letter-spacing:.14em;color:var(--ink);font-weight:600;}
+.side-head .tb{padding:3px 9px;font-size:11.5px;}
+#sideClose{display:none;}
+.side-hint{color:var(--muted);font-size:11.5px;margin:2px 0 12px;line-height:1.7;}
+.side-ctx{border:1px dashed var(--line);border-radius:8px;padding:7px 10px;background:var(--note-bg);color:var(--ink2);margin:0 0 12px;font-size:12px;line-height:1.7;}
+.side-ctx b{color:var(--gold);font-weight:600;}
+.side-sec{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);}
+.side-ttl{font-size:11px;letter-spacing:.22em;color:var(--gold);margin:0 0 9px;}
+.side-empty{color:var(--muted);font-size:12px;padding:10px 2px;}
+.nlist{display:block;margin:0;padding:0;list-style:none;}
+.nlist li{background:var(--note-bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0 0 9px;
+  font-size:12.5px;line-height:1.85;text-align:justify;color:var(--ink2);cursor:default;}
 .nlist li.flash{box-shadow:0 0 0 2px var(--gold);}
+.nlist li.hi{border-color:var(--gold-soft);box-shadow:0 0 0 2px rgba(200,168,120,.35);}
+#sideMask{position:fixed;inset:0;background:rgba(15,12,8,.45);opacity:0;pointer-events:none;transition:.3s;z-index:65;}
+body.side-open #sideMask{opacity:1;pointer-events:auto;}
 .nlist .tag{display:inline-block;font-family:var(--sans);font-size:10.5px;letter-spacing:.08em;color:#fff;background:var(--gold);
   border-radius:4px;padding:1px 7px;margin-right:7px;vertical-align:1px;}
 .nlist .tag.word{background:var(--accent);}
@@ -133,15 +151,21 @@ body.notes-on .nlist{display:block;}
 .nlist .quote{color:var(--muted);font-size:.92em;}
 .nlist .lab{color:var(--accent);font-weight:600;}
 .nlist .refs{display:block;margin-top:7px;color:var(--muted);font-family:var(--sans);font-size:11px;letter-spacing:.02em;}
-.chapnotes{margin:34px 0 0;padding-top:16px;border-top:1px dashed var(--line);}
-.chapnotes h4{font-family:var(--sans);font-size:12px;letter-spacing:.22em;color:var(--gold);margin:0 0 12px;}
-.chapnotes .nlist{display:block;}
 .chnav{display:flex;justify-content:space-between;gap:14px;margin:46px 0 0;padding-top:18px;border-top:1px solid var(--line);font-family:var(--sans);font-size:13px;}
 .chnav a{color:var(--gold);text-decoration:none;padding:8px 0;}
 .chnav span{color:var(--muted);}
 .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--sans);font-size:11.5px;color:var(--muted);line-height:2;text-align:center;}
 .foot a{color:var(--gold);text-decoration:none;}
 
+@media (max-width:1120px){
+  .wrap{display:block;padding:18px 16px 80px;}
+  #content{max-width:none;margin:0;}
+  #side{position:fixed;top:0;right:0;bottom:0;width:min(88vw,410px);max-height:none;border-radius:0;border-left:1px solid var(--line);
+    transform:translateX(103%);transition:transform .3s ease;z-index:70;padding:16px 15px 30px;box-shadow:-20px 0 50px rgba(0,0,0,.25);}
+  body.side-open #side{transform:none;}
+  #sideClose{display:inline-flex;}
+  .pchip{top:-18px;}
+}
 /* 小屏 */
 @media (max-width:640px){
   .wrap{padding:20px 15px 70px;}
@@ -153,7 +177,7 @@ body.notes-on .nlist{display:block;}
   #landing{padding-top:34px;}
   .landing-hint{font-size:12.5px;letter-spacing:.22em;}
 }
-@media print{.toolbar,.progress,#toc,#mask,.chnav,.nchip{display:none!important}#landing{display:none!important}#reader{display:block!important}}
+@media print{.toolbar,.progress,#toc,#mask,#side,#sideMask,.chnav,.pchip{display:none!important}#landing{display:none!important}#reader{display:block!important}}
 </style>
 </head>
 <body data-theme="paper">
@@ -198,7 +222,14 @@ body.notes-on .nlist{display:block;}
 
   <main class="wrap">
     <div id="content"></div>
+    <aside id="side" aria-label="注疏与评校">
+      <div class="side-head"><b>注疏与评校</b><button class="tb" id="sideClose">关闭</button></div>
+      <div class="side-hint">点击正文行首的「注 N」标记或带下划线的词语，即可在此查看对应注疏。</div>
+      <div class="side-ctx" id="sideCtx">尚未选择正文位置。</div>
+      <div id="sideBody"></div>
+    </aside>
   </main>
+  <div id="sideMask"></div>
 </div>
 
 <script src="data.js"></script>
@@ -217,7 +248,7 @@ const state = {
   ci: 0,
   simp: LS.get('simp', true),
   trans: LS.get('trans', true),
-  notes: LS.get('notes', false),
+  notes: LS.get('notes', true),
   py: LS.get('py', true),
   fs: LS.get('fs', 19),
   theme: LS.get('theme', 'paper')
@@ -305,19 +336,11 @@ function chapterHtml(ch, idx){
       h += '<div class="para" id="'+esc(p.id)+'">';
       h += '<p class="orig">'+paraHtml(p)+'</p>';
       if(p.trans) h += '<div class="trans">'+esc(p.trans)+'</div>';
-      if(ns.length){
-        h += '<div class="pnotes"><button class="nchip" data-open="'+esc(p.id)+'">注疏 <b>'+ns.length+'</b> 条</button>';
-        h += '<ul class="nlist">'; ns.forEach(n=>{ h += noteHtml(n); }); h += '</ul></div>';
-      }
+      if(ns.length) h += '<button class="pchip" data-p="'+esc(p.id)+'">注 <b>'+ns.length+'</b></button>';
       h += '</div>';
     });
     h += '</section>';
   });
-  if((ch.chapNotes||[]).length){
-    h += '<div class="chapnotes"><h4>本篇通论</h4><ul class="nlist">';
-    ch.chapNotes.forEach(n=>{ h += noteHtml(n); });
-    h += '</ul></div>';
-  }
   const prev = idx>0 ? CHAPTERS[idx-1] : null;
   const next = idx<CHAPTERS.length-1 ? CHAPTERS[idx+1] : null;
   h += '<nav class="chnav">'+(prev?'<a href="#'+prev.id+'" data-ch="'+(idx-1)+'">← 第'+(idx)+'篇　'+esc(simp?prev.title:prev.title_trad)+'</a>':'<span>卷首</span>')+
@@ -326,6 +349,51 @@ function chapterHtml(ch, idx){
        '全 '+D.meta.counts.paras+' 段译文 · '+D.meta.counts.notes+' 条注疏 · 免费在线阅读<br>'+
        '© 南京欧帕提亚信息科技有限公司 · 开发者 江召兵 博士</div>';
   return h;
+}
+
+/* ---------- 右栏注疏 ---------- */
+function chapterParas(ch){
+  const out = [];
+  (ch.secs||[]).forEach((sec)=>{ (sec.paras||[]).forEach(p=>{ out.push({p, sec}); }); });
+  return out;
+}
+function focusPara(pid, nid, opts){
+  opts = opts || {};
+  if(!state.notes){ state.notes = true; LS.set('notes', true); applyState(); }
+  const ch = CHAPTERS[state.ci];
+  const list = chapterParas(ch);
+  if(!list.length) return;
+  let ent = pid ? list.find(x=>x.p.id===pid) : null;
+  if(!ent) ent = list.find(x=>(x.p.notes||[]).length) || list[0];
+  const num = list.indexOf(ent)+1;
+  const secT = state.simp ? ent.sec.title : (ent.sec.title_trad || ent.sec.title);
+  const ns = ent.p.notes || [];
+  $$('#content .para.active').forEach(el=>el.classList.remove('active'));
+  const pel = document.getElementById(ent.p.id);
+  if(pel) pel.classList.add('active');
+  $('#sideCtx').innerHTML = '<b>第 '+num+' 段</b>　'+esc(secT)+'　·　'+ns.length+' 条注疏';
+  let html = ns.length ? '<ul class="nlist">'+ns.map(noteHtml).join('')+'</ul>'
+                       : '<div class="side-empty">本段暂无注疏。</div>';
+  const chn = ch.chapNotes || [];
+  if(chn.length) html += '<div class="side-sec"><div class="side-ttl">本篇通论</div><ul class="nlist">'+chn.map(noteHtml).join('')+'</ul></div>';
+  $('#sideBody').innerHTML = html;
+  const side = $('#side');
+  if(nid){
+    const card = document.getElementById('note-'+nid);
+    if(card){
+      card.classList.add('hi');
+      setTimeout(()=>card.classList.remove('hi'), 1800);
+      const r = card.getBoundingClientRect(), sr = side.getBoundingClientRect();
+      side.scrollTo({top: Math.max(0, side.scrollTop + (r.top - sr.top) - side.clientHeight/2 + r.height/2), behavior:'smooth'});
+    }
+    $$('#content .w').forEach(sp=>{
+      const ids = (sp.dataset.nids||'').split(',');
+      if(ids.indexOf(nid)>=0){ sp.classList.add('flash'); setTimeout(()=>sp.classList.remove('flash'), 1600); }
+    });
+  } else {
+    side.scrollTo({top:0, behavior:'smooth'});
+  }
+  if(opts.open && window.innerWidth<=1120) document.body.classList.add('side-open');
 }
 
 /* ---------- 渲染与导航 ---------- */
@@ -353,6 +421,9 @@ function render(idx, opts){
   const ch = CHAPTERS[state.ci];
   $('#content').innerHTML = chapterHtml(ch, state.ci);
   document.title = ch.title + ' · 郁离子 注疏';
+  const first = chapterParas(ch).find(x=>(x.p.notes||[]).length);
+  if(first) focusPara(first.p.id);
+  else { $('#sideCtx').textContent='尚未选择正文位置。'; $('#sideBody').innerHTML=''; }
   markToc();
   LS.set('ci', state.ci);
   if(keep){ window.scrollTo(0, y); }
@@ -383,7 +454,8 @@ function restorePos(){
 function applyState(){
   document.body.dataset.theme = state.theme;
   document.body.classList.toggle('hide-trans', !state.trans);
-  document.body.classList.toggle('notes-on', state.notes);
+  document.body.classList.toggle('notes-off', !state.notes);
+  if(!state.notes) document.body.classList.remove('side-open');
   document.body.classList.toggle('no-py', !state.py);
   document.documentElement.style.setProperty('--fs', state.fs+'px');
   $$('[data-mode]').forEach(b=>b.classList.toggle('on', (b.dataset.mode==='simp')===state.simp));
@@ -415,7 +487,12 @@ function bind(){
     state.simp = b.dataset.mode==='simp'; LS.set('simp', state.simp); applyState(); render(state.ci, {keep:true});
   }));
   $('#btnTrans').addEventListener('click', ()=>{ state.trans=!state.trans; LS.set('trans',state.trans); applyState(); });
-  $('#btnNotes').addEventListener('click', ()=>{ state.notes=!state.notes; LS.set('notes',state.notes); applyState(); });
+  $('#btnNotes').addEventListener('click', ()=>{
+    state.notes=!state.notes; LS.set('notes',state.notes); applyState();
+    if(state.notes && window.innerWidth<=1120) document.body.classList.add('side-open');
+  });
+  $('#sideClose').addEventListener('click', ()=> document.body.classList.remove('side-open'));
+  $('#sideMask').addEventListener('click', ()=> document.body.classList.remove('side-open'));
   $('#btnPy').addEventListener('click', ()=>{ state.py=!state.py; LS.set('py',state.py); applyState(); });
   $('#btnFsDown').addEventListener('click', ()=>{ state.fs=Math.max(16,state.fs-1); LS.set('fs',state.fs); applyState(); });
   $('#btnFsUp').addEventListener('click', ()=>{ state.fs=Math.min(23,state.fs+1); LS.set('fs',state.fs); applyState(); });
@@ -432,20 +509,28 @@ function bind(){
   $('#content').addEventListener('click', e=>{
     const a = e.target.closest('a[data-ch]');
     if(a){ e.preventDefault(); openChapter(Number(a.dataset.ch)); return; }
-    const chip = e.target.closest('.nchip');
-    if(chip){ $('#'+CSS.escape(chip.dataset.open)).classList.toggle('open'); return; }
+    const chip = e.target.closest('.pchip');
+    if(chip){ const para = chip.closest('.para'); if(para) focusPara(para.id, null, {open:true}); return; }
     const w = e.target.closest('.w');
     if(w){
       const ids = (w.dataset.nids||'').split(',').filter(Boolean);
-      if(!ids.length) return;
-      const para = w.closest('.para'); if(para) para.classList.add('open');
-      const card = document.getElementById('note-'+ids[0]);
-      if(card){ card.scrollIntoView({block:'center', behavior:'smooth'}); card.classList.add('flash'); setTimeout(()=>card.classList.remove('flash'), 1600); }
+      const para = w.closest('.para');
+      if(para) focusPara(para.id, ids[0]||null, {open:true});
+      return;
     }
+    const para = e.target.closest('.para');
+    if(para && e.target.closest('.orig')) focusPara(para.id, null, {open:true});
+  });
+  $('#side').addEventListener('click', e=>{
+    const li = e.target.closest('li[id^="note-"]');
+    if(!li) return;
+    const nid = li.id.replace('note-','');
+    const sp = $$('#content .w').find(x=>(x.dataset.nids||'').split(',').indexOf(nid)>=0);
+    if(sp){ sp.scrollIntoView({block:'center', behavior:'smooth'}); sp.classList.add('flash'); setTimeout(()=>sp.classList.remove('flash'), 1600); }
   });
   window.addEventListener('scroll', ()=>{ savePos(); }, {passive:true});
   window.addEventListener('keydown', e=>{
-    if(e.key==='Escape'){ $('#toc').classList.remove('on'); $('#mask').classList.remove('on'); }
+    if(e.key==='Escape'){ $('#toc').classList.remove('on'); $('#mask').classList.remove('on'); document.body.classList.remove('side-open'); }
     if(!$('#reader').classList.contains('on')) return;
     const t = e.target; if(t && /INPUT|TEXTAREA|SELECT/.test(t.tagName)) return;
     if(e.key==='ArrowRight' && state.ci<CHAPTERS.length-1){ openChapter(state.ci+1); }
