@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>郁离子 注疏 · 刘基 原著 · 江召兵 注疏</title>
+<meta name="description" content="明·刘基《郁离子》全本学习版：十八篇、一百八十条、二百段，全部译文与一千一百余条注疏，支持繁简切换、译文与注疏对照、生僻字注音、字号与夜间模式，免费在线阅读。">
+<meta name="keywords" content="郁离子,刘基,刘伯温,注疏,江召兵,明代寓言,古典文学,在线阅读">
+<meta name="author" content="原著 刘基；注疏 江召兵">
+<link rel="canonical" href="https://zhaobingjiang.github.io/books/yulizi-zhushu/">
+<meta property="og:type" content="book">
+<meta property="og:title" content="郁离子 注疏">
+<meta property="og:description" content="明·刘基《郁离子》全本学习版：十八篇、二百段，全译全注，繁简对照，免费在线阅读。">
+<meta property="og:image" content="https://zhaobingjiang.github.io/books/yulizi-zhushu/cover.jpg">
+<meta property="og:url" content="https://zhaobingjiang.github.io/books/yulizi-zhushu/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Book","name":"郁离子 注疏","author":[{"@type":"Person","name":"刘基"},{"@type":"Person","name":"江召兵","jobTitle":"注疏"}],"inLanguage":"zh-CN","bookFormat":"https://schema.org/EBook","isAccessibleForFree":true,"url":"https://zhaobingjiang.github.io/books/yulizi-zhushu/","image":"https://zhaobingjiang.github.io/books/yulizi-zhushu/cover.jpg","description":"明·刘基《郁离子》全本学习版，含全部译文与注疏。"}
+</script>
+<style>
+:root{
+  --bg:#f2ecdf; --paper:#fffdf6; --ink:#2a251d; --ink2:#4e463a; --muted:#8a7f6d;
+  --gold:#9a6b2f; --gold-soft:#c8a878; --line:#e4dac6; --accent:#8a4a2c;
+  --note-bg:#faf5e8; --trans-bg:#f7f3e9; --shadow:0 10px 30px rgba(60,45,25,.10);
+  --fs:19px; --serif:"Songti SC","Noto Serif CJK SC","Source Han Serif SC","STSong","SimSun",serif;
+  --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+}
+body[data-theme="warm"]{--bg:#efe3cc;--paper:#fffaf0;--ink:#332a1e;--line:#e0cfae;--note-bg:#f8edd6;--trans-bg:#f6eedb;}
+body[data-theme="night"]{--bg:#15120f;--paper:#1d1a16;--ink:#e8dfd0;--ink2:#c9bfae;--muted:#9b9081;--gold:#d9b77e;--gold-soft:#8f7a54;--line:#332c24;--note-bg:#231f19;--trans-bg:#211d18;--shadow:0 10px 30px rgba(0,0,0,.45);}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;}
+button{font-family:var(--sans);}
+a{color:var(--gold);}
+
+/* ---------- 封面 ---------- */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(1200px 800px at 50% 30%,#2a241b 0%,#14110d 55%,#0c0a08 100%);
+  color:#eee3cd;padding:48px 20px 40px;cursor:pointer;position:relative;overflow:hidden;}
+#landing::after{content:"";position:absolute;inset:0;background:radial-gradient(600px 400px at 50% 42%,rgba(216,181,120,.12),transparent 70%);pointer-events:none;}
+.landing-cover{height:min(60vh,600px);width:auto;max-width:78vw;aspect-ratio:2/3;border-radius:3px;object-fit:cover;
+  box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 0 1px rgba(216,181,120,.25);transition:transform .5s ease,box-shadow .5s ease;}
+#landing:hover .landing-cover{transform:translateY(-6px) scale(1.012);box-shadow:0 38px 90px rgba(0,0,0,.72),0 0 0 1px rgba(216,181,120,.4);}
+.landing-hint{margin-top:26px;font-family:var(--sans);font-size:14px;letter-spacing:.28em;color:#d8b57a;}
+.landing-meta{margin-top:16px;font-family:var(--sans);font-size:12.5px;color:#9d8f78;letter-spacing:.08em;text-align:center;line-height:2;}
+.landing-meta b{color:#c9b08a;font-weight:500;}
+.landing-foot{position:absolute;bottom:20px;left:0;right:0;text-align:center;font-family:var(--sans);font-size:11.5px;color:#6d6353;line-height:1.9;}
+.landing-foot a{color:#8f7a54;text-decoration:none;}
+
+/* ---------- 阅读器 ---------- */
+#reader{display:none;min-height:100vh;}
+#reader.on{display:block;}
+.toolbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 16px;background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+.toolbar .ttl{font-size:15px;letter-spacing:.12em;white-space:nowrap;margin-right:4px;}
+.toolbar .ttl small{font-size:11px;color:var(--muted);letter-spacing:.05em;margin-left:6px;}
+.tb{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:transparent;color:var(--ink2);
+  border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;line-height:1;transition:.18s;}
+.tb:hover{border-color:var(--gold-soft);color:var(--gold);}
+.tb.on{background:var(--gold);border-color:var(--gold);color:#fff;}
+.tb.grp{padding:0;overflow:hidden;}
+.tb.grp button{border:0;background:transparent;padding:6px 11px;font-size:13px;color:inherit;cursor:pointer;}
+.tb.grp button.on{background:var(--gold);color:#fff;}
+.spacer{flex:1;}
+.progress{position:sticky;top:0;z-index:39;height:2px;background:transparent;}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-soft),var(--gold));}
+
+/* 目录抽屉 */
+#toc{position:fixed;inset:0 auto 0 0;width:min(340px,86vw);background:var(--paper);border-right:1px solid var(--line);
+  box-shadow:20px 0 50px rgba(40,30,15,.18);transform:translateX(-104%);transition:transform .32s ease;z-index:60;
+  display:flex;flex-direction:column;}
+#toc.on{transform:none;}
+.toc-head{padding:18px 18px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+.toc-head b{letter-spacing:.2em;font-size:15px;}
+.toc-body{overflow:auto;padding:10px 10px 40px;flex:1;}
+.toc-vol{margin:14px 6px 4px;font-family:var(--sans);font-size:12px;letter-spacing:.18em;color:var(--gold);}
+.toc-vol span{color:var(--muted);letter-spacing:0;margin-left:6px;font-size:11px;}
+.toc-a{display:flex;gap:10px;align-items:baseline;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--ink2);font-size:14.5px;}
+.toc-a:hover{background:var(--note-bg);}
+.toc-a.on{background:var(--gold);color:#fff;}
+.toc-a i{font-style:normal;font-family:var(--sans);font-size:11.5px;color:var(--muted);min-width:2.2em;}
+.toc-a.on i{color:#f3e6cd;}
+#mask{position:fixed;inset:0;background:rgba(15,12,8,.45);opacity:0;pointer-events:none;transition:.3s;z-index:55;}
+#mask.on{opacity:1;pointer-events:auto;}
+
+/* 正文 */
+.wrap{max-width:48rem;margin:0 auto;padding:28px 22px 90px;}
+.bookhead{text-align:center;padding:20px 0 26px;border-bottom:1px solid var(--line);margin-bottom:8px;}
+.bookhead .vol{font-family:var(--sans);font-size:12px;letter-spacing:.3em;color:var(--gold);}
+.bookhead h1{font-size:2.15rem;letter-spacing:.28em;margin:14px 0 10px;font-weight:600;}
+.bookhead .sub{font-family:var(--sans);font-size:12.5px;color:var(--muted);letter-spacing:.1em;}
+.bookhead .alt{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.2em;margin-top:6px;}
+.chapter{margin-top:34px;}
+.chapter + .chapter{margin-top:56px;}
+.chapter-head{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--ink);}
+.chapter-head .n{font-family:var(--sans);font-size:12px;color:var(--muted);}
+.chapter-head h2{font-size:1.55rem;margin:0;letter-spacing:.12em;flex:1;}
+.chapter-head .trad{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.08em;}
+.chapter-meta{font-family:var(--sans);font-size:12px;color:var(--muted);margin:10px 0 0;letter-spacing:.05em;}
+.sec{margin-top:30px;}
+.sec h3{font-size:1.05rem;margin:0 0 14px;font-weight:600;color:var(--accent);letter-spacing:.1em;display:flex;align-items:center;gap:10px;}
+.sec h3 .sn{font-family:var(--sans);font-size:11px;color:var(--gold);border:1px solid var(--gold-soft);border-radius:4px;padding:1px 6px;letter-spacing:0;}
+.para{margin:0 0 26px;}
+.para .orig{font-size:var(--fs);line-height:2.02;text-align:justify;text-indent:2em;margin:0 0 10px;letter-spacing:.012em;}
+.para .orig ruby{ruby-position:over;}
+.para .orig rt{font-size:.5em;color:var(--gold);font-family:var(--sans);letter-spacing:0;user-select:none;}
+body.no-py .para .orig rt{display:none;}
+body:not(.no-py) .para .orig{line-height:2.18;}
+.para .w{border-bottom:1px dotted var(--gold-soft);cursor:pointer;transition:background .2s;}
+.para .w:hover{background:var(--note-bg);}
+.para .w.flash{background:#f6e3b0;border-bottom-color:var(--gold);}
+.para .trans{font-size:.93em;line-height:1.95;color:var(--ink2);background:var(--trans-bg);border-left:3px solid var(--gold-soft);
+  padding:10px 14px;border-radius:0 6px 6px 0;margin:0 0 10px;text-align:justify;text-indent:2em;}
+body.hide-trans .para .trans{display:none;}
+.para .pnotes{margin:2px 0 0;}
+.nchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--note-bg);color:var(--ink2);
+  border-radius:999px;padding:3px 11px;font-family:var(--sans);font-size:11.5px;cursor:pointer;letter-spacing:.05em;}
+.nchip:hover{border-color:var(--gold-soft);color:var(--gold);}
+.nchip b{color:var(--gold);font-weight:600;}
+.nlist{display:none;margin:12px 0 0;padding:0;list-style:none;}
+.para.open .nlist{display:block;}
+body.notes-on .nlist{display:block;}
+.nlist li{background:var(--note-bg);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:0 0 10px;
+  font-size:.9em;line-height:1.9;text-align:justify;}
+.nlist li.flash{box-shadow:0 0 0 2px var(--gold);}
+.nlist .tag{display:inline-block;font-family:var(--sans);font-size:10.5px;letter-spacing:.08em;color:#fff;background:var(--gold);
+  border-radius:4px;padding:1px 7px;margin-right:7px;vertical-align:1px;}
+.nlist .tag.word{background:var(--accent);}
+.nlist .tag.sentence{background:#3f6f52;}
+.nlist .tag.chapter{background:#6b4f8a;}
+.nlist .tag.校{background:#8a3b34;}
+.nlist .quote{color:var(--muted);font-size:.92em;}
+.nlist .lab{color:var(--accent);font-weight:600;}
+.nlist .refs{display:block;margin-top:7px;color:var(--muted);font-family:var(--sans);font-size:11px;letter-spacing:.02em;}
+.chapnotes{margin:34px 0 0;padding-top:16px;border-top:1px dashed var(--line);}
+.chapnotes h4{font-family:var(--sans);font-size:12px;letter-spacing:.22em;color:var(--gold);margin:0 0 12px;}
+.chapnotes .nlist{display:block;}
+.chnav{display:flex;justify-content:space-between;gap:14px;margin:46px 0 0;padding-top:18px;border-top:1px solid var(--line);font-family:var(--sans);font-size:13px;}
+.chnav a{color:var(--gold);text-decoration:none;padding:8px 0;}
+.chnav span{color:var(--muted);}
+.foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--sans);font-size:11.5px;color:var(--muted);line-height:2;text-align:center;}
+.foot a{color:var(--gold);text-decoration:none;}
+
+/* 小屏 */
+@media (max-width:640px){
+  .wrap{padding:20px 15px 70px;}
+  .bookhead h1{font-size:1.7rem;letter-spacing:.2em;}
+  .toolbar{gap:7px;padding:8px 10px;}
+  .toolbar .ttl{font-size:13px;}
+  .tb{padding:5px 10px;font-size:12px;}
+  .para .orig{line-height:1.95;}
+  #landing{padding-top:34px;}
+  .landing-hint{font-size:12.5px;letter-spacing:.22em;}
+}
+@media print{.toolbar,.progress,#toc,#mask,.chnav,.nchip{display:none!important}#landing{display:none!important}#reader{display:block!important}}
+</style>
+</head>
+<body data-theme="paper">
+<!-- ===================== 封面 ===================== -->
+<div id="landing" role="button" tabindex="0" aria-label="点击封面开始阅读《郁离子 注疏》">
+  <img class="landing-cover" src="cover.jpg" alt="《郁离子 注疏》封面：明·刘基原著，江召兵注疏" width="800" height="1200">
+  <div class="landing-hint">点击封面 · 开始阅读</div>
+  <div class="landing-meta">
+    <b id="lm-counts">十八篇 · 二百段 · 全译全注</b><br>
+    明 · 刘基 原著　|　江召兵 注疏
+  </div>
+  <div class="landing-foot">
+    底本：四部丛刊初编影明隆庆六年何镗编本<br>
+    开发者：江召兵 博士　版权所有：南京欧帕提亚信息科技有限公司
+  </div>
+</div>
+
+<!-- ===================== 阅读器 ===================== -->
+<div id="reader">
+  <div class="progress"><i id="pbar"></i></div>
+  <header class="toolbar">
+    <button class="tb" id="tocBtn" aria-label="打开目录">☰ 目录</button>
+    <span class="ttl">郁离子<small>注疏</small></span>
+    <span class="spacer"></span>
+    <span class="tb grp" role="group" aria-label="繁简切换">
+      <button data-mode="simp" class="on">简体</button><button data-mode="trad">繁体</button>
+    </span>
+    <button class="tb on" id="btnTrans">译文</button>
+    <button class="tb" id="btnNotes">注疏</button>
+    <button class="tb on" id="btnPy">注音</button>
+    <button class="tb" id="btnFsDown" aria-label="缩小字号">A−</button>
+    <button class="tb" id="btnFsUp" aria-label="放大字号">A＋</button>
+    <button class="tb" id="btnTheme" aria-label="切换主题">纸色</button>
+    <button class="tb" id="btnCover">封面</button>
+  </header>
+
+  <div id="mask"></div>
+  <nav id="toc" aria-label="全书目录">
+    <div class="toc-head"><b>全书目录</b><button class="tb" id="tocClose">关闭</button></div>
+    <div class="toc-body" id="tocBody"></div>
+  </nav>
+
+  <main class="wrap">
+    <div id="content"></div>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+"use strict";
+const D = window.YL_DATA;
+const $ = (s, r) => (r||document).querySelector(s);
+const $$ = (s, r) => Array.from((r||document).querySelectorAll(s));
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem('ylz.'+k); return v===null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k, v){ try{ localStorage.setItem('ylz.'+k, JSON.stringify(v)); }catch(e){} }
+};
+const CHAPTERS = D.chapters;
+const state = {
+  ci: 0,
+  simp: LS.get('simp', true),
+  trans: LS.get('trans', true),
+  notes: LS.get('notes', false),
+  py: LS.get('py', true),
+  fs: LS.get('fs', 19),
+  theme: LS.get('theme', 'paper')
+};
+
+/* ---------- 工具 ---------- */
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function richBody(s){
+  return esc(s).replace(/【([^】]{1,8})】/g, '<span class="lab">【$1】</span>').replace(/\n/g,'<br>');
+}
+function pyChar(ch){
+  const p = D.pinyin && D.pinyin[ch];
+  if(!p) return esc(ch);
+  return '<ruby>'+esc(ch)+'<rt>'+esc(p)+'</rt></ruby>';
+}
+function hasPy(ch){ return !!(D.pinyin && D.pinyin[ch]); }
+
+/* 段落渲染：词注下划线 + 生僻字注音 */
+function paraHtml(p){
+  const simp = state.simp;
+  const text = simp ? (p.text_simp || p.text) : p.text;
+  const words = p.notes.filter(n => n.word && (n.word.length>0));
+  // 生成匹配表（按目标字形，长词优先，允许重叠时取最长）
+  const chars = Array.from(text);
+  const posMap = new Array(chars.length).fill(null);
+  const anchors = words.map(n => ({t: Array.from(simp ? (n.word_simp || n.word) : (n.word || n.word_simp)), ids:[n.id]}))
+                       .filter(a => a.t.length>0);
+  anchors.sort((a,b)=>b.t.length-a.t.length);
+  for(const a of anchors){
+    const n = a.t.length;
+    for(let i=0;i<=chars.length-n;i++){
+      let ok = true;
+      for(let j=0;j<n;j++){ if(chars[i+j]!==a.t[j]){ ok=false; break; } }
+      if(ok && posMap[i]===null){ posMap[i] = {len:n, ids:a.ids}; }
+    }
+  }
+  let html = '';
+  for(let i=0;i<chars.length;i++){
+    const m = posMap[i];
+    if(m){
+      let inner = '';
+      for(let j=0;j<m.len;j++) inner += pyChar(chars[i+j]);
+      html += '<span class="w" data-nids="'+esc(m.ids.join(','))+'">'+inner+'</span>';
+      i += m.len-1;
+    }else{
+      html += pyChar(chars[i]);
+    }
+  }
+  return html;
+}
+
+function tagOf(n){
+  if(n.level === 'word') return ['词','word'];
+  if(n.level === 'sentence') return ['句','sentence'];
+  if(n.level === 'chapter') return ['篇','chapter'];
+  if(n.level === 'paragraph') return [n.type||'段',''];
+  return [n.type||'注',''];
+}
+function noteHtml(n){
+  const [lab, cls] = tagOf(n);
+  let q = '';
+  if(n.quote) q = '<span class="quote">「'+esc(n.quote)+'」</span> ';
+  else if(n.word) q = '<span class="quote">「'+esc(state.simp ? (n.word_simp||n.word) : n.word)+'」</span> ';
+  const refs = (n.refs && n.refs.length) ? '<span class="refs">参考：'+esc(n.refs.join('、'))+'</span>' : '';
+  return '<li id="note-'+esc(n.id)+'"><span class="tag '+cls+'">'+lab+'</span>'+q+richBody(n.body)+refs+'</li>';
+}
+
+function chapterHtml(ch, idx){
+  const simp = state.simp;
+  const title = simp ? ch.title : (ch.title_trad || ch.title);
+  const volLine = ch.volume + '　' + (ch.volume_source||'');
+  const alt = simp ? (ch.title_trad && ch.title_trad !== title ? ch.title_trad : '') : (ch.title && ch.title !== title ? ch.title : '');
+  let h = '<div class="bookhead"><div class="vol">'+esc(volLine)+'</div>'+
+          '<h1>'+esc(title)+'</h1>'+
+          (alt ? '<div class="alt">'+esc(alt)+'</div>' : '')+
+          '<div class="sub">第 '+(idx+1)+' 篇　共 '+CHAPTERS.length+' 篇　·　'+D.meta.subtitle+'</div></div>';
+  (ch.secs||[]).forEach((sec, si)=>{
+    const st = simp ? sec.title : (sec.title_trad || sec.title);
+    const only = si === 0 && (sec.title === ch.title || sec.title === ch.title_trad || st === title);
+    h += '<section class="sec">'+(only ? '' : '<h3><span class="sn">'+String(sec.num? (sec.num<10?'0'+sec.num:sec.num):'')+'</span>'+esc(st)+'</h3>');
+    (sec.paras||[]).forEach(p=>{
+      const ns = p.notes||[];
+      h += '<div class="para" id="'+esc(p.id)+'">';
+      h += '<p class="orig">'+paraHtml(p)+'</p>';
+      if(p.trans) h += '<div class="trans">'+esc(p.trans)+'</div>';
+      if(ns.length){
+        h += '<div class="pnotes"><button class="nchip" data-open="'+esc(p.id)+'">注疏 <b>'+ns.length+'</b> 条</button>';
+        h += '<ul class="nlist">'; ns.forEach(n=>{ h += noteHtml(n); }); h += '</ul></div>';
+      }
+      h += '</div>';
+    });
+    h += '</section>';
+  });
+  if((ch.chapNotes||[]).length){
+    h += '<div class="chapnotes"><h4>本篇通论</h4><ul class="nlist">';
+    ch.chapNotes.forEach(n=>{ h += noteHtml(n); });
+    h += '</ul></div>';
+  }
+  const prev = idx>0 ? CHAPTERS[idx-1] : null;
+  const next = idx<CHAPTERS.length-1 ? CHAPTERS[idx+1] : null;
+  h += '<nav class="chnav">'+(prev?'<a href="#'+prev.id+'" data-ch="'+(idx-1)+'">← 第'+(idx)+'篇　'+esc(simp?prev.title:prev.title_trad)+'</a>':'<span>卷首</span>')+
+       (next?'<a href="#'+next.id+'" data-ch="'+(idx+1)+'">第'+(idx+2)+'篇　'+esc(simp?next.title:next.title_trad)+'　→</a>':'<span>全书终</span>')+'</nav>';
+  h += '<div class="foot">原著 明·刘基　|　注疏 江召兵　|　底本 四部丛刊初编影明隆庆六年何镗编本<br>'+
+       '全 '+D.meta.counts.paras+' 段译文 · '+D.meta.counts.notes+' 条注疏 · 免费在线阅读<br>'+
+       '© 南京欧帕提亚信息科技有限公司 · 开发者 江召兵 博士</div>';
+  return h;
+}
+
+/* ---------- 渲染与导航 ---------- */
+function buildToc(){
+  let h = '';
+  (D.volumes||[]).forEach(v=>{
+    h += '<div class="toc-vol">'+esc(v.label)+(v.source?'<span>'+esc(v.source)+'</span>':'')+'</div>';
+    v.chapters.forEach(cid=>{
+      const i = CHAPTERS.findIndex(c=>c.id===cid);
+      if(i<0) return;
+      const c = CHAPTERS[i];
+      h += '<a class="toc-a" href="#'+c.id+'" data-ch="'+i+'"><i>'+String(i+1).padStart(2,'0')+'</i>'+esc(c.title)+'</a>';
+    });
+  });
+  $('#tocBody').innerHTML = h;
+}
+function markToc(){
+  $$('#tocBody .toc-a').forEach(a=>a.classList.toggle('on', Number(a.dataset.ch)===state.ci));
+}
+function render(idx, opts){
+  opts = opts || {};
+  const keep = opts.keep === true;
+  const y = keep ? window.scrollY : 0;
+  state.ci = Math.max(0, Math.min(CHAPTERS.length-1, idx||0));
+  const ch = CHAPTERS[state.ci];
+  $('#content').innerHTML = chapterHtml(ch, state.ci);
+  document.title = ch.title + ' · 郁离子 注疏';
+  markToc();
+  LS.set('ci', state.ci);
+  if(keep){ window.scrollTo(0, y); }
+  else {
+    window.scrollTo(0, 0);
+    if(opts.restore) restorePos();
+  }
+  $('#pbar').style.width = ((state.ci+1)/CHAPTERS.length*100).toFixed(2)+'%';
+}
+function openChapter(idx, opts){
+  render(idx, opts);
+  history.replaceState(null,'','#'+CHAPTERS[state.ci].id);
+}
+
+/* 滚动位置记忆 */
+let stTimer = null;
+function savePos(){
+  if(!$('#reader').classList.contains('on')) return;
+  clearTimeout(stTimer);
+  stTimer = setTimeout(()=>{ LS.set('pos.'+CHAPTERS[state.ci].id, Math.round(window.scrollY)); }, 260);
+}
+function restorePos(){
+  const y = LS.get('pos.'+CHAPTERS[state.ci].id, 0);
+  if(y>200) setTimeout(()=>window.scrollTo(0,y), 30);
+}
+
+/* ---------- 界面状态 ---------- */
+function applyState(){
+  document.body.dataset.theme = state.theme;
+  document.body.classList.toggle('hide-trans', !state.trans);
+  document.body.classList.toggle('notes-on', state.notes);
+  document.body.classList.toggle('no-py', !state.py);
+  document.documentElement.style.setProperty('--fs', state.fs+'px');
+  $$('[data-mode]').forEach(b=>b.classList.toggle('on', (b.dataset.mode==='simp')===state.simp));
+  $('#btnTrans').classList.toggle('on', state.trans);
+  $('#btnNotes').classList.toggle('on', state.notes);
+  $('#btnPy').classList.toggle('on', state.py);
+  $('#btnTheme').textContent = state.theme==='paper'?'纸色':(state.theme==='warm'?'暖黄':'夜间');
+}
+function bind(){
+  $('#landing').addEventListener('click', ()=>{
+    $('#landing').style.display='none';
+    $('#reader').classList.add('on');
+    const saved = LS.get('ci', 0);
+    const hash = location.hash.replace('#','');
+    const idx = D.chapters.findIndex(c=>c.id===hash);
+    openChapter(idx>=0?idx:saved, {restore:true});
+    applyState();
+  });
+  $('#landing').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); $('#landing').click(); } });
+  $('#tocBtn').addEventListener('click', ()=>{ $('#toc').classList.add('on'); $('#mask').classList.add('on'); });
+  const closeToc = ()=>{ $('#toc').classList.remove('on'); $('#mask').classList.remove('on'); };
+  $('#tocClose').addEventListener('click', closeToc);
+  $('#mask').addEventListener('click', closeToc);
+  $('#tocBody').addEventListener('click', e=>{
+    const a = e.target.closest('a[data-ch]'); if(!a) return;
+    e.preventDefault(); closeToc(); openChapter(Number(a.dataset.ch));
+  });
+  $$('[data-mode]').forEach(b=>b.addEventListener('click', ()=>{
+    state.simp = b.dataset.mode==='simp'; LS.set('simp', state.simp); applyState(); render(state.ci, {keep:true});
+  }));
+  $('#btnTrans').addEventListener('click', ()=>{ state.trans=!state.trans; LS.set('trans',state.trans); applyState(); });
+  $('#btnNotes').addEventListener('click', ()=>{ state.notes=!state.notes; LS.set('notes',state.notes); applyState(); });
+  $('#btnPy').addEventListener('click', ()=>{ state.py=!state.py; LS.set('py',state.py); applyState(); });
+  $('#btnFsDown').addEventListener('click', ()=>{ state.fs=Math.max(16,state.fs-1); LS.set('fs',state.fs); applyState(); });
+  $('#btnFsUp').addEventListener('click', ()=>{ state.fs=Math.min(23,state.fs+1); LS.set('fs',state.fs); applyState(); });
+  $('#btnTheme').addEventListener('click', ()=>{
+    state.theme = state.theme==='paper'?'warm':(state.theme==='warm'?'night':'paper');
+    LS.set('theme',state.theme); applyState();
+  });
+  $('#btnCover').addEventListener('click', ()=>{
+    $('#reader').classList.remove('on');
+    $('#landing').style.display='flex';
+    history.replaceState(null,'',location.pathname);
+  });
+  // 底部/篇间跳转
+  $('#content').addEventListener('click', e=>{
+    const a = e.target.closest('a[data-ch]');
+    if(a){ e.preventDefault(); openChapter(Number(a.dataset.ch)); return; }
+    const chip = e.target.closest('.nchip');
+    if(chip){ $('#'+CSS.escape(chip.dataset.open)).classList.toggle('open'); return; }
+    const w = e.target.closest('.w');
+    if(w){
+      const ids = (w.dataset.nids||'').split(',').filter(Boolean);
+      if(!ids.length) return;
+      const para = w.closest('.para'); if(para) para.classList.add('open');
+      const card = document.getElementById('note-'+ids[0]);
+      if(card){ card.scrollIntoView({block:'center', behavior:'smooth'}); card.classList.add('flash'); setTimeout(()=>card.classList.remove('flash'), 1600); }
+    }
+  });
+  window.addEventListener('scroll', ()=>{ savePos(); }, {passive:true});
+  window.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){ $('#toc').classList.remove('on'); $('#mask').classList.remove('on'); }
+    if(!$('#reader').classList.contains('on')) return;
+    const t = e.target; if(t && /INPUT|TEXTAREA|SELECT/.test(t.tagName)) return;
+    if(e.key==='ArrowRight' && state.ci<CHAPTERS.length-1){ openChapter(state.ci+1); }
+    if(e.key==='ArrowLeft' && state.ci>0){ openChapter(state.ci-1); }
+    if(e.key==='t'||e.key==='T'){ $('#tocBtn').click(); }
+  });
+  window.addEventListener('hashchange', ()=>{
+    const hash = location.hash.replace('#','');
+    const idx = D.chapters.findIndex(c=>c.id===hash);
+    if(idx>=0 && $('#reader').classList.contains('on') && idx!==state.ci) openChapter(idx);
+  });
+}
+
+/* ---------- 启动 ---------- */
+function boot(){
+  if(D && D.meta){
+    $('#lm-counts').textContent = '十八篇 · '+D.meta.counts.paras+' 段 · '+D.meta.counts.notes+' 条注疏';
+  }
+  buildToc();
+  bind();
+  applyState();
+  // 直接带章节 hash 进入时跳过封面
+  const hash = location.hash.replace('#','');
+  const idx = D.chapters.findIndex(c=>c.id===hash);
+  if(idx>=0){
+    $('#landing').style.display='none';
+    $('#reader').classList.add('on');
+    render(idx, {restore:true});
+  }
+}
+boot();
+})();
+</script>
+</body>
+</html>
