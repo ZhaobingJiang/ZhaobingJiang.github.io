@@ -92,15 +92,14 @@ def main():
     tracked_text(d, (0, ty), title, f_title, ivory, tracking=title_tracking, center_x=W / 2,
                  stroke_width=2, stroke_fill=(26, 16, 10, 255))
 
-    # ---- author（加大、下移、加描边与暗影提高对比）----
+    # ---- author（加大、下移；黑色字，浅色麦田上对比清晰）----
     f_author = font(SONG, 70)
     ay = 606
     author = "江 召 兵 著"
     aw = sum(d.textlength(ch, font=f_author) for ch in author)
-    base = Image.alpha_composite(base, shadow((W, H), lambda dd: dd.text(((W - aw) / 2 + 4, ay + 6), author, font=f_author, fill=(0, 0, 0, 255)), blur=26, alpha=245))
+    base = Image.alpha_composite(base, shadow((W, H), lambda dd: dd.text(((W - aw) / 2 + 2, ay + 4), author, font=f_author, fill=(0, 0, 0, 255)), blur=10, alpha=110))
     d = ImageDraw.Draw(base)
-    tracked_text(d, (0, ay), author, f_author, (253, 248, 236, 255), tracking=2, center_x=W / 2,
-                 stroke_width=2, stroke_fill=(22, 12, 7, 255))
+    tracked_text(d, (0, ay), author, f_author, (20, 14, 9, 255), tracking=2, center_x=W / 2)
 
     # ---- math annotations ----
     f_math = font(SERIF, 28)
