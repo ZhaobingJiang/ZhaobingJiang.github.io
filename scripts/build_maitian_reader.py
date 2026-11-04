@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """生成《麦田怪圈》单页在线阅读器：books/maitian-guiquan/index.html
 
-数据源：D:\\自主择业\\江召兵诗词\\麦田怪圈小说\\书稿\\第01—40章 Markdown
+数据源：D:\\自主择业\\江召兵诗词\\麦田怪圈小说\\书稿-怪圈经济版\\第01—40章 Markdown
 风格沿用同站《未央》《丽品金陵》阅读器（纸墨宋体 + 双栏目录 + 章节锚点）。
 """
 import os
 import re
 
-SRC = r"D:\自主择业\江召兵诗词\麦田怪圈小说\书稿"
+SRC = r"D:\自主择业\江召兵诗词\麦田怪圈小说\书稿-怪圈经济版"
 OUT_DIR = r"D:\deepseek-harness\OpatiyaAgent\JiangZhaobing.github.io\books\maitian-guiquan"
 
 VOLUMES = [
-    ("bofang", "卷一 · 播种", 1, 12),
-    ("chousui", "卷二 · 抽穗", 13, 27),
+    ("bofang", "卷一 · 爆火", 1, 12),
+    ("zhangben", "卷二 · 账本", 13, 27),
     ("shouge", "卷三 · 收割", 28, 40),
 ]
 
@@ -184,8 +184,8 @@ def build():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>麦田怪圈 · 悬疑长篇小说 · 江召兵</title>
-<meta name="description" content="江召兵著悬疑长篇小说《麦田怪圈》：二〇一二年，记者林深报道了一桩麦田怪圈的骗局；同年，十五岁的姜小穗失踪。十二年后，她的父亲用两种麦子种出一张六十米的人脸，只为让林深重新看一眼当年那张航拍照片。三卷四十章，约十七万字，全文免费在线阅读。">
+<title>麦田怪圈 · 怪圈经济版 · 悬疑长篇小说 · 江召兵</title>
+<meta name="description" content="江召兵著悬疑长篇小说《麦田怪圈·怪圈经济版》：二〇一二年，记者林深报道了一桩麦田怪圈的骗局，同村十五岁女孩姜小穗失踪；十二年后，她的父亲用两种麦子种出一张六十米的人脸，只为让林深重看当年那张航拍照片。怪圈成了产业，钱滚进来，埋在地下的旧案被重新翻开。三卷四十章，约二十四万五千字，全文免费在线阅读。">
 <meta name="keywords" content="麦田怪圈,江召兵,悬疑小说,长篇小说,柳洼村,姜小穗,林深,在线阅读">
 <meta name="author" content="江召兵">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
@@ -196,13 +196,13 @@ def build():
 <meta property="og:site_name" content="江召兵 · 专著">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/maitian-guiquan/">
-<meta property="og:title" content="麦田怪圈 · 悬疑长篇小说">
-<meta property="og:description" content="十二年后，麦田里长出一张脸。三卷四十章，约十七万字。">
-<meta property="og:image" content="https://ZhaobingJiang.github.io/books/maitian-guiquan/cover.jpg?v=1">
+<meta property="og:title" content="麦田怪圈 · 怪圈经济版 · 悬疑长篇小说">
+<meta property="og:description" content="十二年后，麦田里长出一张脸。怪圈成了生意，旧案被重新翻开。三卷四十章。">
+<meta property="og:image" content="https://ZhaobingJiang.github.io/books/maitian-guiquan/cover.jpg?v=4">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"Book","@id":"https://ZhaobingJiang.github.io/books/maitian-guiquan/#book","name":"麦田怪圈","alternateName":"十二年后，麦田里长出一张脸","url":"https://ZhaobingJiang.github.io/books/maitian-guiquan/","inLanguage":"zh-CN","bookFormat":"https://schema.org/EBook","numberOfPages":40,"author":{"@type":"Person","name":"江召兵","url":"https://ZhaobingJiang.github.io/"},"abstract":"二〇一二年，记者林深报道了一桩麦田怪圈的骗局；同年，十五岁的姜小穗失踪。十二年后，她的父亲用两种麦子种出一张六十米的人脸，只为让林深重新看一眼当年那张航拍照片。","isAccessibleForFree":true},
+{"@type":"Book","@id":"https://ZhaobingJiang.github.io/books/maitian-guiquan/#book","name":"麦田怪圈","alternateName":"十二年后，麦田里长出一张脸","url":"https://ZhaobingJiang.github.io/books/maitian-guiquan/","inLanguage":"zh-CN","bookFormat":"https://schema.org/EBook","numberOfPages":40,"author":{"@type":"Person","name":"江召兵","url":"https://ZhaobingJiang.github.io/"},"abstract":"二〇一二年，记者林深报道了一桩麦田怪圈的骗局，同村十五岁女孩姜小穗失踪；十二年后，她的父亲用两种成熟期不同的麦子种出一张六十米的人脸，只为让林深重看当年那张航拍照片。怪圈爆火，资本与项目进场，一桩被麦田保守十二年的谋杀重新翻开。","isAccessibleForFree":true},
 {"@type":"WebSite","@id":"https://ZhaobingJiang.github.io/books/maitian-guiquan/#website","url":"https://ZhaobingJiang.github.io/books/maitian-guiquan/","name":"麦田怪圈（网页版）","inLanguage":"zh-CN"}]}
 </script>
 <link rel="stylesheet" href="../../assets/css/style.css">
@@ -258,7 +258,7 @@ def build():
 
 <main class="reader">
   <div class="book-head">
-    <img class="web-cover" src="cover.jpg?v=1" alt="《麦田怪圈》封面：江召兵著，悬疑长篇小说" width="640" height="960">
+    <img class="web-cover" src="cover.jpg?v=4" alt="《麦田怪圈》封面：江召兵著，悬疑长篇小说" width="640" height="960">
     <h1 class="t">麦 田 怪 圈</h1>
     <div class="s">十二年后，麦田里长出一张脸</div>
     <div class="a">江召兵　著</div>
@@ -266,7 +266,7 @@ def build():
 
   <div class="notice">
     <b>三卷四十章 · 约 __WAN__ 万字 · 已完稿。</b>
-    二〇一二年，记者林深在柳洼村报道了一桩麦田怪圈的骗局：四个少年用木板压出一张“外星人的脸”。同年夏天，十五岁的姜小穗失踪。十二年后，她的父亲姜守田用两种成熟期不同的麦子，在自家地里种出一张六十米的人脸；无人机拍到它，全网都说是神迹。林深回到村里，才认出这不是压出来的圈，是种出来的——而老人要的不是神迹，是让他重新看一眼当年那张航拍照片：照片里的假怪圈外，还站着一个人。三卷四十章，两条时间线，一桩被麦田替人保守了十二年的谋杀。
+    二〇一二年六月，实习记者林深在柳洼村报道了一桩麦田怪圈的骗局：四个少年用木板压出一张“外星人的脸”。几天后，村里十五岁的女孩姜小穗失踪，案子悬了十二年。二〇二四年六月，小穗的父亲姜守田用两种成熟期不同的麦子，在自家地里种出一张六十米的人脸；无人机拍到它，全网都说是神迹，“怪圈经济”一夜之间在柳洼村拔地而起。林深回到村里才认出：这不是压出来的圈，是种出来的——老人要的不是神迹，是让他重新看一眼当年那张航拍照片。三卷四十章，两条时间线，一桩被麦田替人保守了十二年的谋杀。
   </div>
 
   <section class="front">
@@ -279,15 +279,15 @@ def build():
     <hr>
     <h2>内容简介</h2>
     <p>二〇一二年六月，平川县柳洼村的麦田里“长”出一张外星人的脸。实习记者林深跟着老摄影记者刘振山赶到村里，写下《谁在麦田里撒谎》，拿了奖，转了正。几天后，村里十五岁的女孩姜小穗失踪，案子悬了十二年。</p>
-    <p>二〇二四年六月，一张六十米长的人脸出现在同一片麦田里。主播白露的无人机视频一夜爆火，专家、艺术家、教派、官员、资本轮番进场，都说这圈是自己的。只有林深看出：麦子没有倒，是种的——用两种成熟期相差七天的麦子，按一张铅笔画的轮廓错期播种，长出来就是一张脸。</p>
-    <p>种圈的人是姜小穗的父亲姜守田。他种了三年，失败两次，只为一件事：让林深回来，重新看一遍二〇一二年六月十九日下午他拍下的那张航拍照片。照片里，假怪圈外三十米，站着一个穿红背心的人，脚边是新土。</p>
-    <p>本书以林深的第一人称回望写成，双时间线交替推进：二〇一二年那个夏天，与二〇二四年那场全网围观。每一章后附一页“伪文献”——日记、直播文字稿、实验记录、讯问笔录、信件、作文批语——让那些不被听见的人自己开口。</p>
+    <p>二〇二四年六月，一张六十米长的人脸出现在同一片麦田里。主播白露的无人机视频一夜爆火：打卡的人来了，卖“怪圈面粉”的人来了，做文创、谈项目、请专家的人全来了，八百亩地的“凤凰计划”估值两个亿。柳洼村靠一个圈，做起了“怪圈经济”。</p>
+    <p>只有林深看出来：麦子没有倒，是种的——用两种成熟期相差七天的麦子，按一张铅笔画的轮廓错期播种，长出来就是一张脸。种圈的人是姜小穗的父亲姜守田。他种了三年，失败两次，只为一件事：让林深回来，重新看一遍二〇一二年六月十九日下午他拍下的那张航拍照片。照片里，假怪圈外三十米，站着一个穿红背心的人，脚边是新土。</p>
+    <p>本书以林深的第一人称回望写成，双时间线交替推进：二〇一二年那个夏天，与二〇二四年那场全网围观。每一章后附一页“伪文献”——日记、直播文字稿、环评报告、账本、讯问笔录、判决书摘录——让那些不被听见的人自己开口。圈是假的，钱是真的；钱是真的，命也是真的。</p>
     <h2>关于这本书</h2>
     <ul>
-      <li><b>体量</b>：三卷四十章，约 __WAN__ 万字（正文 __CHARS__ 字）。卷一播种（一至十二章）、卷二抽穗（十三至二十七章）、卷三收割（二十八至四十章）。</li>
-      <li><b>结构</b>：双时间线（二〇一二／二〇二四）＋每章一页伪文献插页；五层反转，最后一层落在“报道者本人也参与了掩埋”。</li>
-      <li><b>人物</b>：八位女性角色——姜小穗、沈栀、白露、苏晚、刘桂兰、陈玉兰、张秀芹、方韵——其中五人是推动主线转折的核心人物。</li>
-      <li><b>写法</b>：克制、白描、多用物证与农事细节；不写鬼，不写神，只写人怎样替自己圆一个谎，又怎样被一个父亲用麦子逼着把谎说完。</li>
+      <li><b>体量</b>：三卷四十章，约 __WAN__ 万字（正文 __CHARS__ 字）。卷一爆火（一至十二）、卷二账本（十三至二十七）、卷三收割（二十八至四十）。</li>
+      <li><b>结构</b>：双时间线（二〇一二／二〇二四）＋每章一页伪文献插页；五层反转——圈是压的、圈是种的、种圈是为了让人重看照片、地下埋着遗骨与毒土、凶手不是一个而是“集体决策”。</li>
+      <li><b>人物</b>：林深、姜守田、麦有福、赵德贵、沈栀、白露、苏晚、刘桂兰、周德发、程立诚、秦岚；八位女性角色中，姜小穗、沈栀、白露、苏晚、刘桂兰五人推动主线转折。</li>
+      <li><b>写法</b>：克制、白描，多用物证、账本、农事与公文细节；不写鬼，不写神，写钱怎样把一个圈变成产业，又怎样把一个女孩埋进土里。</li>
     </ul>
     <h2>作者简介</h2>
     <p>江召兵，1979年3月生，湖南郴州永兴人，博士，教授，南京欧帕提亚信息科技有限公司创始人、董事长，兼任西北工业大学、南京航空航天大学、西安交通大学外聘导师。1998年至2008年就读于中国人民解放军理工大学，先后获应用气象学学士、流体力学硕士、桥梁与隧道工程博士学位；其后在上海交通大学从事博士后研究，并赴英国南安普顿大学访学。2017年自主择业，先后创办南京欧帕提亚信息科技有限公司、湖南云数仿真信息技术有限公司和南京驭风数智科技有限公司等。</p>
