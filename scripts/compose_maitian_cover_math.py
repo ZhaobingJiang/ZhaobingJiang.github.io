@@ -19,14 +19,16 @@ def font(path, size):
     return ImageFont.truetype(path, size)
 
 
-def tracked_text(draw, xy, text, fnt, fill, tracking=0, center_x=None):
+def tracked_text(draw, xy, text, fnt, fill, tracking=0, center_x=None,
+                 stroke_width=0, stroke_fill=None):
     widths = [draw.textlength(ch, font=fnt) for ch in text]
     total = sum(widths) + tracking * (len(text) - 1)
     x, y = xy
     if center_x is not None:
         x = center_x - total / 2
     for ch, w in zip(text, widths):
-        draw.text((x, y), ch, font=fnt, fill=fill)
+        draw.text((x, y), ch, font=fnt, fill=fill,
+                  stroke_width=stroke_width, stroke_fill=stroke_fill)
         x += w + tracking
     return total
 
@@ -78,22 +80,27 @@ def main():
     f_label = font(SONG, 30)
     tracked_text(d, (0, 92), "悬 疑 长 篇 小 说", f_label, muted, tracking=10, center_x=W / 2)
 
-    # ---- title ----
-    f_title = font(SERIF_HEAVY, 150)
-    y = 140
-    for line in ["麦田", "怪圈"]:
-        tw = sum(d.textlength(ch, font=f_title) for ch in line) + 8 * (len(line) - 1)
-        tx = (W - tw) / 2
-        base = Image.alpha_composite(base, shadow((W, H), lambda dd, tx=tx, y=y, line=line: dd.text((tx + 4, y + 6), line, font=f_title, fill=(0, 0, 0, 255)), blur=16, alpha=220))
-        d = ImageDraw.Draw(base)
-        tracked_text(d, (0, y), line, f_title, ivory, tracking=8, center_x=W / 2)
-        y += 188
+    # ---- title（四字单行）----
+    f_title = font(SERIF_HEAVY, 205)
+    title = "麦田怪圈"
+    title_tracking = 12
+    tw = sum(d.textlength(ch, font=f_title) for ch in title) + title_tracking * (len(title) - 1)
+    tx = (W - tw) / 2
+    ty = 150
+    base = Image.alpha_composite(base, shadow((W, H), lambda dd, tx=tx, ty=ty: dd.text((tx + 5, ty + 7), title, font=f_title, fill=(0, 0, 0, 255)), blur=20, alpha=235))
+    d = ImageDraw.Draw(base)
+    tracked_text(d, (0, ty), title, f_title, ivory, tracking=title_tracking, center_x=W / 2,
+                 stroke_width=2, stroke_fill=(26, 16, 10, 255))
 
-    d.line([(W / 2 - 150, y + 14), (W / 2 + 150, y + 14)], fill=(238, 224, 198, 210), width=2)
-
-    # ---- author ----
-    f_author = font(SONG, 38)
-    tracked_text(d, (0, y + 46), "江 召 兵 著", f_author, ivory, tracking=12, center_x=W / 2)
+    # ---- author（加大、下移、加描边与暗影提高对比）----
+    f_author = font(SONG, 70)
+    ay = 606
+    author = "江 召 兵 著"
+    aw = sum(d.textlength(ch, font=f_author) for ch in author)
+    base = Image.alpha_composite(base, shadow((W, H), lambda dd: dd.text(((W - aw) / 2 + 4, ay + 6), author, font=f_author, fill=(0, 0, 0, 255)), blur=26, alpha=245))
+    d = ImageDraw.Draw(base)
+    tracked_text(d, (0, ay), author, f_author, (253, 248, 236, 255), tracking=2, center_x=W / 2,
+                 stroke_width=2, stroke_fill=(22, 12, 7, 255))
 
     # ---- math annotations ----
     f_math = font(SERIF, 28)
