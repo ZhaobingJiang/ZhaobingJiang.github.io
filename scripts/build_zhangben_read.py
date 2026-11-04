@@ -108,7 +108,7 @@ html_doc = f"""<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>账本 · 全文在线阅读 · 江召兵</title>
-<meta name="description" content="江召兵长篇小说《账本》全文在线阅读：一个饥饿者的七十年。1953—2023，甘肃通渭。五卷四十六章，约三十万字。">
+<meta name="description" content="江召兵长篇小说《账本》全文在线阅读：一个饥饿者的七十年。1953—2023，甘肃通渭。五卷四十六章，约三十一万字。">
 <meta name="keywords" content="账本,江召兵,长篇小说,在线阅读,甘肃通渭,饥饿,心理小说">
 <meta name="author" content="江召兵">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
@@ -120,7 +120,7 @@ html_doc = f"""<!DOCTYPE html>
 <meta property="og:locale" content="zh_CN">
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/zhangben/read.html">
 <meta property="og:title" content="账本 · 全文在线阅读">
-<meta property="og:description" content="一个饥饿者的七十年。1953—2023，甘肃通渭。五卷四十六章，约三十万字，全文在线阅读。">
+<meta property="og:description" content="一个饥饿者的七十年。1953—2023，甘肃通渭。五卷四十六章，约三十一万字，全文在线阅读。">
 <meta property="og:image" content="https://ZhaobingJiang.github.io/books/zhangben/cover.jpg?v=2">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../assets/css/style.css">
@@ -177,7 +177,7 @@ html_doc = f"""<!DOCTYPE html>
   </div>
 
   <div class="notice">
-    <b>五卷四十六章 · 约三十万字 · 全书完</b><br>
+    <b>五卷四十六章 · 约三十一万字 · 全书完</b><br>
     1953—2023，甘肃通渭。一个把每一笔得失都记在心里的人，最后发现自己欠下的那一笔算不清。本页为全文网页版，可从头读，也可从目录跳读。
   </div>
   <div class="read-top">
@@ -192,7 +192,7 @@ html_doc = f"""<!DOCTYPE html>
   {articles_html}
 
   <footer class="reader-foot">
-    <p>《账本》 · 江召兵 著 · 五卷四十六章 · 约三十万字 · 全书完</p>
+    <p>《账本》 · 江召兵 著 · 五卷四十六章 · 约三十一万字 · 全书完</p>
     <p><a href="index.html">返回作品页</a> · <a href="../../zh/books.html">返回中文书籍</a></p>
   </footer>
 </main>
