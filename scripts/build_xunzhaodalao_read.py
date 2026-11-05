@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Build the full-text web edition of 《寻找大佬》 from chapter markdown."""
 from pathlib import Path
 import re
@@ -9,7 +9,7 @@ OUT = Path(r"D:\deepseek-harness\OpatiyaAgent\JiangZhaobing.github.io\books\xunz
 
 SLUG = "xunzhaodalao"
 TITLE = "寻找大佬"
-SUBTITLE = "一个寒门子弟的三十七年"
+SUBTITLE = "路漫漫其修远兮，吾将上下而求索。"
 WORDS = "约三十五万字"
 
 # (volume title, era, first chapter number, last chapter number); chapter 0 is the 楔子
@@ -103,7 +103,7 @@ html_doc = f"""<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{TITLE} · 全文在线阅读 · 江召兵</title>
-<meta name="description" content="江召兵长篇小说《{TITLE}》全文在线阅读：一个寒门子弟的三十七年。1989—2026，从陈家坳到MIT。五卷四十章，{WORDS}，全书完成。">
+<meta name="description" content="江召兵长篇小说《{TITLE}》全文在线阅读：1989—2026，从陈家坳到MIT。五卷四十章，{WORDS}，全书完成。">
 <meta name="keywords" content="{TITLE},江召兵,长篇小说,在线阅读,寒门,自卑与超越,阿德勒,成长小说">
 <meta name="author" content="江召兵">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
@@ -115,7 +115,7 @@ html_doc = f"""<!DOCTYPE html>
 <meta property="og:locale" content="zh_CN">
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/{SLUG}/read.html">
 <meta property="og:title" content="{TITLE} · 全文在线阅读">
-<meta property="og:description" content="一个寒门子弟的三十七年。1989—2026，从陈家坳到MIT。五卷四十章，{WORDS}，全文在线阅读。">
+<meta property="og:description" content="1989—2026，从陈家坳到MIT。五卷四十章，{WORDS}，全文在线阅读。">
 <meta property="og:image" content="https://ZhaobingJiang.github.io/books/{SLUG}/cover.jpg?v=1">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">

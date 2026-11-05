@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 """Compose the cover of 《寻找大佬》: Dreamina dusk loess art + PIL typography.
 
+Typography:
+  长篇小说 / 寻找大佬 / 屈原《离骚》句（路漫漫其修远兮，吾将上下而求索）
+  / 阿德勒《自卑与超越》句（生活的意义在于对别人发生兴趣以及互助合作）/ 江召兵 著
+
 Input : d:\\tmp_bg\\xzdl_cover\\fa705eba-0e06-4f50-85b3-35fc3ed7716f_image_1.png
 Output: books/xunzhaodalao/cover.jpg (1600x2400), cover-card.jpg (640x960),
         cover_preview.png (800x1200)
@@ -17,6 +21,11 @@ W, H = 1600, 2400
 SERIF_HEAVY = r"C:\Windows\Fonts\Source Han Serif SC Heavy (TrueType).ttf"
 SONG = r"C:\Windows\Fonts\STSONG.TTF"
 KAI = r"C:\Windows\Fonts\STKAITI.TTF"
+
+POEM = "路漫漫其修远兮，吾将上下而求索。"
+POEM_SRC = "—— 屈原《离骚》"
+PSY = "生活的意义在于对别人发生兴趣以及互助合作。"
+PSY_SRC = "—— 阿德勒《自卑与超越》"
 
 
 def font(path, size):
@@ -53,11 +62,11 @@ def main():
     art = art.crop((x0, 0, x0 + tw, art.height)).resize((W, H), Image.LANCZOS)
     base = art.convert("RGBA")
 
-    # bottom gradient so the tagline and author stay legible
+    # bottom gradient so quotes and author stay legible
     grad = Image.new("L", (1, H), 0)
     for y in range(H):
-        t = max(0.0, (y - H * 0.60) / (H * 0.40))
-        grad.putpixel((0, y), int(168 * (t ** 1.25)))
+        t = max(0.0, (y - H * 0.58) / (H * 0.42))
+        grad.putpixel((0, y), int(178 * (t ** 1.2)))
     grad = grad.resize((W, H))
     shade = Image.new("RGBA", (W, H), (14, 16, 26, 255))
     base = Image.composite(shade, base, grad)
@@ -72,53 +81,57 @@ def main():
     base = Image.composite(shade2, base, grad2)
 
     ivory = (247, 240, 228, 255)
-    warm = (232, 219, 200, 235)
-    soft = (214, 203, 186, 220)
-    gold = (176, 136, 84, 255)
+    warm = (232, 219, 200, 238)
+    soft = (214, 203, 186, 215)
+    gold = (182, 142, 90, 235)
 
-    d = ImageDraw.Draw(base)
-
-    # top label
+    # ---- top label ----
     f_label = font(SONG, 40)
-    shadow(base, lambda dd: tracked(dd, (0, 150), "长篇小说", f_label, (12, 14, 22, 210), tracking=20, center_x=W / 2),
+    shadow(base, lambda dd: tracked(dd, (0, 146), "长篇小说", f_label, (12, 14, 22, 210), tracking=20, center_x=W / 2),
            blur=10, alpha=120)
     d = ImageDraw.Draw(base)
-    tracked(d, (0, 150), "长篇小说", f_label, soft, tracking=20, center_x=W / 2)
+    tracked(d, (0, 146), "长篇小说", f_label, soft, tracking=20, center_x=W / 2)
 
-    # title: 4 characters, heavy serif, wide tracking
+    # ---- title ----
     f_title = font(SERIF_HEAVY, 292)
     def draw_title(dd):
-        tracked(dd, (0, 258), "寻找大佬", f_title, ivory, tracking=40, center_x=W / 2)
+        tracked(dd, (0, 252), "寻找大佬", f_title, ivory, tracking=40, center_x=W / 2)
 
-    base = shadow(base, draw_title, blur=22, alpha=170)
+    base = shadow(base, draw_title, blur=22, alpha=175)
     d = ImageDraw.Draw(base)
     draw_title(d)
 
-    # subtitle
-    f_sub = font(KAI, 62)
-    shadow(base, lambda dd: tracked(dd, (0, 648), "一个寒门子弟的三十七年", f_sub, (10, 12, 20, 210), tracking=12, center_x=W / 2),
-           blur=10, alpha=130)
+    # ---- classical poem line under the title ----
+    f_poem = font(KAI, 54)
+    shadow(base, lambda dd: tracked(dd, (0, 642), POEM, f_poem, (6, 8, 16, 215), tracking=8, center_x=W / 2),
+           blur=9, alpha=130)
     d = ImageDraw.Draw(base)
-    tracked(d, (0, 648), "一个寒门子弟的三十七年", f_sub, warm, tracking=12, center_x=W / 2)
+    tracked(d, (0, 642), POEM, f_poem, warm, tracking=8, center_x=W / 2)
 
-    # thin rule under the subtitle
-    d.line([(W / 2 - 150, 745), (W / 2 + 150, 745)], fill=(176, 136, 84, 200), width=3)
-
-    # tagline, two lines, small kaiti
-    f_tag = font(KAI, 56)
-    tag1 = "我找的不是大佬，"
-    tag2 = "是一个能替我爹还手的人。"
-    shadow(base, lambda dd: tracked(dd, (0, 1985), tag1, f_tag, (8, 10, 18, 220), tracking=6, center_x=W / 2), blur=8, alpha=120)
-    shadow(base, lambda dd: tracked(dd, (0, 2075), tag2, f_tag, (8, 10, 18, 220), tracking=6, center_x=W / 2), blur=8, alpha=120)
+    f_src = font(SONG, 30)
+    shadow(base, lambda dd: tracked(dd, (0, 718), POEM_SRC, f_src, (6, 8, 16, 210), tracking=6, center_x=W / 2),
+           blur=11, alpha=185)
     d = ImageDraw.Draw(base)
-    tracked(d, (0, 1985), tag1, f_tag, (228, 216, 198, 225), tracking=6, center_x=W / 2)
-    tracked(d, (0, 2075), tag2, f_tag, (228, 216, 198, 225), tracking=6, center_x=W / 2)
+    tracked(d, (0, 718), POEM_SRC, f_src, (232, 223, 208, 235), tracking=6, center_x=W / 2)
 
-    # author
+    # ---- Adler line, bottom ----
+    f_psy = font(KAI, 42)
+    shadow(base, lambda dd: tracked(dd, (0, 2050), PSY, f_psy, (6, 8, 16, 220), tracking=3, center_x=W / 2),
+           blur=8, alpha=130)
+    d = ImageDraw.Draw(base)
+    tracked(d, (0, 2050), PSY, f_psy, (232, 221, 203, 232), tracking=3, center_x=W / 2)
+
+    f_psy_src = font(SONG, 27)
+    shadow(base, lambda dd: tracked(dd, (0, 2106), PSY_SRC, f_psy_src, (6, 8, 16, 210), tracking=5, center_x=W / 2),
+           blur=7, alpha=115)
+    d = ImageDraw.Draw(base)
+    tracked(d, (0, 2106), PSY_SRC, f_psy_src, (228, 219, 204, 232), tracking=5, center_x=W / 2)
+
+    # ---- author ----
     f_author = font(SONG, 46)
-    shadow(base, lambda dd: tracked(dd, (0, 2218), "江召兵　著", f_author, (8, 10, 18, 220), tracking=10, center_x=W / 2), blur=8, alpha=120)
+    shadow(base, lambda dd: tracked(dd, (0, 2228), "江召兵　著", f_author, (8, 10, 18, 220), tracking=10, center_x=W / 2), blur=8, alpha=120)
     d = ImageDraw.Draw(base)
-    tracked(d, (0, 2218), "江召兵　著", f_author, ivory, tracking=10, center_x=W / 2)
+    tracked(d, (0, 2228), "江召兵　著", f_author, ivory, tracking=10, center_x=W / 2)
 
     os.makedirs(OUT, exist_ok=True)
     cover = base.convert("RGB")
@@ -132,3 +145,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
