@@ -116,7 +116,7 @@ html_doc = f"""<!DOCTYPE html>
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/{SLUG}/read.html">
 <meta property="og:title" content="{TITLE} · 全文在线阅读">
 <meta property="og:description" content="1989—2026，从陈家坳到MIT。五卷四十章，{WORDS}，全文在线阅读。">
-<meta property="og:image" content="https://ZhaobingJiang.github.io/books/{SLUG}/cover.jpg?v=1">
+<meta property="og:image" content="https://ZhaobingJiang.github.io/books/{SLUG}/cover.jpg?v=2">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"Book","name":"{TITLE}","url":"https://ZhaobingJiang.github.io/books/{SLUG}/","inLanguage":"zh-CN","bookFormat":"https://schema.org/EBook","author":{{"@type":"Person","name":"江召兵","url":"https://ZhaobingJiang.github.io/"}},"numberOfPages":40,"bookEdition":"网页版","isAccessibleForFree":true,"creativeWorkStatus":"全书完成"}}
@@ -163,7 +163,7 @@ html_doc = f"""<!DOCTYPE html>
 
 <main class="reader">
   <div class="book-head">
-    <img class="web-cover" src="cover.jpg?v=1" alt="《{TITLE}》封面：江召兵著，长篇小说" width="1600" height="2400">
+    <img class="web-cover" src="cover.jpg?v=2" alt="《{TITLE}》封面：江召兵著，长篇小说" width="1600" height="2400">
     <h1 class="t">寻找大佬</h1>
     <div class="s">{SUBTITLE}</div>
     <div class="a">江召兵　著</div>
