@@ -25,6 +25,7 @@ W, H = 1600, 2400
 SERIF_HEAVY = r"C:\Windows\Fonts\Source Han Serif SC Heavy (TrueType).ttf"
 SONG = r"C:\Windows\Fonts\STSONG.TTF"
 KAI = r"C:\Windows\Fonts\STKAITI.TTF"
+ZHONGSONG = r"C:\Windows\Fonts\STZHONGS.TTF"
 
 POEM = "路漫漫其修远兮，吾将上下而求索。"
 POEM_SRC = "—— 屈原《离骚》"
@@ -163,10 +164,24 @@ def main():
     tracked(d, (0, psy_src_y), PSY_SRC, f_psy_src, (228, 219, 204, 232) if style != "paper" else (100, 110, 118, 240), tracking=5, center_x=bottom_cx)
 
     # ---- author ----
-    f_author = font(SONG, 46)
-    shadow(base, lambda dd: tracked(dd, (0, author_y), "江召兵　著", f_author, (8, 10, 18, 220), tracking=10, center_x=bottom_cx), blur=8, alpha=120)
-    d = ImageDraw.Draw(base)
-    tracked(d, (0, author_y), "江召兵　著", f_author, ivory if style != "paper" else (30, 38, 46, 255), tracking=10, center_x=bottom_cx)
+    author_text = "江召兵　著"
+    if style == "paper":
+        f_author = font(ZHONGSONG, 88)
+        d = ImageDraw.Draw(base)
+        widths = [d.textlength(ch, font=f_author) for ch in author_text]
+        tr = 18
+        total = sum(widths) + tr * (len(author_text) - 1)
+        ax = W / 2 - total / 2
+        ay = 845
+        ink = (24, 32, 40, 255)
+        for ch, wch in zip(author_text, widths):
+            d.text((ax, ay), ch, font=f_author, fill=ink, stroke_width=2, stroke_fill=ink)
+            ax += wch + tr
+    else:
+        f_author = font(SONG, 46)
+        shadow(base, lambda dd: tracked(dd, (0, author_y), author_text, f_author, (8, 10, 18, 220), tracking=10, center_x=bottom_cx), blur=8, alpha=120)
+        d = ImageDraw.Draw(base)
+        tracked(d, (0, author_y), author_text, f_author, ivory, tracking=10, center_x=bottom_cx)
 
     os.makedirs(OUT, exist_ok=True)
     cover = base.convert("RGB")
