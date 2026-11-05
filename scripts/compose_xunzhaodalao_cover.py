@@ -9,13 +9,17 @@ Input : d:\\tmp_bg\\xzdl_cover\\fa705eba-0e06-4f50-85b3-35fc3ed7716f_image_1.png
 Output: books/xunzhaodalao/cover.jpg (1600x2400), cover-card.jpg (640x960),
         cover_preview.png (800x1200)
 """
-import os
+import os, sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 OUT = os.path.join(ROOT, "books", "xunzhaodalao")
+if len(sys.argv) > 2:
+    OUT = sys.argv[2]
 ART = r"D:\tmp_bg\xzdl_cover\fa705eba-0e06-4f50-85b3-35fc3ed7716f_image_1.png"
+if len(sys.argv) > 1:
+    ART = sys.argv[1]
 
 W, H = 1600, 2400
 SERIF_HEAVY = r"C:\Windows\Fonts\Source Han Serif SC Heavy (TrueType).ttf"
