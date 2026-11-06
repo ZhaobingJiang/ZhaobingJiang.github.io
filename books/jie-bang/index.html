@@ -6,7 +6,7 @@
 <title>接棒：二十个家族企业的传承调查 · 江召兵</title>
 <meta name="description" content="《接棒：二十个家族企业的传承调查》——国内部与二十家家族企业的接班调查，基于公开资料的纪实调研文学。">
 <style>
-:root{--ink:#1c2434;--sub:#5b6472;--gold:#b08d57;--paper:#fbfaf7;--line:#e6e1d6;--max:43rem}
+:root{--ink:#1c2434;--sub:#5b6472;--gold:#b08d57;--paper:#fbfaf7;--line:#e6e1d6;--max:43rem;--side:190px}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Serif SC","Songti SC","Source Han Serif SC",STSong,serif;line-height:1.95;font-size:17px;-webkit-font-smoothing:antialiased}
@@ -27,13 +27,19 @@ a:hover{text-decoration:underline}
 .hero .sub{font-size:19px;color:var(--sub);margin-bottom:18px;letter-spacing:.05em}
 .hero p{font-size:15px;color:var(--sub);line-height:1.9;margin:0 0 18px}
 .hero .meta{font-size:13px;color:#8b919b;letter-spacing:.05em}
-.layout{max-width:1000px;margin:0 auto;padding:20px 22px 80px;display:grid;grid-template-columns:250px 1fr;gap:48px}
-aside{position:sticky;top:72px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;padding-right:8px}
-aside h3{font-size:12px;letter-spacing:.28em;color:#9aa0a9;font-weight:600;margin:0 0 12px}
-aside a{display:block;color:var(--sub);font-size:13.5px;padding:5px 0;border-bottom:1px dashed transparent;line-height:1.5}
+.layout{max-width:1040px;margin:0 auto;padding:20px 22px 80px;display:grid;grid-template-columns:var(--side,190px) 12px minmax(0,1fr);gap:0}
+aside{position:sticky;top:72px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;padding-right:6px;box-sizing:border-box}
+aside h3{font-size:12px;letter-spacing:.22em;color:#9aa0a9;font-weight:600;margin:0 0 10px}
+aside a{display:block;color:var(--sub);font-size:13px;padding:5px 0;border-bottom:1px dashed transparent;line-height:1.45}
 aside a:hover{color:var(--gold);border-color:var(--line);text-decoration:none}
-aside .num{display:inline-block;width:26px;color:#b9b2a3;font-family:Georgia,serif;font-size:12px}
-main{min-width:0}
+aside .num{display:inline-block;width:22px;color:#b9b2a3;font-family:Georgia,serif;font-size:11.5px}
+.splitter{position:relative;cursor:col-resize;touch-action:none;border-radius:6px;transition:background .15s}
+.splitter::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--line);transition:background .15s}
+.splitter:hover,.splitter.dragging{background:rgba(176,141,87,.12)}
+.splitter:hover::before,.splitter.dragging::before{background:var(--gold)}
+body.resizing{cursor:col-resize;user-select:none}
+body.resizing *{cursor:col-resize!important;user-select:none!important}
+main{min-width:0;padding-left:10px}
 .chapter{margin:0 0 56px;padding-top:8px}
 .chapter h1{font-size:30px;line-height:1.4;margin:24px 0 22px;letter-spacing:.04em;font-weight:700;border-top:1px solid var(--line);padding-top:34px}
 .chapter:first-of-type h1{border-top:0;padding-top:0;margin-top:0}
@@ -57,6 +63,7 @@ footer b{color:var(--sub);font-weight:600}
   .hero img{max-width:230px;margin:0 auto;display:block}
   .hero h1{font-size:32px}
   .layout{grid-template-columns:1fr;gap:0}
+  .splitter{display:none}
   aside{display:none;position:fixed;inset:53px 0 0 0;background:var(--paper);z-index:45;padding:18px 24px;max-height:none}
   aside.open{display:block}
   body{font-size:16px}
@@ -138,6 +145,7 @@ footer b{color:var(--sub);font-weight:600}
 <a href="#ch26"><span class="num">26</span>比较篇：六个维度的中外对照</a>
 <a href="#ch27"><span class="num">27</span>结语：传承清单十二条</a>
 <a href="#ch28"><span class="num">28</span>附录</a></aside>
+<div class="splitter" id="splitter" title="拖动调整目录宽度 · 双击恢复默认" role="separator" aria-orientation="vertical" aria-label="调整目录宽度" tabindex="0"></div>
 <main>
 <section class="chapter" id="ch1">
 <h1 id="ch1" id="sec-0">导论：交接的中国时刻</h1>
@@ -3090,6 +3098,37 @@ btn&&btn.addEventListener('click',function(){aside.classList.toggle('open')});
 aside&&aside.addEventListener('click',function(e){if(e.target.tagName==='A')aside.classList.remove('open')});
 var sizes=[15,16,17,18,19,20],si=2;
 document.getElementById('fontBtn').addEventListener('click',function(){si=(si+1)%sizes.length;document.body.style.fontSize=sizes[si]+'px';});
+// 目录宽度：默认较窄，可拖动分隔条调整，双击恢复
+(function(){
+  var layout=document.querySelector('.layout'), sp=document.getElementById('splitter');
+  if(!layout||!sp) return;
+  var MIN=140, MAX=430, DEF=190;
+  function apply(w){
+    var cap=Math.min(MAX, layout.clientWidth*0.45);
+    w=Math.max(MIN, Math.min(cap, w));
+    layout.style.setProperty('--side', w+'px');
+    return w;
+  }
+  try{ var s=parseInt(localStorage.getItem('jieBangSide')||'',10); if(s) apply(s); }catch(e){}
+  var dragging=false;
+  function padLeft(){ return parseFloat(getComputedStyle(layout).paddingLeft)||0; }
+  sp.addEventListener('pointerdown',function(e){ dragging=true; sp.classList.add('dragging'); document.body.classList.add('resizing'); try{sp.setPointerCapture(e.pointerId);}catch(_){} e.preventDefault(); });
+  sp.addEventListener('pointermove',function(e){ if(!dragging) return; var r=layout.getBoundingClientRect(); apply(e.clientX-r.left-padLeft()-6); });
+  function stop(e){ if(!dragging) return; dragging=false; sp.classList.remove('dragging'); document.body.classList.remove('resizing'); try{sp.releasePointerCapture(e.pointerId);}catch(_){} var w=parseInt(getComputedStyle(layout).getPropertyValue('--side'),10)||DEF; try{localStorage.setItem('jieBangSide',w);}catch(_){} }
+  sp.addEventListener('pointerup',stop);
+  sp.addEventListener('pointercancel',stop);
+  sp.addEventListener('dblclick',function(){ layout.style.setProperty('--side',DEF+'px'); try{localStorage.removeItem('jieBangSide');}catch(_){} });
+  sp.addEventListener('keydown',function(e){
+    var cur=parseInt(getComputedStyle(layout).getPropertyValue('--side'),10)||DEF;
+    if(e.key==='ArrowLeft'){ apply(cur-10); e.preventDefault(); }
+    else if(e.key==='ArrowRight'){ apply(cur+10); e.preventDefault(); }
+    else if(e.key==='Enter'){ apply(DEF); e.preventDefault(); }
+  });
+  window.addEventListener('resize',function(){
+    var cur=parseInt(getComputedStyle(layout).getPropertyValue('--side'),10)||DEF;
+    apply(cur);
+  });
+})();
 window.addEventListener('scroll',function(){
   var h=document.documentElement;
   var p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
