@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Compose the cover art for 井水照人 from a Dreamina-generated background.
+"""Compose the cover for 井水照人 from a Dreamina-generated colorful background.
 
-Input: _tmp_cover_art/art2.png (3328x4992 ink-wash well and moon)
+Input: _tmp_cover_art/colorB.png (3328x4992, twilight village + well + moon)
 Outputs (books/jingshui-zhaoren/):
   cover.jpg         1600x2400
   cover-card.jpg     640x960
@@ -11,20 +11,35 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 
 ROOT = Path(__file__).resolve().parents[1]
-ART = ROOT / "_tmp_cover_art" / "art2.png"
+ART = ROOT / "_tmp_cover_art" / "colorB.png"
 OUT = ROOT / "books" / "jingshui-zhaoren"
 OUT.mkdir(parents=True, exist_ok=True)
 
 W, H = 1600, 2400
 
-FONT_TITLE = r"C:\Windows\Fonts\Source Han Serif SC Heavy (TrueType).ttf"
-FONT_SERIF = r"C:\Windows\Fonts\STSONG.TTF"
-FONT_KAI = r"C:\Windows\Fonts\STKAITI.TTF"
+FONT_DIR = Path(r"C:\Windows\Fonts")
+TITLE_CANDIDATES = [
+    FONT_DIR / "Source Han Serif SC Heavy (TrueType).ttf",
+    FONT_DIR / "SourceHanSerifSC-Heavy.otf",
+    FONT_DIR / "STSONG.TTF",
+]
+SERIF = FONT_DIR / "STSONG.TTF"
+KAI = FONT_DIR / "STKAITI.TTF"
 
-IVORY = (243, 236, 221)
-GOLD = (196, 160, 96)
-MUTED = (198, 186, 162)
-SEAL_RED = (143, 45, 39)
+
+def pick_font(candidates, size):
+    for p in candidates:
+        if p.exists():
+            return ImageFont.truetype(str(p), size)
+    raise FileNotFoundError(candidates)
+
+
+IVORY = (247, 241, 227)
+WARM = (232, 222, 204)
+GOLD = (198, 164, 104)
+GOLD_SOFT = (198, 164, 104, 70)
+MUTED = (206, 194, 172)
+SEAL_RED = (150, 46, 40)
 
 
 def fit(img: Image.Image, w: int, h: int) -> Image.Image:
@@ -38,14 +53,13 @@ def fit(img: Image.Image, w: int, h: int) -> Image.Image:
 
 
 def vgrad(size, stops):
-    """Vertical gradient image from list of (t, rgba)."""
     w, h = size
     img = Image.new("RGBA", (w, h))
     px = img.load()
     stops = sorted(stops)
     for y in range(h):
         t = y / (h - 1)
-        # find segment
+        col = stops[-1][1]
         for i in range(len(stops) - 1):
             t0, c0 = stops[i]
             t1, c1 = stops[i + 1]
@@ -53,8 +67,6 @@ def vgrad(size, stops):
                 k = 0 if t1 == t0 else (t - t0) / (t1 - t0)
                 col = tuple(int(c0[j] + (c1[j] - c0[j]) * k) for j in range(4))
                 break
-        else:
-            col = stops[-1][1]
         for x in range(w):
             px[x, y] = col
     return img
@@ -76,98 +88,127 @@ def build():
     art = Image.open(ART).convert("RGB")
     base = fit(art, W, H).convert("RGBA")
 
-    # 1. deepen the sky at the top so ivory typography stays legible
+    # 1. Top scrim: keep the indigo sky but deepen it behind the title.
     shade = vgrad((W, H), [
-        (0.00, (14, 17, 20, 150)),
-        (0.28, (18, 21, 24, 108)),
-        (0.52, (20, 24, 27, 44)),
-        (0.68, (12, 15, 18, 10)),
-        (1.00, (8, 10, 12, 26)),
+        (0.00, (12, 14, 30, 128)),
+        (0.22, (14, 16, 30, 96)),
+        (0.42, (16, 18, 30, 46)),
+        (0.58, (10, 12, 20, 12)),
+        (0.72, (6, 8, 12, 6)),
+        (0.82, (6, 6, 10, 84)),
+        (0.92, (4, 4, 8, 140)),
+        (1.00, (3, 3, 6, 165)),
     ])
     base = Image.alpha_composite(base, shade)
 
-    # 2. soft vignette
+    # 2. soft vignette (gentle, keeps the colors vivid)
     vign = Image.new("L", (W, H), 0)
     vd = ImageDraw.Draw(vign)
-    vd.ellipse((-int(W * 0.55), -int(H * 0.30), int(W * 1.55), int(H * 1.30)), fill=120)
-    vign = vign.filter(ImageFilter.GaussianBlur(180))
-    dark = Image.new("RGBA", (W, H), (6, 8, 10, 255))
-    dark.putalpha(ImageEnhance.Brightness(vign).enhance(0.9))
+    vd.ellipse((-int(W * 0.62), -int(H * 0.34), int(W * 1.62), int(H * 1.34)), fill=104)
+    vign = vign.filter(ImageFilter.GaussianBlur(190))
+    dark = Image.new("RGBA", (W, H), (5, 6, 9, 255))
+    dark.putalpha(ImageEnhance.Brightness(vign).enhance(0.85))
     base = Image.alpha_composite(base, dark)
 
     draw = ImageDraw.Draw(base)
 
-    # 3. top label
-    f_label = ImageFont.truetype(FONT_SERIF, 40)
+    # 3. thin double gold frame, inset from the trim edge
+    frame = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    fd = ImageDraw.Draw(frame)
+    fd.rectangle((40, 40, W - 40, H - 40), outline=GOLD_SOFT, width=2)
+    fd.rectangle((54, 54, W - 54, H - 54), outline=(198, 164, 104, 42), width=1)
+    base = Image.alpha_composite(base, frame)
+    draw = ImageDraw.Draw(base)
+
+    # 4. top label
+    f_label = ImageFont.truetype(str(SERIF), 40)
     lab = "长 篇 小 说"
     lw = tracked_width(draw, lab, f_label, 18)
-    draw_tracked(draw, ((W - lw) / 2, 258), lab, f_label, (208, 194, 168), 18)
+    draw_tracked(draw, ((W - lw) / 2, 250), lab, f_label, (216, 200, 170), 18)
 
-    # 4. main title
-    f_title = ImageFont.truetype(FONT_TITLE, 306)
+    # 5. main title
+    f_title = pick_font(TITLE_CANDIDATES, 306)
     title = "井水照人"
     tw = tracked_width(draw, title, f_title, 46)
     tx = (W - tw) / 2
-    ty = 430
-    # soft shadow first
+    ty = 420
     shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     sd = ImageDraw.Draw(shadow)
-    draw_tracked(sd, (tx + 6, ty + 10), title, f_title, (0, 0, 0, 170), 46)
-    shadow = shadow.filter(ImageFilter.GaussianBlur(14))
+    draw_tracked(sd, (tx + 5, ty + 12), title, f_title, (0, 0, 0, 185), 46)
+    shadow = shadow.filter(ImageFilter.GaussianBlur(16))
     base = Image.alpha_composite(base, shadow)
     draw = ImageDraw.Draw(base)
     draw_tracked(draw, (tx, ty), title, f_title, IVORY, 46)
 
-    # 5. gold rule with a small diamond
-    ry = 900
-    half = 300
-    draw.line([(W / 2 - half, ry), (W / 2 - 16, ry)], fill=GOLD, width=3)
-    draw.line([(W / 2 + 16, ry), (W / 2 + half, ry)], fill=GOLD, width=3)
-    d = 9
+    # 6. gold rule with diamond
+    ry = 892
+    half = 310
+    draw.line([(W / 2 - half, ry), (W / 2 - 18, ry)], fill=GOLD, width=3)
+    draw.line([(W / 2 + 18, ry), (W / 2 + half, ry)], fill=GOLD, width=3)
+    d = 10
     draw.polygon([(W / 2, ry - d), (W / 2 + d, ry), (W / 2, ry + d), (W / 2 - d, ry)], fill=GOLD)
 
-    # 6. tagline
-    f_tag = ImageFont.truetype(FONT_KAI, 60)
+    # 7. tagline
+    f_tag = ImageFont.truetype(str(KAI), 60)
     tag = "井水照人，照见的是各人的心。"
     tagw = draw.textlength(tag, font=f_tag)
-    draw.text(((W - tagw) / 2, 972), tag, font=f_tag, fill=(232, 222, 204))
+    draw.text(((W - tagw) / 2, 964), tag, font=f_tag, fill=WARM)
 
-    # 7. author and book line
-    f_author = ImageFont.truetype(FONT_SERIF, 66)
+    # 8. author and imprint line (over a soft dark plate at the foot)
+    plate = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    pd = ImageDraw.Draw(plate)
+    pd.ellipse((250, 1940, W - 250, 2270), fill=(4, 6, 12, 120))
+    plate = plate.filter(ImageFilter.GaussianBlur(70))
+    base = Image.alpha_composite(base, plate)
+    draw = ImageDraw.Draw(base)
+
+    f_author = ImageFont.truetype(str(SERIF), 66)
     author = "江 召 兵  著"
     aw = tracked_width(draw, author, f_author, 12)
-    ay = 2052
+    ay = 2006
+    ash = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ad = ImageDraw.Draw(ash)
+    draw_tracked(ad, ((W - aw) / 2 + 3, ay + 5), author, f_author, (0, 0, 0, 200), 12)
+    ash = ash.filter(ImageFilter.GaussianBlur(8))
+    base = Image.alpha_composite(base, ash)
+    draw = ImageDraw.Draw(base)
     draw_tracked(draw, ((W - aw) / 2, ay), author, f_author, IVORY, 12)
 
-    f_line = ImageFont.truetype(FONT_SERIF, 32)
+    f_line = ImageFont.truetype(str(SERIF), 32)
     line = "三卷四十章 · 一九八六—二〇二六"
     lw2 = tracked_width(draw, line, f_line, 6)
-    draw_tracked(draw, ((W - lw2) / 2, 2160), line, f_line, MUTED, 6)
+    lx = (W - lw2) / 2
+    ly = 2116
+    lsh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ld = ImageDraw.Draw(lsh)
+    draw_tracked(ld, (lx + 2, ly + 4), line, f_line, (0, 0, 0, 190), 6)
+    lsh = lsh.filter(ImageFilter.GaussianBlur(6))
+    base = Image.alpha_composite(base, lsh)
+    draw = ImageDraw.Draw(base)
+    draw_tracked(draw, (lx, ly), line, f_line, (236, 226, 206), 6)
 
-    # 8. red seal, slightly rotated, right of the author line
+    # 9. red seal
     seal = Image.new("RGBA", (150, 150), (0, 0, 0, 0))
     sdd = ImageDraw.Draw(seal)
     sdd.rounded_rectangle((6, 6, 144, 144), radius=14, outline=SEAL_RED, width=7)
     sdd.rounded_rectangle((16, 16, 134, 134), radius=8, outline=SEAL_RED, width=2)
-    f_seal = ImageFont.truetype(FONT_TITLE, 82)
+    f_seal = pick_font(TITLE_CANDIDATES, 82)
     cw = sdd.textlength("井", font=f_seal)
     sdd.text(((150 - cw) / 2, 30), "井", font=f_seal, fill=SEAL_RED)
     seal = seal.rotate(6, expand=True, resample=Image.BICUBIC)
-    base.alpha_composite(seal, (1258, 2100))
+    base.alpha_composite(seal, (1244, 2092))
 
-    # 9. subtle paper grain
-    grain = Image.effect_noise((W, H), 8).convert("L").resize((W, H))
-    grain = ImageEnhance.Contrast(grain).enhance(0.6)
+    # 10. paper grain
+    grain = Image.effect_noise((W, H), 7).convert("L")
+    grain = ImageEnhance.Contrast(grain).enhance(0.55)
     noise = Image.new("RGBA", (W, H), (255, 255, 255, 0))
-    noise.putalpha(grain.point(lambda v: int(v * 0.05)))
+    noise.putalpha(grain.point(lambda v: int(v * 0.045)))
     base = Image.alpha_composite(base, noise)
 
     rgb = base.convert("RGB")
     rgb.save(OUT / "cover.jpg", "JPEG", quality=92, optimize=True)
-    card = rgb.resize((640, 960), Image.LANCZOS)
-    card.save(OUT / "cover-card.jpg", "JPEG", quality=90, optimize=True)
-    prev = rgb.resize((800, 1200), Image.LANCZOS)
-    prev.save(OUT / "cover_preview.png", "PNG", optimize=True)
+    rgb.resize((640, 960), Image.LANCZOS).save(OUT / "cover-card.jpg", "JPEG", quality=90, optimize=True)
+    rgb.resize((800, 1200), Image.LANCZOS).save(OUT / "cover_preview.png", "PNG", optimize=True)
     for p in ("cover.jpg", "cover-card.jpg", "cover_preview.png"):
         f = OUT / p
         print(p, f.stat().st_size)
