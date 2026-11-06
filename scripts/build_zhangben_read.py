@@ -121,7 +121,7 @@ html_doc = f"""<!DOCTYPE html>
 <meta property="og:url" content="https://ZhaobingJiang.github.io/books/zhangben/read.html">
 <meta property="og:title" content="账本 · 全文在线阅读">
 <meta property="og:description" content="一个饥饿者的七十年。1953—2023，甘肃通渭。五卷四十六章，约三十一万字，全文在线阅读。">
-<meta property="og:image" content="https://ZhaobingJiang.github.io/books/zhangben/cover.jpg?v=2">
+<meta property="og:image" content="https://ZhaobingJiang.github.io/books/zhangben/cover.jpg?v=3">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../../assets/css/style.css">
 <style>
@@ -170,7 +170,7 @@ html_doc = f"""<!DOCTYPE html>
 
 <main class="reader">
   <div class="book-head">
-    <img class="web-cover" src="cover.jpg?v=2" alt="《账本》封面：江召兵著，长篇小说" width="1600" height="2400">
+    <img class="web-cover" src="cover.jpg?v=3" alt="《账本》封面：江召兵著，长篇小说" width="1600" height="2400">
     <h1 class="t">账　本</h1>
     <div class="s">一个饥饿者的七十年</div>
     <div class="a">江召兵　著</div>
