@@ -6,7 +6,7 @@ ROOT = Path(r"D:\deepseek-harness\OpatiyaAgent\JiangZhaobing.github.io")
 
 ZH_CARD = '''        <article class="book-card" id="book-19">
           <figure class="book-figure">
-            <img src="../books/jingshui-zhaoren/cover-card.jpg?v=1" alt="《井水照人》封面" width="640" height="960">
+            <img src="../books/jingshui-zhaoren/cover-card.jpg?v=2" alt="《井水照人》封面" width="640" height="960">
             <figcaption>全书完成 · 楔子 + 三卷四十章</figcaption>
           </figure>
           <div class="book-body">
@@ -32,7 +32,7 @@ ZH_CARD = '''        <article class="book-card" id="book-19">
 
 EN_CARD = '''        <article class="book-card" id="book-19">
           <figure class="book-figure">
-            <img src="./jingshui-zhaoren/cover-card.jpg?v=1" alt="Cover of Well Water Mirrors (Jingshui Zhaoren)" width="640" height="960">
+            <img src="./jingshui-zhaoren/cover-card.jpg?v=2" alt="Cover of Well Water Mirrors (Jingshui Zhaoren)" width="640" height="960">
             <figcaption>Complete &middot; Prologue and three volumes, forty chapters</figcaption>
           </figure>
           <div class="book-body">
