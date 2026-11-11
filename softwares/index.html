@@ -392,6 +392,39 @@
         </p>
       </article>
 
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">12. Yangtze Middle-Reaches Water-Level Deep-Learning Rolling Forecast Platform<span class="soft-tag">local web app</span></h3>
+        <p class="soft-desc">
+          A browser-based water-level forecasting platform for the middle reaches of the Yangtze, built on
+          <strong>daily mean water levels of two stations &mdash; Yichang and Wuhu &mdash; from 2003 to 2019</strong>
+          (2003&ndash;2010 from the Changjiang Waterway Bureau&rsquo;s published series, 2010&ndash;2019 from the
+          updated series, the overlapping year matching day for day; datum: navigation base, m).
+          <strong>Four recurrent models (RNN / LSTM / GRU / Transformer)</strong> take a
+          <strong>30-day window</strong> and emit a <strong>7-day</strong> forecast in one forward pass;
+          results are reported for the <strong>1 / 3 / 7-day</strong> horizons with a chronological
+          <strong>70 / 15 / 15</strong> train / validation / test split and a persistence baseline.
+          The single-page canvas front end provides a nine-parameter training panel with asynchronous job
+          polling and live progress, forecast overlays (distinct dash-dot patterns, hover read-out,
+          drag-box zoom), an absolute-error table (MAE, maximum, median, p95, bias) and loss curves.
+          A <strong>full-data card</strong> retrains on 100% of the record and extrapolates the next 7 days
+          beyond the last 7 observed days; measured values can be appended manually or imported from a
+          CSV / TXT file through a directory picker (the number of days read equals the number of appended
+          rows) before warm-starting another 10 training epochs (learning rate &times;0.4) and re-forecasting.
+          Flask + PyTorch back end; everything runs on the author&rsquo;s machine.
+        </p>
+        <p class="soft-meta">
+          2003&ndash;2019 &middot; 2,608 days (Yichang) / 5,767 valid days (Wuhu) &middot;
+          4 models &times; 1/3/7-day horizons &middot; 30-day window &middot; 70/15/15 split &middot;
+          MAE 0.271 m / NSE 0.984 (Yichang, 1 day) &middot; MAE 0.080 m / NSE 0.996 (Wuhu, 1 day) &middot;
+          full-data training + rolling append-and-refit &middot; PyTorch 2.8.0 (CPU) + Flask
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./water-level-dl/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs as a local web service on the author's machine</span>
+        </p>
+      </article>
+
     </section>
   </main>
 

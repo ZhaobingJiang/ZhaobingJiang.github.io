@@ -294,6 +294,30 @@
         </p>
       </article>
 
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">12. 长江中游水位深度学习滚动预报平台<span class="soft-tag">本地网页版</span></h3>
+        <p class="soft-desc">
+          面向长江中游<strong>宜昌、芜湖</strong>两站的网页端水位预报平台。数据为
+          <strong>2003–2019 年逐日平均水位</strong>：2003–2010 年取自长江航道局网站公开资料，
+          2010–2019 年取更新资料，2010 年重叠段逐日一致；基准为<strong>航行基面</strong>（m）。
+          <strong>RNN / LSTM / GRU / Transformer</strong> 四类循环神经网络以 <strong>30 天</strong>窗口
+          一次前向输出未来 <strong>7 天</strong>水位，按时间顺序 <strong>70/15/15</strong> 切分
+          训练 / 验证 / 测试集，给出 <strong>1/3/7 天</strong>预见期指标并与持久性基线对照。
+          单页 Canvas 前端含九项超参面板、异步任务进度轮询、预测对比（点划线区分模型、悬停读数、
+          拖框放大）、绝对误差表（MAE、最大、中位、p95、偏差）与损失曲线。
+          <strong>全量训练卡</strong>以 100% 数据训练并外推最后 7 天实测之后的未来 7 天；
+          还可<strong>手工录入或从末月数据目录弹窗读入实测文件</strong>（读取天数等于追加行数），
+          再<strong>从保存权重继续训练 10 轮（学习率 0.4×）</strong>并重新外推。
+          后端为 Flask + PyTorch，全部在本机运行，数据不出本机。
+        </p>
+        <p class="soft-meta">2003–2019 年 · 宜昌 2,608 天 / 芜湖 5,767 有效日 · 四模型 × 1/3/7 天 · 30 天窗口 · 70/15/15 切分 · 宜昌 1 天 MAE 0.271 m、NSE 0.984；芜湖 1 天 MAE 0.080 m、NSE 0.996 · 全量训练 + 追加实测继续训练 · PyTorch 2.8.0（CPU）+ Flask</p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="../softwares/water-level-dl/">软件介绍 →</a>
+          <span class="soft-side">介绍页含软件截图与运行说明 · 软件本体以本地网页服务形式在作者本机运行</span>
+        </p>
+      </article>
+
     </section>
   </main>
 

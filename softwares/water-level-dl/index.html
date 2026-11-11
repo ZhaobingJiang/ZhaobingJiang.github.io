@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="长江中游水位深度学习滚动预报平台（本地网页版）：宜昌、芜湖两站 2003–2019 年实测水位，RNN/LSTM/GRU/Transformer 四模型 1/3/7 天滚动预报，可调参重训、全量训练末段外推、追加实测后继续训练。本页为软件介绍，软件本体在作者本机运行。">
+  <title>长江中游水位深度学习滚动预报平台（本地网页版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页眉品牌栏：开发者 + 版权）---- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+    .res-table { width: 100%; border-collapse: collapse; margin: 10px 0 8px; font-size: 13.5px; }
+    .res-table th, .res-table td { border: 1px solid var(--border-color); padding: 6px 10px; text-align: center; }
+    .res-table th { background: var(--border-color); color: var(--heading-color); font-weight: 600; }
+    .res-table td:first-child, .res-table th:first-child { text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件（网页本地版）开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        长江中游水位深度学习滚动预报平台
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">本地网页版</span>
+      </h1>
+      <p class="affiliation">宜昌 / 芜湖两站长序列 —— 四模型 1 / 3 / 7 天滚动预报，可调参重训、全量外推与实测追加。</p>
+    </div>
+
+    <p class="intro-lede">
+      本平台基于 <strong>2003–2019 年</strong>长江中游<strong>宜昌、芜湖</strong>两站逐日平均水位（航行基面，m）构建：
+      以 <strong>30 天</strong>历史窗口为输入，用 <strong>RNN / LSTM / GRU / Transformer</strong> 四类循环神经网络
+      一次前向输出未来 <strong>7 天</strong>水位，并分别给出 <strong>1 / 3 / 7 天</strong>预见期的训练、评估与误差对照。
+      页面提供参数面板（9 项超参 + 模型勾选）交互重训、测试集预测对比（点划线区分模型、可拖框放大）、
+      绝对误差指标、全量训练末段外推，以及“追加实测 → 继续训练 → 再外推”的滚动更新闭环；
+      亦可从末月数据目录弹窗读入实测文件，读取天数由手工追加行数决定。
+      前端为单页原生 Canvas，后端为 <strong>Flask + PyTorch</strong> 本机服务，数据与训练均不出本机。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="长江中游水位深度学习滚动预报平台主界面：左侧参数面板，右侧数据与切分、测试集预测对比、误差指标与损失曲线">
+    </div>
+    <p class="shot-cap">
+      软件主界面：左侧为参数面板（站点、模型、超参、训练与重载），右侧自上而下为数据总览与 70/15/15 切分、
+      测试集预测对比（实测与四模型）、绝对误差指标表、误差柱状对比与训练损失曲线。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>双站长序列数据</b> — 宜昌 2,608 天（2003-11 至 2010-12）、芜湖 5,767 个有效日（2003-11 至 2019-12，末有效 2019-09-15），缺测日标记不插值；另有逐日 / 年均 / 叠加三视图的独立查看器，可缩放、悬停读数并导出 CSV。</div>
+        <div class="feat-item"><b>四模型多预见期</b> — RNN / LSTM / GRU / Transformer 共享同一训练流程；按时间顺序 70 / 15 / 15 切分训练、验证、测试集；一次前向输出 7 天，指标分别取第 1 / 3 / 7 天。</div>
+        <div class="feat-item"><b>交互式重训</b> — 输入窗口、隐藏维度、层数、学习率、轮数、批大小、Dropout、随机种子、季节特征均可改；异步任务 + 进度轮询，训练完成自动重绘预测与误差。</div>
+        <div class="feat-item"><b>误差与图表</b> — MAE / RMSE / NSE / 合格率（≤0.2 m），并给出绝对误差的 MAE、最大误差、中位误差、p95 与偏差；预测图支持图例开关、悬停读数、各模型点划线区分、拖框放大与复位。</div>
+        <div class="feat-item"><b>全量训练 · 末段外推</b> — 以 100% 数据训练（无验证 / 测试集，固定 60 轮不早停），用最后 30 天窗口外推未来 7 天；图上只画最后 7 天实测 + 未来 7 天预测，表格给出第 1 / 3 / 7 天预测值与样本内 MAE。</div>
+        <div class="feat-item"><b>追加实测 · 继续训练</b> — 手工录入 1~7 天或从末月数据目录弹窗选文件（CSV / TXT 自动识别日期与水位列，读取天数 = 追加行数）；后端并入序列、从保存权重继续训练 10 轮（学习率 0.4×）后重新外推，更新写回结果与权重。</div>
+      </div>
+      <p class="metric-line">
+        2003–2019 年 · 宜昌 2,608 天 / 芜湖 5,767 有效日 · 30 天窗口 → 1/3/7 天 · 默认 60 轮 ·
+        宜昌 1 天 RNN MAE 0.271 m、NSE 0.984；芜湖 1 天 MAE 0.080 m · 全量更新单站约 1–2 分钟（CPU）
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">预测与误差示例</h2>
+      <div class="shot-frame">
+        <img src="screenshot_horizon.jpg" alt="宜昌站测试集 MAE 与 RMSE 随预见期变化曲线（24~168 小时），含持久性基线">
+      </div>
+      <p class="shot-cap">宜昌站测试集误差随预见期变化：四模型与持久性基线对比（MAE / RMSE，24–168 h）。</p>
+
+      <div class="shot-frame">
+        <img src="screenshot_metrics.jpg" alt="绝对误差指标表：四个模型在 1、3、7 天预见期下的 MAE、最大误差、中位误差、RMSE、NSE 与合格率">
+      </div>
+      <p class="shot-cap">绝对误差指标表：每行一个模型，每列一个预见期（1 / 3 / 7 天），含最大误差与中位误差。</p>
+
+      <div class="shot-frame">
+        <img src="screenshot_full.jpg" alt="全量训练 · 末段外推预测卡片：最后 7 天实测与未来 7 天预测，附第 1/3/7 天预测值表">
+      </div>
+      <p class="shot-cap">全量训练 · 末段外推：100% 数据训练后，最后 7 天实测 + 未来 7 天预测及第 1 / 3 / 7 天数值表。</p>
+
+      <div class="shot-frame">
+        <img src="screenshot_files.jpg" alt="读入数据文件弹窗：定位末月数据目录，列出两站末月文件的天数、起止日期、水位范围与大小">
+      </div>
+      <p class="shot-cap">读入数据文件：弹窗直接定位末月数据目录并列出文件摘要，点选即读入；读取天数等于手工追加的行数。</p>
+
+      <div class="shot-frame">
+        <img src="screenshot_zoom.jpg" alt="预测对比图拖框放大后：每个圆点代表一个锚点日的预测值">
+      </div>
+      <p class="shot-cap">拖框放大后的预测对比图：相邻点仅隔 1 天，放大后每个圆点代表一个锚点日的预测值。</p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件以本机网页服务形式运行（Flask + PyTorch，页面与训练均在本机完成）；本页面为软件介绍。</li>
+          <li>在本机双击启动脚本，或在 <span class="run-code">dl</span> 目录执行
+              <span class="run-code">python app.py</span> 启动服务（默认仅监听回环地址）。</li>
+          <li>浏览器打开本机服务地址即可使用；数据与模型文件均在本机，不联网、不出本机。</li>
+        </ol>
+        <div class="guest-note">
+          说明：软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
+          欢迎通过本页了解软件功能，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">数据口径与结果说明</h2>
+      <p>
+        实测水位取自长江航道局网站公开的逐日水位资料（2003 年 11 月起，<strong>航行基面</strong>，m），
+        2010–2019 年段取后续更新资料；两站在 2010 年重叠时段逐日水位完全一致。
+        页面统一使用“航行基面 m”，<strong>未</strong>与 85 基准或吴淞基准混用换算。
+      </p>
+      <table class="res-table">
+        <thead><tr><th>测试集（默认参数）</th><th>1 天 MAE / NSE</th><th>3 天 MAE / NSE</th><th>7 天 MAE / NSE</th></tr></thead>
+        <tbody>
+          <tr><td>宜昌 · 最优模型（RNN）</td><td>0.271 m / 0.984</td><td>0.541 m / 0.944</td><td>0.752 m / 0.889</td></tr>
+          <tr><td>芜湖 · 最优模型（GRU / Transformer）</td><td>0.080 m / 0.996</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p class="metric-line">
+        误差随预见期增大；模型与持久性基线在不同站点、不同预见期互有胜负。表中为默认参数一次训练结果，
+        页面可随时改参重训并以最新结果为准。
+      </p>
+      <p>
+        技术栈：PyTorch 2.8.0（CPU）+ Flask + 原生 Canvas / JavaScript；四模型单站训练约 1–2 分钟（CPU）。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+
+  <script src="/assets/js/site-counter.js?v=3" defer></script>
+</body>
+</html>
