@@ -110,6 +110,45 @@
       margin: 16px 0 4px;
       line-height: 1.75;
     }
+    .launch-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 4px 0 22px;
+      background: var(--bg-color);
+    }
+    .launch-title {
+      font-size: 15.5px;
+      font-weight: 600;
+      color: var(--heading-color);
+      margin-right: 2px;
+    }
+    .btn-launch {
+      display: inline-block;
+      padding: 9px 20px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 14.5px;
+      font-weight: 600;
+      border: 0;
+      cursor: pointer;
+    }
+    .btn-launch:hover { background: var(--accent-hover); text-decoration: none; }
+    .btn-direct { font-size: 13.5px; }
+    .launch-hint {
+      flex-basis: 100%;
+      font-size: 13px;
+      color: var(--muted-color);
+      line-height: 1.75;
+      margin: 2px 0 0;
+    }
+    .launch-hint.ready { color: #15803d; }
     .res-table { width: 100%; border-collapse: collapse; margin: 10px 0 8px; font-size: 13.5px; }
     .res-table th, .res-table td { border: 1px solid var(--border-color); padding: 6px 10px; text-align: center; }
     .res-table th { background: var(--border-color); color: var(--heading-color); font-weight: 600; }
@@ -158,6 +197,17 @@
       亦可从末月数据目录弹窗读入实测文件，读取天数由手工追加行数决定。
       前端为单页原生 Canvas，后端为 <strong>Flask + PyTorch</strong> 本机服务，数据与训练均不出本机。
     </p>
+
+    <div class="launch-panel" id="launchPanel">
+      <span class="launch-title">本机运行 · 一键启动</span>
+      <a class="btn-launch" id="btnLaunchLocal" href="water-level://start">▶ 启动本地服务</a>
+      <a class="btn-direct" href="http://127.0.0.1:8792/" target="_blank" rel="noopener">已在运行？直接打开</a>
+      <p class="launch-hint" id="launchHint">
+        点击后浏览器会询问是否打开“water-level”，请选择“打开”；启动脚本会在本机拉起 Flask 服务
+        （约 2–8 秒）并自动打开软件页面。首次使用需在本机做一次性协议注册（见下方「获取与运行」）。
+        此按钮只对已部署本软件的本机有效。
+      </p>
+    </div>
 
     <div class="shot-frame">
       <img src="screenshot.jpg" alt="长江中游水位深度学习滚动预报平台主界面：左侧参数面板，右侧数据与切分、测试集预测对比、误差指标与损失曲线">
@@ -215,13 +265,20 @@
       <div class="run-box">
         <h3>获取与运行</h3>
         <ol>
-          <li>软件以本机网页服务形式运行（Flask + PyTorch，页面与训练均在本机完成）；本页面为软件介绍。</li>
-          <li>在本机双击启动脚本，或在 <span class="run-code">dl</span> 目录执行
-              <span class="run-code">python app.py</span> 启动服务（默认仅监听回环地址）。</li>
-          <li>浏览器打开本机服务地址即可使用；数据与模型文件均在本机，不联网、不出本机。</li>
+          <li><b>首次使用：一次性注册启动协议</b>（仅写入当前用户，无需管理员权限）。在本模块目录运行：
+              <span class="run-code">powershell -ExecutionPolicy Bypass -File setup-local-launch.ps1 -AppDir "…\dl"</span>
+              —— <span class="run-code">-AppDir</span> 指向软件的 dl 目录（含 <span class="run-code">app.py</span>）；
+              卸载加 <span class="run-code">-Uninstall</span>。</li>
+          <li><b>启动服务</b>：点击页面顶部「启动本地服务」，浏览器询问时选择“打开”；或直接在本机
+              <span class="run-code">dl</span> 目录执行 <span class="run-code">python app.py</span>。
+              启动后会自动打开软件页面，也可手动访问
+              <span class="run-code">http://127.0.0.1:8792/</span>。</li>
+          <li>服务仅监听本机回环地址，数据与模型文件均在本机，不联网、不出本机。</li>
         </ol>
         <div class="guest-note">
-          说明：软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
+          说明：“启动本地服务”按钮通过 <span class="run-code">water-level://</span> 协议调用本机启动脚本，
+          只对已部署本软件并完成协议注册的电脑有效；其他访客点击后不会启动任何服务。
+          软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
           欢迎通过本页了解软件功能，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
         </div>
       </div>
@@ -259,6 +316,19 @@
     </p>
   </footer>
 
+  <script>
+    (function () {
+      var btn = document.getElementById('btnLaunchLocal');
+      var hint = document.getElementById('launchHint');
+      if (!btn || !hint) return;
+      btn.addEventListener('click', function () {
+        hint.className = 'launch-hint ready';
+        hint.textContent = '已向本机发送启动请求：若出现“是否打开 water-level”的提示，请选择“打开”；'
+          + '服务就绪后会自动打开软件页面（约 2–8 秒）。若未出现该提示，说明本机尚未注册启动协议，'
+          + '请按下方「获取与运行」第 1 步完成一次性注册。';
+      });
+    })();
+  </script>
   <script src="/assets/js/site-counter.js?v=3" defer></script>
 </body>
 </html>
