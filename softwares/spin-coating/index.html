@@ -84,6 +84,10 @@
     .feat-item { font-size: 14.5px; line-height: 1.7; }
     .feat-item b { color: var(--heading-color); }
     .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .audit-list { margin: 12px 0 10px; padding-left: 22px; font-size: 14.5px; line-height: 1.85; }
+    .audit-list li { margin-bottom: 8px; }
+    .audit-list b { color: var(--heading-color); }
+    .audit-list code { font-size: 13px; background: var(--border-color); padding: 1px 5px; border-radius: 4px; }
     .run-box {
       border: 1px solid var(--border-color);
       border-radius: 10px;
@@ -268,6 +272,32 @@
         各面板来自不同台阶仪扫描，x 零点与高度基准由作者逐面板对齐，模型只输出相对基准；
         用参数化重建掩模代替实测掩模时，图 10(b) 为 7.15 %（列为参考项），差异主要来自 50–500 nm 细结构低于读图分辨率。
       </p>
+
+      <p>
+        除 ≤ 5 % 判据外，软件对<strong>相对误差超过 10 %</strong> 的指标强制走一遍审核：逐条列出根因类别
+        （模型假设 / 参数与口径 / 代码缺陷 / 测量与数字化 / 数据来源）、现场计算的证据、
+        对应代码位置与参数来源，以及处置结论，状态分「已定位」与「待审核」。
+        当前 11 个图件条目共 <strong>8 项</strong>超差，全部已定位、无待审核项：
+      </p>
+      <ul class="audit-list">
+        <li><strong>图 4（3 项，模型假设）</strong>：单高斯核只有一个长度尺度，复算的 ρ(w) 过渡区比实测窄；
+          反推的有效 λ 在 0.64–12.3 µm 间漂移（工艺 A#1），强行拟合单一 λ 残差仍达 16.7 pp。</li>
+        <li><strong>图 5（4 项）</strong>：三深度偏差同源于模型假设；另有 19.35 pp 为论文自身三条深度曲线的互差，
+          归入「数据来源」，作为实验噪声底保留为参考项。</li>
+        <li><strong>图 10(a)（1 项，测量与数字化）</strong>：参数化掩模与实测无填充剖面的剖面 RMSE 为 18.1 %，
+          主要因为 50 nm–2 µm 细结构超出台阶仪横向分辨极限；改用「可分辨区边缘配准残差」后为 0.85 µm，
+          证明掩模几何本身保真。</li>
+        <li><strong>审核中发现的代码缺陷</strong>：<code>make_structure()</code> 在 <code>fig8</code> / <code>step</code>
+          分支曾忽略 <code>d0</code> 入参（参数未生效），已修复；该缺陷未影响任何判定项。</li>
+      </ul>
+      <p class="metric-line">
+        审核记录随软件归档（<code>webapp/data/AUDIT.md</code>），由审核模块的计算结果自动生成，与界面同源、可复核。
+      </p>
+
+      <div class="shot-frame">
+        <img src="screenshot_audit.jpg" alt="误差审核卡片：逐条列出超过 10 % 的指标、根因类别、现场证据、代码位置与参数来源、处置与状态">
+      </div>
+      <p class="shot-cap">「误差审核」卡片：图 4 的三项超差指标，逐条给出根因、证据（现场反推 λ_eff）、代码位置、参数来源、处置与状态。</p>
 
       <div class="shot-frame">
         <img src="screenshot_overview.jpg" alt="复现精度总览卡片：判定类图件 8/8 项达标，最大相对误差 4.89 %，逐图列出判定项数与结论">
