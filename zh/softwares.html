@@ -318,6 +318,31 @@
         </p>
       </article>
 
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">13. 旋涂平坦化计算平台<span class="soft-tag">本地网页版</span></h3>
+        <p class="soft-desc">
+          把 <strong>Decoster 等（JVST B 36, 03E102, 2018）</strong>的<strong>图形密度卷积模型</strong>做成网页计算软件：
+          输入刻蚀掩模 <em>d</em>(<em>x</em>,<em>y</em>)（0 = 沟槽、1 = 线/台面）、图形深度 <em>T</em><sub>0</sub>
+          与平坦化长度 <em>λ</em>，按 <span class="run-code">p = T₀·[d ⊛ Gλ]</span> 求旋涂后高度场，
+          并按 <span class="run-code">ρ = H₁/H₂×100 %</span> 给出残余形貌比。默认参数取自论文：
+          <strong>λ = 1.5 / 13.5 / 3.5 µm</strong>（工艺 A#1 / A#2 / B）、<strong>T₀ = 60 nm</strong>、
+          图 8 标准掩模（50 nm–50 µm 共十组、每组 5 线 + 5 槽、填充区 8 %）。
+          界面按<strong>七步计算流程</strong>组织（背景 / 理论 / 模型 / 参数 / 仿真 / 后处理 / 对比），
+          内置掩模库（标准掩模、等宽光栅、密度台阶、柱孔阵列、图 11 三种结构）、可分离核 FFT 解算
+          （7001 点网格约 0.02 s）、二维与三维形貌、按宽度分组的 ρ 表、网格收敛性检验和 CSV 导出。
+          对比页逐图复现论文<strong>图 7 / 9 / 10 / 11</strong>（以实测预涂剖面作掩模输入并做 (Δx, Δy) 对齐），
+          判定类指标<strong>8/8 项 ≤ 5 %</strong>（最大 4.89 %）；图 4 / 5 作为实验趋势对照，
+          并量化了单高斯核的系统性偏差（如工艺 B、w = 5 µm：实测 33.4 % 对模型 11.3 %）。
+          后端为 Flask + NumPy/SciPy 本机服务，模型、掩模与数据不出本机。
+        </p>
+        <p class="soft-meta">七步流程 · 6 类结构掩模 · 2 个解析解交叉校验 · 1400 µm × 0.2 µm 网格 · 7001 点 0.02 s · y 向 200 µm 图带 · 40 项 pytest 回归 · 判定类 8/8 项 ≤ 5 %（最大 4.89 %）· 一键协议启动</p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="../softwares/spin-coating/">软件介绍 →</a>
+          <span class="soft-side">介绍页含软件截图、逐图复现精度表与运行说明 · 软件本体以本地网页服务形式在作者本机运行，支持 spin-coating:// 一键启动</span>
+        </p>
+      </article>
+
     </section>
   </main>
 

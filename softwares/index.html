@@ -425,6 +425,45 @@
         </p>
       </article>
 
+      <article class="soft-card">
+        <div class="soft-strip" aria-hidden="true"></div>
+        <h3 class="soft-title">13. Spin-Coating Planarization Calculator<span class="soft-tag">local web app</span></h3>
+        <p class="soft-desc">
+          A browser-based implementation of the <strong>pattern-density convolution model</strong> of
+          Decoster <em>et al.</em> (<em>J. Vac. Sci. Technol. B</em> <strong>36</strong>, 03E102, 2018):
+          given an etched mask <em>d</em>(<em>x</em>,<em>y</em>) (0 = trench, 1 = line / mesa), a pattern depth
+          <em>T</em><sub>0</sub> and a process planarization length <em>&lambda;</em>, it computes the
+          post-spin-coating height field
+          <em>p</em> = <em>T</em><sub>0</sub>&middot;(<em>d</em> &#8857; <em>G</em><sub>&lambda;</sub>)
+          and reports the residual-topography ratio
+          &rho; = <em>H</em><sub>1</sub>/<em>H</em><sub>2</sub>.
+          Defaults come from the paper: <strong>&lambda; = 1.5 / 13.5 / 3.5 &micro;m</strong> for processes
+          <strong>A#1 / A#2 / B</strong>, <strong><em>T</em><sub>0</sub> = 60 nm</strong>, and the standard
+          Fig. 8 mask (ten groups of five lines + five trenches, 50 nm &ndash; 50 &micro;m, 8 % dummy fill).
+          The interface follows the <strong>seven-step calculation workflow</strong> (background, theory, model
+          set-up, parameters, simulation, post-processing, comparison) and ships a structural mask library
+          (standard mask, equal-width grating, density step, via array, the three Fig. 11 structures),
+          a separable-kernel FFT solver (7001-point grid in about 0.02 s), 2-D/3-D topography views,
+          a per-width &rho; table, a grid-convergence check and CSV export. The comparison page reproduces the
+          paper&rsquo;s <strong>Figs. 7, 9, 10 and 11</strong> figure by figure, using the measured pre-coat
+          profiles as mask input with (&#916;x, &#916;y) alignment: <strong>8 of 8 judged indicators within
+          5 %</strong> (worst case 4.89 %). Figs. 4 and 5 are kept as experimental trend references &mdash; the
+          paper draws no model curve on them &mdash; and the systematic deviation of the single-Gaussian kernel
+          is quantified (e.g. process B at w = 5 &micro;m: measured 33.4 % versus model 11.3 %).
+          Flask + NumPy/SciPy local service; model, masks and data never leave the machine.
+        </p>
+        <p class="soft-meta">
+          7-step workflow &middot; 6 structural mask types &middot; 2 analytic cross-checks &middot;
+          1400 &micro;m &times; 0.2 &micro;m grid &middot; 7001 points in 0.02 s &middot; 200 &micro;m pattern band &middot;
+          40 pytest regressions &middot; 8/8 judged figures &le; 5 % (max 4.89 %) &middot;
+          Flask + NumPy/SciPy &middot; one-click <span class="run-code">spin-coating://</span> launch
+        </p>
+        <p class="soft-actions">
+          <a class="soft-btn" href="./spin-coating/">Software details &rarr;</a>
+          <span class="soft-side">Introduction page in Chinese &middot; the software itself runs as a local web service on the author's machine &middot; one-click launch via <span class="run-code">spin-coating://</span></span>
+        </p>
+      </article>
+
     </section>
   </main>
 

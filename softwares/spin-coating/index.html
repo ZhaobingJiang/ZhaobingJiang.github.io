@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="旋涂平坦化计算平台（本地网页版）：基于 Decoster 等 (2018) 密度卷积模型，输入刻蚀掩模、图形深度 T0 与平坦化长度 λ，按 p = T0·(d ⊛ Gλ) 计算旋涂后残余形貌；7 步流程复现论文图 7/9/10/11 共 8 项判定指标，最大相对误差 4.89 %。本页为软件介绍，软件本体在作者本机运行。">
+  <title>旋涂平坦化计算平台（本地网页版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    /* ---- page masthead（页眉品牌栏：开发者 + 版权）---- */
+    .page-masthead {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .masthead-logo {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      padding: 5px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 11px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--heading-color);
+      letter-spacing: 0.3px;
+      line-height: 1.45;
+    }
+    .masthead-sub {
+      font-size: 12.5px;
+      color: var(--muted-color);
+      letter-spacing: 0.4px;
+      line-height: 1.45;
+    }
+    .masthead-copy {
+      flex: none;
+      margin-left: auto;
+      font-size: 12.5px;
+      color: var(--muted-color);
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 4px 14px;
+      white-space: nowrap;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .page-masthead { padding: 16px 16px 12px; gap: 11px; flex-wrap: wrap; }
+      .masthead-logo { width: 40px; height: 40px; border-radius: 10px; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-org { font-size: 14.5px; }
+      .masthead-sub { font-size: 11.5px; }
+      .masthead-copy { margin-left: 51px; padding: 2px 11px; font-size: 11.5px; }
+    }
+    /* ---- page-local styles (software introduction) ---- */
+    .intro-lede { font-size: 15.5px; line-height: 1.75; margin: 14px 0 22px; }
+    .shot-frame {
+      margin: 6px 0 26px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+      line-height: 0;
+    }
+    .shot-frame img { width: 100%; height: auto; display: block; }
+    .shot-cap { font-size: 13px; color: var(--muted-color); text-align: center; margin: 8px 0 26px; line-height: 1.5; }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 22px;
+      margin: 16px 0 8px;
+    }
+    @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-item { font-size: 14.5px; line-height: 1.7; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); margin: 14px 0 26px; }
+    .run-box {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin: 10px 0 26px;
+      background: var(--bg-color);
+    }
+    .run-box h3 { margin-top: 0; font-size: 16.5px; color: var(--heading-color); }
+    .run-box ol { margin: 10px 0 14px; padding-left: 22px; font-size: 14.5px; line-height: 1.9; }
+    .run-code {
+      display: inline-block;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--border-color);
+      border-radius: 5px;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .guest-note {
+      font-size: 13.5px;
+      color: var(--muted-color);
+      border-left: 3px solid var(--accent-color);
+      padding: 6px 0 6px 14px;
+      margin: 16px 0 4px;
+      line-height: 1.75;
+    }
+    .launch-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 4px 0 22px;
+      background: var(--bg-color);
+    }
+    .launch-title {
+      font-size: 15.5px;
+      font-weight: 600;
+      color: var(--heading-color);
+      margin-right: 2px;
+    }
+    .btn-launch {
+      display: inline-block;
+      padding: 9px 20px;
+      border-radius: 6px;
+      background: var(--accent-color);
+      color: #fff !important;
+      font-size: 14.5px;
+      font-weight: 600;
+      border: 0;
+      cursor: pointer;
+    }
+    .btn-launch:hover { background: var(--accent-hover); text-decoration: none; }
+    .btn-direct { font-size: 13.5px; }
+    .launch-hint {
+      flex-basis: 100%;
+      font-size: 13px;
+      color: var(--muted-color);
+      line-height: 1.75;
+      margin: 2px 0 0;
+    }
+    .launch-hint.ready { color: #15803d; }
+    .res-table { width: 100%; border-collapse: collapse; margin: 10px 0 8px; font-size: 13.5px; }
+    .res-table th, .res-table td { border: 1px solid var(--border-color); padding: 6px 10px; text-align: center; }
+    .res-table th { background: var(--border-color); color: var(--heading-color); font-weight: 600; }
+    .res-table td:first-child, .res-table th:first-child { text-align: left; }
+    .eq-line {
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 15.5px;
+      text-align: center;
+      margin: 12px 0;
+      color: var(--heading-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件（网页本地版）开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        旋涂平坦化计算平台
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">本地网页版</span>
+      </h1>
+      <p class="affiliation">密度卷积模型 —— 掩模 + 图形深度 + 平坦化长度 λ → 涂层后残余形貌，并逐图复现论文结果。</p>
+    </div>
+
+    <p class="intro-lede">
+      本平台把 <strong>Decoster 等（J. Vac. Sci. Technol. B 36, 03E102, 2018）</strong>提出的<strong>图形密度卷积模型</strong>
+      做成可在本机运行的计算软件：输入刻蚀掩模 <em>d</em>(<em>x</em>,<em>y</em>)（0 = 沟槽、1 = 线/台面）、
+      图形深度 <em>T</em><sub>0</sub> 与工艺平坦化长度 <em>λ</em>，按
+      <span class="run-code">p = T₀ · [ d ⊛ Gλ ]</span> 求旋涂后高度场，再按
+      <span class="run-code">ρ = H₁ / H₂ × 100 %</span> 给出残余形貌比。
+      默认参数全部取自论文：<strong>λ = 1.5 / 13.5 / 3.5 µm</strong>（工艺 A#1 / A#2 / B）、<strong>T₀ = 60 nm</strong>、
+      图 8 标准掩模（50 nm – 50 µm 共 10 组、每组 5 线 + 5 槽、填充区 8 %）。
+      界面按 7 步计算流程组织，并内置论文图 4/5/7/9/10/11 的数字化对比与误差判定：
+      判定类图件 <strong>8/8 项达到 ≤ 5 %</strong>，最大相对误差 <strong>4.89 %</strong>。
+      前端为原生 HTML / CSS / JavaScript，后端为 <strong>Flask + NumPy / SciPy</strong> 本机服务，模型与数据不出本机。
+    </p>
+
+    <div class="launch-panel" id="launchPanel">
+      <span class="launch-title">本机运行 · 一键启动</span>
+      <a class="btn-launch" id="btnLaunchLocal" href="spin-coating://start">▶ 启动本地服务</a>
+      <a class="btn-direct" href="http://127.0.0.1:8765/" target="_blank" rel="noopener">已在运行？直接打开</a>
+      <p class="launch-hint" id="launchHint">
+        点击后浏览器会询问是否打开“spin-coating”，请选择“打开”；启动脚本会在本机拉起 Flask 服务
+        （约 2–6 秒）并自动打开软件页面。首次使用需在本机做一次性协议注册（见下方「获取与运行」）。
+        此按钮只对已部署本软件的本机有效。
+      </p>
+    </div>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="旋涂平坦化计算平台「计算仿真」页：上排为输入掩模与涂层后二维形貌图，下排为三维曲面与沿扫描线剖面">
+    </div>
+    <p class="shot-cap">
+      计算仿真页：输入掩模 <em>d</em>(<em>x</em>,<em>y</em>)、涂层后高度场 <em>p</em>(<em>x</em>,<em>y</em>)（色标 0 – <em>T</em>₀）、
+      三维曲面与沿扫描线的高度剖面，右侧为当前 7 步流程与进度。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>论文级模型式</b> — 式 (1) 残余形貌比 ρ = H₁/H₂ 与式 (2) 密度卷积 p = T₀·(d ⊛ Gλ) 原样实现；Gλ 为 σ = λ 的二维高斯核，λ 是该模型唯一的自由参数，按工艺标定而非逐图拟合。</div>
+        <div class="feat-item"><b>7 步计算流程</b> — 背景介绍 / 理论依据 / 模型建立 / 参数输入 / 计算仿真 / 结果后处理 / 对比分析；左侧流程栏与主区联动，每一步给出公式推演、参数含义与可操作面板。</div>
+        <div class="feat-item"><b>掩模库与自定义</b> — 图 8 标准掩模（10 组、5 线 + 5 槽、200 µm 长、8 % 填充）、等宽光栅（可调线宽 w 与占空比）、单台阶密度差（Δdensity）、柱孔阵列（二维 2 µm 孔 / 4 µm 间距）、图 11 三种结构（由论文实测预涂剖面重建）。</div>
+        <div class="feat-item"><b>快速数值内核</b> — 可分离高斯核 + 一维 FFT + replicate 边界处理；1400 µm × 0.2 µm 网格（7001 点）核心卷积约 0.02 s，二维色图、三维曲面与剖面即时出图。</div>
+        <div class="feat-item"><b>结果后处理</b> — H₁ / H₂ / ρ、p<sub>max</sub> / p<sub>min</sub> / 均值 / RMS 粗糙度、按图形宽度分组的 ρ 表、剖面叠加与缩放、网格收敛性（dx = 1.0 → 0.1 µm）以及 CSV 导出。</div>
+        <div class="feat-item"><b>论文图件对比</b> — 图 4 / 5 / 7 / 9 / 10 / 11 逐项对比与误差判定；图 10 / 11 支持实测预涂剖面作掩模输入与 (Δx, Δy) 对齐；另含 λ 反演标定（给定实测剖面扫描 λ 并返回最佳值、RMSE 与整体平移量）。</div>
+      </div>
+      <p class="metric-line">
+        7 步界面 · 6 类结构性掩模 · 2 个解析解交叉校验（无限光栅级数解、台阶 10–90 % 过渡宽 2.5631λ）·
+        40 项 pytest 回归 · 1400 µm × 0.2 µm 网格 0.02 s · 判定类图件 8/8 项 ≤ 5 %
+      </p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">复现精度（判据 ≤ 5 %）</h2>
+      <p>
+        论文只在图 7（密度差线性律）、图 9（二维形貌图）、图 10 与图 11（实测 / 计算剖面）给出可直接对照的定量结果，
+        本软件按“相对误差 = |软件值 − 论文值| / |论文值|”逐项判定；图 4 / 5 / 6 为实验散点、论文未在其上绘制模型曲线，
+        仅作趋势对照并单列偏差。判定结果如下：
+      </p>
+      <table class="res-table">
+        <thead><tr><th>论文图件</th><th>类型</th><th>判定指标</th><th>最大相对误差</th><th>结论</th></tr></thead>
+        <tbody>
+          <tr><td>图 7 密度差线性律</td><td>解析</td><td>斜率 / 截距 / R² / 逐系列偏差</td><td>4.18 %</td><td>通过</td></tr>
+          <tr><td>图 9 二维形貌图（λ = 1 / 6 / 15 µm）</td><td>计算</td><td>形貌区间与 λ = 15 µm 的 ρ</td><td>1.77 %</td><td>通过</td></tr>
+          <tr><td>图 10(b) 工艺 A#1 剖面</td><td>计算</td><td>对齐后 RMSE（vs 论文计算 / 实测）</td><td>4.60 %</td><td>通过</td></tr>
+          <tr><td>图 10(c) 工艺 A#2 剖面</td><td>计算</td><td>对齐后 RMSE</td><td>4.54 %</td><td>通过</td></tr>
+          <tr><td>图 10(d) 工艺 B 剖面</td><td>计算</td><td>对齐后 RMSE</td><td>4.64 %</td><td>通过</td></tr>
+          <tr><td>图 11 工艺 A#1 预测</td><td>计算</td><td>三结构池化 RMSE</td><td>4.89 %</td><td>通过</td></tr>
+          <tr><td>图 11 工艺 A#2 预测</td><td>计算</td><td>三结构池化 RMSE</td><td>2.72 %</td><td>通过</td></tr>
+          <tr><td>图 11 工艺 B 预测</td><td>计算</td><td>三结构池化 RMSE</td><td>4.28 %</td><td>通过</td></tr>
+        </tbody>
+      </table>
+      <p class="metric-line">
+        判定口径：图 10 / 11 以论文实测预涂剖面作为掩模输入，并允许 (Δx, Δy) 整体对齐（图 10 ≤ 6 µm、图 11 ≤ 10 µm）——
+        各面板来自不同台阶仪扫描，x 零点与高度基准由作者逐面板对齐，模型只输出相对基准；
+        用参数化重建掩模代替实测掩模时，图 10(b) 为 7.15 %（列为参考项），差异主要来自 50–500 nm 细结构低于读图分辨率。
+      </p>
+
+      <div class="shot-frame">
+        <img src="screenshot_overview.jpg" alt="复现精度总览卡片：判定类图件 8/8 项达标，最大相对误差 4.89 %，逐图列出判定项数与结论">
+      </div>
+      <p class="shot-cap">「复现精度总览」：判定类 8/8 项达标（判据 ≤ 5 %），逐图列出判定项数、最大相对误差与结论。</p>
+
+      <div class="shot-frame">
+        <img src="screenshot_fig10.jpg" alt="图 10(b) 对比页：左侧为软件剖面与论文实测/计算曲线的叠加及残差，右侧为论文原图">
+      </div>
+      <p class="shot-cap">图 10(b)（工艺 A#1，λ = 1.5 µm）：左为叠加曲线与残差，右为论文原图，便于人工复核。</p>
+
+      <div class="shot-frame">
+        <img src="screenshot_fig11.jpg" alt="图 11 对比页：三种结构的剖面复现与残差三列网格，右侧为论文 15 面板原图">
+      </div>
+      <p class="shot-cap">图 11（工艺 A#1）：三种结构（1 µm 线 / 10 µm 线 / 1 µm 沟槽）的剖面复现与残差，右侧为论文原图。</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">模型与参数口径</h2>
+      <p>
+        模型建立在两个前提上：残余形貌由<strong>图形密度</strong>决定；某点的密度必须在<strong>特征半径 λ</strong> 内统计，
+        因此在纳米尺度上局部密度只能是 0 或 1，经有限面积平均后才成为连续量。掩模 <em>d</em> 取
+        <em>d</em> = 1（未刻蚀：线、台面）与 <em>d</em> = 0（刻蚀：槽、孔、沟），则
+      </p>
+      <p class="eq-line">p(<em>x</em>, <em>y</em>) = <em>T</em><sub>0</sub> · [ <em>d</em>(<em>x</em>, <em>y</em>) ⊛ <em>G</em><sub>λ</sub>(<em>x</em>, <em>y</em>) ]，&nbsp;
+        <em>G</em><sub>λ</sub> = (1 / 2πλ²) · exp[ −(<em>x</em>² + <em>y</em>²) / 2λ² ]</p>
+      <p>
+        <em>p</em> 的单位为 nm，<em>λ</em> 为高斯核标准差。λ 越大，横向平均范围越宽、平坦化能力越强；
+        λ → 0 时 <em>p</em> → <em>T</em><sub>0</sub><em>d</em>（完全不平坦化），λ → ∞ 时 <em>p</em> 趋于常数（完全平坦化）。
+        论文用一次台阶仪扫描标定 λ，得到 A#1 = 1.5 µm、A#2 = 13.5 µm、B = 3.5 µm；本软件同一套 λ 同时用于图 9 / 10 / 11 的复算。
+      </p>
+      <table class="res-table">
+        <thead><tr><th>工艺</th><th>材料 / 厚度</th><th>标定 λ</th><th>本软件默认值</th></tr></thead>
+        <tbody>
+          <tr><td>A#1</td><td>旋涂碳（SOC）100 nm</td><td>1.5 µm</td><td>λ = 1.5 µm</td></tr>
+          <tr><td>A#2</td><td>旋涂碳（SOC）180 nm</td><td>13.5 µm</td><td>λ = 13.5 µm</td></tr>
+          <tr><td>B</td><td>旋涂氧化物（SOG）100 nm</td><td>3.5 µm</td><td>λ = 3.5 µm</td></tr>
+          <tr><td>图形深度</td><td>图 8 / 10 / 11 结构</td><td>60 nm</td><td>T₀ = 60 nm</td></tr>
+        </tbody>
+      </table>
+      <p class="metric-line">
+        数值口径：一维网格 1400 µm（dx 默认 0.2 µm，可选 1.0 – 0.05 µm）；二维场在 y 方向取 200 µm 图带；
+        收敛性检验给出 dx 逐级细化时的 ρ 变化与剖面 RMS 差异（dx = 0.1 µm 时差异 &lt; 0.02 nm）。
+      </p>
+      <p>
+        单高斯核的适用边界也已量化：在 50 % 等宽光栅的过渡区（w 与 λ 同量级），实测 ρ 的过渡比单一高斯更宽，
+        由实测反推的“有效 λ”会随 w 增大而漂移（工艺 A#1 从 0.64 µm 漂到 12.3 µm）。
+        例如工艺 B、w = 5 µm 处实测 ρ = 33.4 %、模型给出 11.3 %；工艺 A#1、w = 2 µm 处实测 48.7 %、模型 7.9 %。
+        因此图 4 / 5 在本软件中作为<strong>实验趋势对照</strong>呈现，不计入 ≤ 5 % 判定。
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li><b>首次使用：一次性注册启动协议</b>（仅写入当前用户，无需管理员权限）。在本模块目录运行：
+              <span class="run-code">powershell -ExecutionPolicy Bypass -File setup-local-launch.ps1 -AppDir "…\webapp"</span>
+              —— <span class="run-code">-AppDir</span> 指向软件的 webapp 目录（含 <span class="run-code">app.py</span>）；
+              卸载加 <span class="run-code">-Uninstall</span>。</li>
+          <li><b>启动服务</b>：点击页面上方「启动本地服务」，浏览器询问时选择“打开”；或直接在本机
+              <span class="run-code">webapp</span> 目录执行 <span class="run-code">python app.py</span>。
+              启动后会自动打开软件页面，也可手动访问
+              <span class="run-code">http://127.0.0.1:8765/</span>。</li>
+          <li>运行环境：Python 3.10+（Flask 3、NumPy、SciPy、Matplotlib）；服务仅监听本机回环地址，
+              模型、掩模与数据均在本机，不联网、不出本机。</li>
+        </ol>
+        <div class="guest-note">
+          说明：“启动本地服务”按钮通过 <span class="run-code">spin-coating://</span> 协议调用本机启动脚本，
+          只对已部署本软件并完成协议注册的电脑有效；其他访客点击后不会启动任何服务。
+          软件仅通过作者本机的回环地址提供服务，不经互联网暴露，外部访客无法连接。
+          欢迎通过本页了解软件功能，或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">数据口径与出处</h2>
+      <p>
+        模型、标定参数与全部对照数据取自：S. Decoster, X. Piao, W. Gillijns, F. Lazzarino,
+        <em>“Modeling the topography of uneven substrates post spin-coating”</em>,
+        J. Vac. Sci. Technol. B <strong>36</strong>, 03E102 (2018), DOI
+        <a href="https://doi.org/10.1116/1.5022166" target="_blank" rel="noopener">10.1116/1.5022166</a>（Imec）。
+        论文的图 4 / 5 / 7 / 9 / 10 / 11 由作者从 PDF 中数字化（含实测与计算曲线分别提取），
+        读图不确定度：散点 ρ ±1.5–2 pp、剖面高度 ±1.5 nm、横坐标 ±0.5 µm；数字化脚本与校验叠加图随软件一并归档。
+      </p>
+      <p>
+        技术栈：Python 3.12 + Flask 3 + NumPy / SciPy（可分离高斯核 + FFT 卷积）+ Matplotlib（服务端出图）+
+        原生 HTML / CSS / JavaScript（7 步单页界面）；pytest 40 项回归覆盖模型、对比判定与 API。
+        软件著作权与版权归南京欧帕提亚信息科技有限公司；开发者：江召兵 博士。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('btnLaunchLocal');
+      var hint = document.getElementById('launchHint');
+      if (!btn || !hint) return;
+      btn.addEventListener('click', function () {
+        hint.className = 'launch-hint ready';
+        hint.textContent = '已向本机发送启动请求：若出现“是否打开 spin-coating”的提示，请选择“打开”；'
+          + '服务就绪后会自动打开软件页面（约 2–6 秒）。若未出现该提示，说明本机尚未注册启动协议，'
+          + '请按下方「获取与运行」第 1 步完成一次性注册。';
+      });
+    })();
+  </script>
+  <script src="/assets/js/site-counter.js?v=3" defer></script>
+</body>
+</html>
