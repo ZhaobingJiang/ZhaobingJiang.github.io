@@ -141,9 +141,9 @@ STYLE = """<style>
   .toc-cols ol.vol-3 a:hover, .toc-cols ol.vol-3 a:focus { color:#2f5d50; }
   .toc-cols ol.vol-2 a { color:#4a3a20; }
   .toc-cols ol.vol-3 a { color:#2c443c; }
-  @media (max-width:1180px) { .toc-cols { column-count:3; } }
-  @media (max-width:920px) { .toc-cols { column-count:2; } }
-  @media (max-width:600px) {
+  @media (max-width:980px) { .toc-cols { column-count:3; } }
+  @media (max-width:780px) { .toc-cols { column-count:2; } }
+  @media (max-width:560px) {
     .toc-cols { column-count:1; }
     .toc-cols h3.vol-h { margin:1.2rem 0 .4rem; }
   }
@@ -201,9 +201,8 @@ def build_index():
         for e in vm["entries"]:
             title = e.get("title") or e.get("toc_title") or "（标题待补）"
             page = e.get("book_page")
-            pg = f'<span class="pg">p.{page}</span>' if page else ""
             toc_parts.append(
-                f'<li><a href="{vm["file"]}#{e["anchor"]}">{esc(title)}</a>{pg}</li>'
+                f'<li><a href="{vm["file"]}#{e["anchor"]}">{esc(title)}</a></li>'
             )
         toc_parts.append("</ol>")
 
