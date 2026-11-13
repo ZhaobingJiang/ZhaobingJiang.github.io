@@ -122,6 +122,31 @@ STYLE = """<style>
   ol.toc .pg { color:var(--muted); font-size:.82rem; margin-left:.4rem; }
   h3.vol-h { margin:2rem 0 .6rem; font-size:1.05rem; letter-spacing:.16rem; color:var(--seal); }
   h3.vol-h a { color:var(--seal); text-decoration:none; }
+  /* ---- 总目录：四列排版 + 分卷区分 ---- */
+  .toc-cols { column-count:4; column-gap:1.7rem; column-rule:1px solid var(--line);
+    width:min(1340px,94vw); margin:.4rem 0 2.4rem calc((100% - min(1340px,94vw)) / 2); }
+  .toc-cols h3.vol-h { column-span:all; margin:1.8rem 0 .5rem; padding:.3rem .7rem; border-radius:3px; font-size:1.02rem; }
+  .toc-cols h3.vol-h.vol-1 { background:#f7ebe9; border-left:4px solid #8e221c; }
+  .toc-cols h3.vol-h.vol-2 { background:#f8f2e2; border-left:4px solid #8a5a12; }
+  .toc-cols h3.vol-h.vol-3 { background:#eaf1ee; border-left:4px solid #2f5d50; }
+  .toc-cols h3.vol-h .vol-badge { display:inline-block; margin-left:.55rem; padding:.01rem .45rem; font-size:.72rem;
+    letter-spacing:.08rem; border:1px solid currentColor; border-radius:999px; opacity:.85; vertical-align:.08em; }
+  .toc-cols ol.toc { margin:0 0 .6rem; padding-left:.2rem; }
+  .toc-cols ol.toc > li { padding:.27rem .25rem; font-size:.9rem; break-inside:avoid; }
+  .toc-cols ol.vol-1 > li { border-bottom:1px dashed rgba(142,34,28,.22); }
+  .toc-cols ol.vol-2 > li { border-bottom:1px dashed rgba(138,90,18,.22); }
+  .toc-cols ol.vol-3 > li { border-bottom:1px dashed rgba(47,93,80,.22); }
+  .toc-cols ol.vol-1 a:hover, .toc-cols ol.vol-1 a:focus { color:#8e221c; }
+  .toc-cols ol.vol-2 a:hover, .toc-cols ol.vol-2 a:focus { color:#8a5a12; }
+  .toc-cols ol.vol-3 a:hover, .toc-cols ol.vol-3 a:focus { color:#2f5d50; }
+  .toc-cols ol.vol-2 a { color:#4a3a20; }
+  .toc-cols ol.vol-3 a { color:#2c443c; }
+  @media (max-width:1180px) { .toc-cols { column-count:3; } }
+  @media (max-width:920px) { .toc-cols { column-count:2; } }
+  @media (max-width:600px) {
+    .toc-cols { column-count:1; }
+    .toc-cols h3.vol-h { margin:1.2rem 0 .4rem; }
+  }
   h2.vol-head { text-align:center; font-size:1.5rem; letter-spacing:.8rem; margin:2.6rem 0 1.4rem; padding:.6rem 0; color:var(--seal); border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-family:"Songti SC","SimSun",serif; }
   .vol-sub { text-align:center; color:var(--muted); font-size:.88rem; margin:-.7rem 0 1.6rem; letter-spacing:.06rem; }
   article.entry { margin:2.8rem 0 0; padding-top:.4rem; border-top:1px solid var(--line); }
@@ -163,14 +188,16 @@ FOOT = """<footer class="reader-foot">
 
 # ---------------------------------------------------------------- index page
 def build_index():
-    toc_parts = []
-    for vm in vol_meta:
+    toc_parts = ['<div class="toc-cols">']
+    badges = ("卷一", "卷二", "卷三")
+    for vi, vm in enumerate(vol_meta):
         toc_parts.append(
-            f'<h3 class="vol-h"><a href="{vm["file"]}">{vm["name"]}</a>'
+            f'<h3 class="vol-h vol-{vi + 1}"><a href="{vm["file"]}">{vm["name"]}</a>'
+            f'<span class="vol-badge">{badges[vi]}</span>'
             f'<span class="pg" style="color:var(--muted);font-size:.82rem;font-weight:400;letter-spacing:.04rem;margin-left:.6rem;">'
             f'原书第 {vm["first"]}–{vm["last"]} 页 · 共 {vm["count"]} 篇</span></h3>'
         )
-        toc_parts.append('<ol class="toc">')
+        toc_parts.append(f'<ol class="toc vol-{vi + 1}">')
         for e in vm["entries"]:
             title = e.get("title") or e.get("toc_title") or "（标题待补）"
             page = e.get("book_page")
@@ -179,6 +206,8 @@ def build_index():
                 f'<li><a href="{vm["file"]}#{e["anchor"]}">{esc(title)}</a>{pg}</li>'
             )
         toc_parts.append("</ol>")
+
+    toc_parts.append("</div>")
 
     front = f"""  <section class="front">
     <h1>扉页</h1>
