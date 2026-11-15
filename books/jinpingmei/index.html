@@ -56,6 +56,43 @@ article.chapter{margin:2.6rem 0 0;padding-top:.5rem;border-top:1px solid var(--l
 .ch-nav a{color:var(--seal)}
 footer.reader-foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.84rem;line-height:1.9;text-align:center}
 @media(max-width:640px){.book-head .t{font-size:1.8rem;letter-spacing:.3rem}ol.toc{column-count:1}.ch-title{font-size:1.08rem}.ch-body p,.prose{font-size:1rem;line-height:1.95}}
+
+/* ---------- annotations ---------- */
+.anno-fab{position:fixed;z-index:95;padding:.34rem .7rem;border:1px solid var(--seal);background:#fffdf8;color:var(--seal);border-radius:999px;font-size:.84rem;line-height:1.4;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.16);font-family:inherit}
+.anno-fab:hover{background:var(--seal);color:#fff}
+.anno-toggle{position:fixed;right:18px;bottom:18px;z-index:85;padding:.5rem .95rem;border:1px solid var(--seal);background:#fffdf8;color:var(--seal);border-radius:999px;font-size:.88rem;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.14);font-family:inherit}
+.anno-toggle:hover{background:var(--seal);color:#fff}
+.anno-toggle b{font-weight:600;margin-left:.2rem}
+.anno-panel{position:fixed;top:0;right:0;z-index:100;width:min(360px,100%);height:100%;display:flex;flex-direction:column;background:#fffdf8;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(40,30,20,.12);transform:translateX(103%);transition:transform .24s ease;}
+body.anno-open .anno-panel{transform:none}
+.anno-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.9rem 1rem;border-bottom:1px solid var(--line);background:#faf6ee}
+.anno-head h2{margin:0;font-size:.98rem;letter-spacing:.12rem;color:var(--seal);font-weight:600}
+.anno-head .x{border:0;background:none;font-size:1.2rem;line-height:1;color:var(--muted);cursor:pointer;padding:.2rem}
+.anno-body{flex:1;overflow:auto;padding:.9rem 1rem 2rem}
+.anno-hint{font-size:.78rem;line-height:1.75;color:var(--muted);margin:0 0 .8rem}
+.anno-hint.warn{color:#8a5a12}
+#anno-form{margin:0 0 1rem;padding:.75rem .8rem;border:1px dashed var(--line);border-radius:6px;background:#fffdf8}
+#anno-form[hidden]{display:none}
+#anno-quote{margin:0 0 .55rem;padding:.1rem 0 .1rem .55rem;border-left:3px solid #d8c6b8;font-size:.86rem;line-height:1.7;color:#4a4f55;max-height:6.2em;overflow:auto;font-family:"Kaiti SC","KaiTi",serif}
+#anno-note{width:100%;min-height:4.6rem;resize:vertical;font:inherit;font-size:.9rem;line-height:1.7;padding:.45rem .55rem;border:1px solid var(--line);border-radius:4px;background:#fff}
+#anno-name{width:8.5rem;font:inherit;font-size:.84rem;padding:.3rem .5rem;border:1px solid var(--line);border-radius:4px;background:#fff;margin:.5rem .4rem 0 0}
+#anno-form .row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.55rem}
+#anno-form button{font:inherit;font-size:.85rem;padding:.32rem .85rem;border-radius:999px;cursor:pointer}
+#anno-form .ok{border:1px solid var(--seal);background:var(--seal);color:#fff}
+#anno-form .no{border:1px solid var(--line);background:#fff;color:var(--muted)}
+#anno-list{list-style:none;margin:0;padding:0}
+#anno-list li{padding:.7rem .1rem .75rem;border-bottom:1px dashed var(--line);cursor:pointer}
+#anno-list li:hover{background:#fbf7ee}
+#anno-list .q{margin:0 0 .4rem;padding-left:.55rem;border-left:3px solid #d8c6b8;font-size:.84rem;line-height:1.7;color:#5b6068;font-family:"Kaiti SC","KaiTi",serif}
+#anno-list .n{margin:0 0 .35rem;font-size:.88rem;line-height:1.8;color:#2b2f35;white-space:pre-wrap;word-break:break-word}
+#anno-list .m{font-size:.75rem;color:var(--muted);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+#anno-list .del{border:0;background:none;color:#a3473c;font:inherit;font-size:.75rem;cursor:pointer;padding:0;text-decoration:underline}
+.anno-empty{font-size:.84rem;color:var(--muted);padding:.4rem 0}
+::highlight(jpm){background-color:#f7e2a4}
+::highlight(jpm-flash){background-color:#ffc857}
+mark.anno{background:#f7e2a4;color:inherit;padding:0}
+mark.anno.flash{background:#ffc857}
+@media(max-width:1100px){.anno-panel{width:100%;height:72%;top:auto;bottom:0;border-left:0;border-top:1px solid var(--line);transform:translateY(104%);border-radius:12px 12px 0 0}body.anno-open .anno-panel{transform:none}}
 </style>
 </head>
 <body>
@@ -74,7 +111,7 @@ footer.reader-foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(-
   <a href="xia.html">卷三 · 六十七至一百回</a>
   <a href="#toc">总目录</a>
 </div>
-<div class="notice"><b>一百回 · 约 74.9 万字</b>　·　据大吕文化 · 华语出版社《金瓶梅（崇祯本 · 完整版）》电子本逐页提取文本、重新排版。全书不删节，保留原书回目、诗曰词曰与评点文字；仅按阅读版式重排段落与韵文。本书含成人内容，仅供文学阅读与研究。</div>
+<div class="notice"><b>一百回 · 约 74.9 万字</b>　·　据大吕文化 · 华语出版社《金瓶梅（崇祯本 · 完整版）》电子本逐页提取文本、重新排版。全书不删节，保留原书回目、诗曰词曰与评点文字；仅按阅读版式重排段落与韵文。本书含成人内容，仅供文学阅读与研究。正文各回支持拖选文字添加评注（右侧评注栏）。</div>
 <h2 class="section-h">内容简介</h2>
 <p class="prose">《金瓶梅》是明代长篇白话小说，署兰陵笑笑生著，与《三国演义》《水浒传》《西游记》并称明代四大奇书。全书一百回，以西门庆一家为中心，写山东清河县一个商人家庭的兴起与败落，牵连官场、商场、宅院与市井，铺展出晚明社会的世情百态。</p>
 <p class="prose">书名取自潘金莲、李瓶儿、庞春梅三人。小说借《水浒传》武松杀嫂一段生发，却把笔锋从英雄传奇转向日常人情：吃饭、做寿、买卖、诉讼、争宠、算计，一一写得细密。鲁迅《中国小说史略》称其「同时说部，无以上之」，又说作者「描写世情，尽其情伪」。</p>

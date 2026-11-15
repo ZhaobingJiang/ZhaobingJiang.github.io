@@ -56,6 +56,43 @@ article.chapter{margin:2.6rem 0 0;padding-top:.5rem;border-top:1px solid var(--l
 .ch-nav a{color:var(--seal)}
 footer.reader-foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);color:var(--muted);font-size:.84rem;line-height:1.9;text-align:center}
 @media(max-width:640px){.book-head .t{font-size:1.8rem;letter-spacing:.3rem}ol.toc{column-count:1}.ch-title{font-size:1.08rem}.ch-body p,.prose{font-size:1rem;line-height:1.95}}
+
+/* ---------- annotations ---------- */
+.anno-fab{position:fixed;z-index:95;padding:.34rem .7rem;border:1px solid var(--seal);background:#fffdf8;color:var(--seal);border-radius:999px;font-size:.84rem;line-height:1.4;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.16);font-family:inherit}
+.anno-fab:hover{background:var(--seal);color:#fff}
+.anno-toggle{position:fixed;right:18px;bottom:18px;z-index:85;padding:.5rem .95rem;border:1px solid var(--seal);background:#fffdf8;color:var(--seal);border-radius:999px;font-size:.88rem;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.14);font-family:inherit}
+.anno-toggle:hover{background:var(--seal);color:#fff}
+.anno-toggle b{font-weight:600;margin-left:.2rem}
+.anno-panel{position:fixed;top:0;right:0;z-index:100;width:min(360px,100%);height:100%;display:flex;flex-direction:column;background:#fffdf8;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(40,30,20,.12);transform:translateX(103%);transition:transform .24s ease;}
+body.anno-open .anno-panel{transform:none}
+.anno-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.9rem 1rem;border-bottom:1px solid var(--line);background:#faf6ee}
+.anno-head h2{margin:0;font-size:.98rem;letter-spacing:.12rem;color:var(--seal);font-weight:600}
+.anno-head .x{border:0;background:none;font-size:1.2rem;line-height:1;color:var(--muted);cursor:pointer;padding:.2rem}
+.anno-body{flex:1;overflow:auto;padding:.9rem 1rem 2rem}
+.anno-hint{font-size:.78rem;line-height:1.75;color:var(--muted);margin:0 0 .8rem}
+.anno-hint.warn{color:#8a5a12}
+#anno-form{margin:0 0 1rem;padding:.75rem .8rem;border:1px dashed var(--line);border-radius:6px;background:#fffdf8}
+#anno-form[hidden]{display:none}
+#anno-quote{margin:0 0 .55rem;padding:.1rem 0 .1rem .55rem;border-left:3px solid #d8c6b8;font-size:.86rem;line-height:1.7;color:#4a4f55;max-height:6.2em;overflow:auto;font-family:"Kaiti SC","KaiTi",serif}
+#anno-note{width:100%;min-height:4.6rem;resize:vertical;font:inherit;font-size:.9rem;line-height:1.7;padding:.45rem .55rem;border:1px solid var(--line);border-radius:4px;background:#fff}
+#anno-name{width:8.5rem;font:inherit;font-size:.84rem;padding:.3rem .5rem;border:1px solid var(--line);border-radius:4px;background:#fff;margin:.5rem .4rem 0 0}
+#anno-form .row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.55rem}
+#anno-form button{font:inherit;font-size:.85rem;padding:.32rem .85rem;border-radius:999px;cursor:pointer}
+#anno-form .ok{border:1px solid var(--seal);background:var(--seal);color:#fff}
+#anno-form .no{border:1px solid var(--line);background:#fff;color:var(--muted)}
+#anno-list{list-style:none;margin:0;padding:0}
+#anno-list li{padding:.7rem .1rem .75rem;border-bottom:1px dashed var(--line);cursor:pointer}
+#anno-list li:hover{background:#fbf7ee}
+#anno-list .q{margin:0 0 .4rem;padding-left:.55rem;border-left:3px solid #d8c6b8;font-size:.84rem;line-height:1.7;color:#5b6068;font-family:"Kaiti SC","KaiTi",serif}
+#anno-list .n{margin:0 0 .35rem;font-size:.88rem;line-height:1.8;color:#2b2f35;white-space:pre-wrap;word-break:break-word}
+#anno-list .m{font-size:.75rem;color:var(--muted);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+#anno-list .del{border:0;background:none;color:#a3473c;font:inherit;font-size:.75rem;cursor:pointer;padding:0;text-decoration:underline}
+.anno-empty{font-size:.84rem;color:var(--muted);padding:.4rem 0}
+::highlight(jpm){background-color:#f7e2a4}
+::highlight(jpm-flash){background-color:#ffc857}
+mark.anno{background:#f7e2a4;color:inherit;padding:0}
+mark.anno.flash{background:#ffc857}
+@media(max-width:1100px){.anno-panel{width:100%;height:72%;top:auto;bottom:0;border-left:0;border-top:1px solid var(--line);transform:translateY(104%);border-radius:12px 12px 0 0}body.anno-open .anno-panel{transform:none}}
 </style>
 </head>
 <body>
@@ -1044,6 +1081,251 @@ footer.reader-foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(-
   </div>
   <div class="ch-nav"><a href="#c-065">← 第六十五回</a><a class="to-toc" href="index.html#toc">目次</a><span></span></div>
 </article>
+
+<button class="anno-toggle" id="anno-toggle" type="button" aria-controls="anno-panel" aria-expanded="false">评注<b id="anno-n">0</b></button>
+<aside class="anno-panel" id="anno-panel" aria-label="评注栏" aria-hidden="true">
+  <div class="anno-head"><h2>评注</h2><button class="x" id="anno-close" type="button" aria-label="关闭评注栏">×</button></div>
+  <div class="anno-body">
+    <p class="anno-hint" id="anno-hint">在正文中拖选一段文字，即可写下评注。评注会显示在这里，点击可定位原文。</p>
+    <form id="anno-form" hidden>
+      <blockquote id="anno-quote"></blockquote>
+      <textarea id="anno-note" maxlength="1200" placeholder="写下你的评注…" required></textarea>
+      <div class="row"><input id="anno-name" maxlength="24" placeholder="昵称（可不填）"><button class="ok" type="submit">保存</button><button class="no" type="button" id="anno-cancel">取消</button></div>
+    </form>
+    <ol id="anno-list"></ol>
+  </div>
+</aside>
+<script>
+(function () {
+  var CFG = { book: 'jinpingmei', url: '', key: '', table: 'annotations' };
+  var PAGE = (location.pathname.split('/').pop() || 'index.html');
+  var LS = 'jpm_anno_v1';
+  var arts = [].slice.call(document.querySelectorAll('article.chapter'));
+  if (!arts.length) return;
+  var panel = document.getElementById('anno-panel'),
+      listEl = document.getElementById('anno-list'),
+      form = document.getElementById('anno-form'),
+      quoteEl = document.getElementById('anno-quote'),
+      noteEl = document.getElementById('anno-note'),
+      nameEl = document.getElementById('anno-name'),
+      countEl = document.getElementById('anno-n'),
+      hintEl = document.getElementById('anno-hint'),
+      toggleEl = document.getElementById('anno-toggle');
+  var anns = [], pending = null, saveFn = null;
+  var HL = ('highlights' in CSS) && (typeof Highlight === 'function');
+  var shared = !!(CFG.url && CFG.key);
+
+  function token() {
+    var t = localStorage.getItem('jpm_tok');
+    if (!t) { t = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)); localStorage.setItem('jpm_tok', t); }
+    return t;
+  }
+  function uid() { return (crypto.randomUUID ? crypto.randomUUID() : 'a' + Date.now() + Math.random().toString(36).slice(2)); }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function chapterKey(artId) { return PAGE + '#' + artId; }
+  function artOf(rec) { return document.getElementById(rec.chapter.split('#')[1]); }
+  function bodyOf(art) { return art ? art.querySelector('.ch-body') : null; }
+
+  function pointAt(root, off) {
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), acc = 0, n;
+    while ((n = w.nextNode())) { var L = n.nodeValue.length; if (acc + L >= off) return { node: n, off: off - acc }; acc += L; }
+    return null;
+  }
+  function rangeAt(root, s, e) {
+    var a = pointAt(root, s), b = pointAt(root, e);
+    if (!a || !b) return null;
+    var r = document.createRange();
+    try { r.setStart(a.node, a.off); r.setEnd(b.node, b.off); } catch (x) { return null; }
+    return r;
+  }
+  function offsetOf(root, node, off) {
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), acc = 0, n;
+    while ((n = w.nextNode())) { if (n === node) return acc + off; acc += n.nodeValue.length; }
+    return -1;
+  }
+  function myAnnos() { return anns.filter(function (a) { return a.chapter.indexOf(PAGE + '#') === 0; }); }
+
+  function paint() {
+    paintMarks(); return;
+    var ranges = [];
+    myAnnos().forEach(function (a) {
+      var art = artOf(a), body = bodyOf(art); if (!body) return;
+      var r = rangeAt(body, a.start_off, a.end_off);
+      if (r) { a._range = r; ranges.push(r); }
+    });
+    try { CSS.highlights.delete('jpm'); } catch (e) {}
+    if (ranges.length) {
+      try {
+        var hl = new Highlight();
+        ranges.forEach(function (r) { hl.add(r); });
+        CSS.highlights.set('jpm', hl);
+      } catch (e) { paintMarks(); }
+    }
+  }
+  function paintMarks() {
+    [].slice.call(document.querySelectorAll('mark.anno')).forEach(function (m) { var p = m.parentNode; while (m.firstChild) p.insertBefore(m.firstChild, m); p.removeChild(m); p.normalize(); });
+    myAnnos().slice().sort(function (a, b) { return b.start_off - a.start_off; }).forEach(function (a) {
+      var body = bodyOf(artOf(a)); if (!body) return;
+      var r = rangeAt(body, a.start_off, a.end_off); if (!r) return;
+      var m = document.createElement('mark'); m.className = 'anno'; m.dataset.id = a.id;
+      try { r.surroundContents(m); } catch (e) { m.appendChild(r.extractContents()); r.insertNode(m); }
+    });
+  }
+  function flash(a) {
+    var m = document.querySelector('mark.anno[data-id="' + a.id + '"]');
+    if (!m) return;
+    m.classList.add('flash');
+    setTimeout(function () { m.classList.remove('flash'); }, 1500);
+  }
+
+  function fmt(ts) {
+    try { var d = new Date(ts); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); } catch (e) { return ''; }
+  }
+  function renderList() {
+    var mine = myAnnos().sort(function (a, b) {
+      var A = artOf(a), B = artOf(b);
+      var ia = arts.indexOf(A), ib = arts.indexOf(B);
+      return ia === ib ? a.start_off - b.start_off : ia - ib;
+    });
+    countEl.textContent = mine.length;
+    hintEl.className = 'anno-hint' + (shared ? '' : ' warn');
+    hintEl.innerHTML = shared
+      ? '在正文中拖选一段文字，即可写下评注；评注对所有人可见。'
+      : '在正文中拖选一段文字，即可写下评注。<b>当前为本机保存</b>：评注只存在本浏览器，配置共享存储后所有人可见。';
+    listEl.innerHTML = mine.length ? mine.map(function (a) {
+      return '<li data-id="' + esc(a.id) + '"><p class="q">' + esc(a.exact) + '</p><p class="n">' + esc(a.note) + '</p>' +
+        '<p class="m"><span>' + esc(a.name || '匿名') + '</span><span>' + fmt(a.created_at) + '</span>' +
+        (a.delete_token === token() ? '<button class="del" data-id="' + esc(a.id) + '" type="button">删除</button>' : '') + '</p></li>';
+    }).join('') : '<li class="anno-empty" style="border:0;cursor:default">本回还没有评注。</li>';
+  }
+
+  function openPanel(showForm) {
+    document.body.classList.add('anno-open');
+    panel.setAttribute('aria-hidden', 'false');
+    toggleEl.setAttribute('aria-expanded', 'true');
+    if (showForm) form.hidden = false;
+    renderList();
+  }
+  function closePanel() {
+    document.body.classList.remove('anno-open');
+    panel.setAttribute('aria-hidden', 'true');
+    toggleEl.setAttribute('aria-expanded', 'false');
+  }
+
+  function showFab(x, y, rec) {
+    var fab = document.getElementById('anno-fab');
+    if (!fab) { fab = document.createElement('button'); fab.id = 'anno-fab'; fab.className = 'anno-fab'; fab.type = 'button'; fab.textContent = '✎ 评注'; document.body.appendChild(fab); }
+    fab.style.left = Math.max(8, Math.min(x - 30, window.innerWidth - 90)) + 'px';
+    fab.style.top = Math.max(8, y - 44) + 'px';
+    fab.hidden = false;
+    pending = rec;
+    fab.onclick = function () { fab.hidden = true; quoteEl.textContent = rec.exact; noteEl.value = ''; openPanel(true); noteEl.focus(); };
+  }
+  function hideFab() { var f = document.getElementById('anno-fab'); if (f) f.hidden = true; }
+
+  document.addEventListener('mouseup', function (ev) {
+    if (!ev.target.closest || !ev.target.closest('.ch-body')) { hideFab(); return; }
+    setTimeout(function () {
+      var sel = window.getSelection();
+      if (!sel || sel.isCollapsed) { hideFab(); return; }
+      var txt = sel.toString().replace(/\s+/g, ' ').trim();
+      if (txt.length < 2 || txt.length > 300) { hideFab(); return; }
+      var r = sel.getRangeAt(0), node = r.commonAncestorContainer;
+      var el = node.nodeType === 1 ? node : node.parentElement;
+      var art = el && el.closest ? el.closest('article.chapter') : null;
+      if (!art) return;
+      var body = art.querySelector('.ch-body');
+      if (!body.contains(r.startContainer) || !body.contains(r.endContainer)) return;
+      var s = offsetOf(body, r.startContainer, r.startOffset), e = offsetOf(body, r.endContainer, r.endOffset);
+      if (s < 0 || e <= s) return;
+      showFab(ev.clientX, ev.clientY, { artId: art.id, start: s, end: e, exact: txt });
+    }, 10);
+  });
+
+  document.addEventListener('click', function (ev) {
+    var mk = ev.target.closest ? ev.target.closest('mark.anno') : null;
+    if (mk && mk.dataset.id) {
+      var hit = anns.filter(function (x) { return x.id === mk.dataset.id; })[0];
+      if (hit) { openPanel(false); flash(hit); }
+      return;
+    }
+    var li = ev.target.closest ? ev.target.closest('#anno-list li') : null;
+    var del = ev.target.closest ? ev.target.closest('.del') : null;
+    if (del) { ev.stopPropagation(); remove(del.dataset.id); return; }
+    if (li && li.dataset.id) {
+      var a = anns.filter(function (x) { return x.id === li.dataset.id; })[0];
+      if (a) { var art = artOf(a); if (art) art.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(a); }
+      return;
+    }
+    if (!ev.target.closest || !ev.target.closest('.ch-body')) return;
+    if (!HL || !document.caretRangeFromPoint) return;
+    var cr = document.caretRangeFromPoint(ev.clientX, ev.clientY); if (!cr) return;
+    var el = cr.startContainer.nodeType === 1 ? cr.startContainer : cr.startContainer.parentElement;
+    var art = el && el.closest ? el.closest('article.chapter') : null; if (!art) return;
+    var body = art.querySelector('.ch-body'); if (!body.contains(cr.startContainer)) return;
+    var off = offsetOf(body, cr.startContainer, cr.startOffset); if (off < 0) return;
+    var hit = myAnnos().filter(function (a) { return a.chapter === chapterKey(art.id) && off >= a.start_off && off <= a.end_off; })[0];
+    if (hit) { openPanel(false); var row = listEl.querySelector('li[data-id="' + hit.id + '"]'); if (row) row.scrollIntoView({ block: 'center' }); flash(hit); }
+  });
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var note = noteEl.value.trim(); if (!note || !pending) return;
+    var rec = {
+      book: CFG.book, chapter: chapterKey(pending.artId),
+      start_off: pending.start, end_off: pending.end, exact: pending.exact,
+      note: note, name: (nameEl.value.trim() || '匿名'),
+      client_id: token(), delete_token: token()
+    };
+    var btn = form.querySelector('.ok'); btn.disabled = true;
+    save(rec).then(function (saved) {
+      btn.disabled = false; form.hidden = true; noteEl.value = ''; pending = null;
+      anns.push(saved); paint(); renderList();
+    }).catch(function (err) {
+      btn.disabled = false; alert('保存失败：' + (err && err.message ? err.message : err));
+    });
+  });
+  document.getElementById('anno-cancel').onclick = function () { form.hidden = true; pending = null; };
+  toggleEl.onclick = function () { document.body.classList.contains('anno-open') ? closePanel() : openPanel(false); };
+  document.getElementById('anno-close').onclick = closePanel;
+
+  function api(path, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({ apikey: CFG.key, Authorization: 'Bearer ' + CFG.key, 'Content-Type': 'application/json' }, opts.headers || {});
+    return fetch(CFG.url + '/rest/v1/' + path, opts).then(function (r) {
+      if (!r.ok) return r.text().then(function (t) { throw new Error(r.status + ' ' + t.slice(0, 160)); });
+      return r.status === 204 ? null : r.json();
+    });
+  }
+  function save(rec) {
+    if (shared) return api(CFG.table, { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify([rec]) }).then(function (rows) { return rows[0]; });
+    var d = JSON.parse(localStorage.getItem(LS) || '{"items":[]}');
+    var row = Object.assign({ id: uid(), created_at: new Date().toISOString() }, rec);
+    d.items.push(row); localStorage.setItem(LS, JSON.stringify(d));
+    return Promise.resolve(row);
+  }
+  function remove(id) {
+    if (!confirm('删除这条评注？')) return;
+    var a = anns.filter(function (x) { return x.id === id; })[0]; if (!a) return;
+    var done = function () { anns = anns.filter(function (x) { return x.id !== id; }); paint(); renderList(); };
+    if (shared) {
+      api('rpc/delete_annotation', { method: 'POST', body: JSON.stringify({ p_id: id, p_token: a.delete_token }) }).then(done).catch(function (e) { alert('删除失败：' + e.message); });
+    } else {
+      var d = JSON.parse(localStorage.getItem(LS) || '{"items":[]}');
+      d.items = d.items.filter(function (x) { return x.id !== id; });
+      localStorage.setItem(LS, JSON.stringify(d)); done();
+    }
+  }
+  function load() {
+    if (shared) {
+      return api(CFG.table + '?book=eq.' + CFG.book + '&chapter=like.' + encodeURIComponent(PAGE) + '*&select=*&order=created_at.asc')
+        .catch(function (e) { console.warn('shared store unavailable', e); hintEl.className = 'anno-hint warn'; hintEl.textContent = '共享存储连接失败，评注暂存本机。'; return []; });
+    }
+    return Promise.resolve(JSON.parse(localStorage.getItem(LS) || '{"items":[]}').items);
+  }
+  load().then(function (rows) { anns = rows || []; paint(); renderList(); });
+})();
+</script>
 <footer class="reader-foot">
 <p>原著：兰陵笑笑生《金瓶梅》（崇祯本）。本网页版据大吕文化 · 华语出版社电子本逐页识别、重新排版，仅供个人阅读与研究；原著版权归作者与出版方所有。</p>
 <p><a href="../../zh/books.html">← 江召兵个人主页 · 全部专著</a></p>
