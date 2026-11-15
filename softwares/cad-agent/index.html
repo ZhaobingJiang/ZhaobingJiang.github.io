@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="欧帕提亚CAD智能体（Web 本地版）：读 DWG/DXF 户型图，识别楼层、房间、墙体与空调设备，在 FreeCAD 中生成可编辑三维模型，导出 STEP/STL/GLB，并支持整栋多层叠合与自然语言改参数。本页为软件介绍，软件本体在作者本机运行。">
+  <title>欧帕提亚CAD智能体（Web 本地版） | Zhaobing Jiang</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script src="../../assets/js/theme.js?v=2"></script>
+  <style>
+    .page-masthead { max-width: 860px; margin: 0 auto; padding: 20px 20px 14px; display: flex; align-items: center; gap: 13px; }
+    .masthead-logo { flex: none; width: 46px; height: 46px; object-fit: contain; padding: 5px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 11px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+    .masthead-id { display: flex; flex-direction: column; min-width: 0; }
+    .masthead-org { font-size: 16.5px; font-weight: 700; color: var(--heading-color); letter-spacing: .3px; line-height: 1.45; }
+    .masthead-sub { font-size: 12.5px; color: var(--muted-color); letter-spacing: .4px; line-height: 1.45; }
+    .masthead-copy { flex: none; margin-left: auto; font-size: 12.5px; color: var(--muted-color); background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 999px; padding: 4px 14px; white-space: nowrap; line-height: 1.6; }
+    @media (max-width: 640px) {
+      .page-masthead { flex-wrap: wrap; }
+      .masthead-id { flex: 1 1 calc(100% - 51px); }
+      .masthead-copy { margin-left: 59px; }
+    }
+    .intro-lede { font-size: 16px; line-height: 1.95; color: var(--text-color); margin: 18px 0 26px; }
+    .shot-frame { margin: 26px 0 10px; border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; background: var(--card-bg); box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+    .shot-frame img { display: block; width: 100%; height: auto; }
+    .shot-cap { font-size: 13.5px; color: var(--muted-color); line-height: 1.8; margin: 0 0 26px; }
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin: 18px 0 8px; }
+    .feat-item { font-size: 14.5px; line-height: 1.8; color: var(--text-color); background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 9px; padding: 13px 15px; }
+    .feat-item b { color: var(--heading-color); }
+    .metric-line { font-size: 13.5px; color: var(--muted-color); border-top: 1px dashed var(--border-color); border-bottom: 1px dashed var(--border-color); padding: 12px 2px; margin: 24px 0; line-height: 1.9; }
+    .run-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 22px 24px; }
+    .run-box h3 { margin: 0 0 12px; font-size: 17px; color: var(--heading-color); }
+    .run-box ol { margin: 0 0 16px 20px; padding: 0; font-size: 14.5px; line-height: 2; color: var(--text-color); }
+    .run-code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12.8px; background: var(--code-bg, rgba(127,127,127,.12)); padding: 2px 6px; border-radius: 5px; }
+    .btn-local { display: inline-block; background: var(--accent-color); color: #fff; text-decoration: none; font-size: 15px; font-weight: 700; padding: 10px 22px; border-radius: 999px; letter-spacing: .3px; }
+    .btn-local:hover { filter: brightness(1.06); }
+    .open-hint { font-size: 13px; color: var(--muted-color); margin-top: 12px; line-height: 1.75; min-height: 1.2em; }
+    .guest-note { font-size: 13.5px; color: var(--muted-color); border-left: 3px solid var(--accent-color); padding: 6px 0 6px 14px; margin: 16px 0 4px; line-height: 1.8; }
+  </style>
+</head>
+<body>
+  <div class="page-masthead">
+    <img class="masthead-logo" src="logo.png" alt="南京欧帕提亚信息科技有限公司 logo">
+    <div class="masthead-id">
+      <span class="masthead-org">南京欧帕提亚信息科技有限公司</span>
+      <span class="masthead-sub">本软件开发与维护方</span>
+    </div>
+    <span class="masthead-copy">© 2026 江召兵</span>
+  </div>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="../../" class="nav-link">Home</a>
+      <a href="../../publications/" class="nav-link">Publications</a>
+      <a href="../../projects.html" class="nav-link">Projects</a>
+      <a href="../../awards/" class="nav-link">Awards</a>
+      <a href="../../mooc.html" class="nav-link">MOOC</a>
+      <a href="../../poems.html" class="nav-link">Poems</a>
+      <a href="../../books/" class="nav-link">Books</a>
+      <a href="../" class="nav-link active">Softwares</a>
+      <a href="../../zh/softwares.html" class="nav-link">中文</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="title-section">
+      <h1 class="name">
+        欧帕提亚CAD智能体
+        <span style="font-size:15px; font-weight:600; vertical-align:4px; color:var(--accent-color); border:1px solid var(--accent-color); border-radius:999px; padding:1px 10px; white-space:nowrap;">Web 本地版</span>
+      </h1>
+      <p class="affiliation">图纸 / 图片 → 可编辑三维：DWG/DXF 解析 · 房间与设备识别 · FreeCAD 参数化建模 · STEP/STL/GLB · 整栋叠合 · 自然语言改参数。</p>
+    </div>
+
+    <p class="intro-lede">
+      本软件把<strong>户型图（DWG/DXF）</strong>读成可计算的三维模型：先解出楼层、墙体、房间、门窗与空调设备，
+      再在 <strong>FreeCAD</strong> 里按参数生成楼板、墙体与设备盒体，输出 <strong>STEP / STL / GLB</strong>，
+      并支持<strong>整栋多层叠合</strong>与浏览器三维预览。图纸解析全在本地完成，
+      不上传云端；大模型只负责理解自然语言并给出受控参数，几何仍由 FreeCAD 确定性生成。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot.jpg" alt="欧帕提亚CAD智能体主界面：左侧 0 智能体对话、1 图纸输入、2 楼层选择、3 生成三维、4 房间与设备清单、5 过程记录；右侧为 FreeCAD 生成的一层三维模型">
+    </div>
+    <p class="shot-cap">
+      主界面（恒裕滨城一层，单层生成完成）：左侧依次为智能体对话、图纸上传、楼层选择、生成与指标、房间/设备/假设清单、
+      过程记录；右侧为 FreeCAD 生成的三维模型（楼板 + 实体墙 + 空调设备），可直接旋转缩放。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot_all.jpg" alt="整栋四层叠合模型：2,617 个实体、4,192.901 立方米，层距 2,950 毫米">
+    </div>
+    <p class="shot-cap">
+      整栋叠合：四层按“层高 2,800 mm + 楼板 150 mm = 2,950 mm 层距”叠放，共 <strong>2,617 个实体、4,192.901 m³</strong>，
+      导出 STEP 约 17 MB / STL 约 8 MB，FreeCAD 建模约 4 秒。
+    </p>
+
+    <div class="shot-frame">
+      <img src="screenshot_chat.jpg" alt="智能体对话：把层高从 2,800 毫米改为 3,200 毫米并重新生成，模型体积由 419.958 变为 470.608 立方米">
+    </div>
+    <p class="shot-cap">
+      自然语言改参数：输入“层高改成 3200，重新生成”，智能体回填受控参数并触发重建，
+      体积由 419.958 m³ 变为 <strong>470.608 m³</strong>；对话下方为参数 chip 与追问。
+    </p>
+
+    <section class="section">
+      <h2 class="section-title">主要功能</h2>
+      <div class="feat-grid">
+        <div class="feat-item"><b>DWG / DXF 解析</b> — LibreDWG 把 DWG 转 DXF，ezdxf 展开四个楼层大块（每块 3,000–5,000 实体），识别墙填充（HATCH）、平行双线墙、房间名、门窗与设备标注。</div>
+        <div class="feat-item"><b>楼层与房间识别</b> — 按图名与块包围盒切分楼层；房间名文本落多边形，给出每间面积、轮廓、中心与所属设备（栅格 BFS，门洞未闭合时标注估算误差）。</div>
+        <div class="feat-item"><b>设备语义</b> — 从 MTEXT 解析型号（FQRP/FQDP/FJEKP/VAM/RQCZQ 等）、尺寸（200*970*450）、冷量（5.6KW/2.2匹）与气流方式（侧出下回），按标注点落位。</div>
+        <div class="feat-item"><b>FreeCAD 参数化建模</b> — 楼板 150 mm、墙体 2,800 mm（HATCH 多边形 + 双线矩形）、设备盒体按标注尺寸生成，输出 STEP/STL/GLB；单层约 0.4–0.7 s，整栋约 4 s。</div>
+        <div class="feat-item"><b>整栋多层叠合</b> — 各层按自身包围盒原点对齐后逐层叠放，解决图纸中四层横向偏移约 30 m 的问题，输出整栋 STEP/STL/GLB 与层距。</div>
+        <div class="feat-item"><b>自然语言改参数</b> — 接入 DeepSeek（OpenAI 兼容接口），把“层高改 3200”“墙厚 250”等解析为受控参数（层高/墙厚/楼板/门高/窗高/窗台/设备下挂），驱动 FreeCAD 重建。</div>
+        <div class="feat-item"><b>过程可追溯</b> — 界面逐步显示 ①上传 → ②DWG 转 DXF → ③解析（层数/房/机/墙段/耗时）→ ④就绪 → ⑤生成 → ⑥FreeCAD → ⑦STEP/STL → ⑧GLB → ⑨完成，并给出每步耗时。</div>
+        <div class="feat-item"><b>本地优先与密钥隔离</b> — 图纸不出本机；API 密钥只存本机 <span class="run-code">.env</span>，页面只显示掩码；未配置大模型时，解析与建模功能仍可独立使用。</div>
+      </div>
+      <p class="metric-line">
+        样例：6.97 MB DWG → 50.3 MB DXF · 4 层 / 14·9·10·7 房间 / 10·8·5·5 台设备 ·
+        单层 308 实体 / 419.958 m³ / 0.43 s · 整栋 2,617 实体 / 4,192.901 m³ / 4.0–4.5 s ·
+        STEP 2.05 MB（单层）/ 17.1 MB（整栋）
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="run-box">
+        <h3>获取与运行</h3>
+        <ol>
+          <li>软件运行在作者本机（Web 本地版，图纸与数据不出本机）；本页面为软件介绍。</li>
+          <li>本机首次配置（一次性）：双击 <span class="run-code">LuBanWeb复刻\注册软件协议.reg</span>，注册 <span class="run-code">opatiya-cad://</span> 启动协议。</li>
+          <li>日常使用：直接点击下方按钮，浏览器会唤起本机启动器并打开软件界面；也可双击 <span class="run-code">LuBanWeb复刻\启动软件.bat</span> 手动启动。</li>
+        </ol>
+        <a class="btn-local" id="btnOpen" href="opatiya-cad://open">▶ 启动本机软件</a>
+        <div class="open-hint" id="openHint"></div>
+        <div class="guest-note">
+          说明：软件仅安装在作者本机，不通过互联网提供服务，外部访客无法运行。
+          访客点击“启动本机软件”通常没有反应，属于正常现象——欢迎通过本页了解能力，
+          或通过 <a href="../../">Home</a> 页与作者联系洽谈演示与合作。
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">技术栈与边界</h2>
+      <p>
+        前端 <strong>Vue 风格原生 HTML + three.js r128</strong>（本地 vendor，无外网依赖），后端
+        <strong>FastAPI + uvicorn</strong>，几何内核 <strong>FreeCAD 1.0.0</strong>（便携 conda 环境，无 GUI 调用），
+        解析链 <strong>LibreDWG 0.11 → ezdxf 1.4 → shapely / OpenCV</strong>，转换 <strong>trimesh</strong>。
+        当前版本以 DWG/DXF 为主链路；PNG 图纸矢量化、门窗洞口开洞、墙厚/门窗驱动几何仍在开发中，
+        房间面积因门洞未闭合按“估算 ±20–40%”标注。示例图纸为恒裕滨城四层空调布置图（6.97 MB），
+        设备型号与尺寸均来自图纸标注，未标注的层高、墙厚按工程假设并在界面与日志中注明。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      本页参考
+      <a href="https://github.com/yaoyao-liu/minimal-light" target="_blank" rel="noopener">minimal-light</a>
+      模板风格构建，欢迎使用本页源码。版权与开发者信息见页首。
+    </p>
+  </footer>
+
+  <script>
+    // 点击“启动本机软件”：经隐藏 iframe 唤起本机注册的 opatiya-cad:// 协议，
+    // 由本机启动器（启动软件.bat）拉起 Web 服务并打开页面。用 iframe 而非 location.href：
+    // 即使协议未注册，主页面也不会被导航走。页面不含任何本机路径或地址。
+    (function () {
+      var btn = document.getElementById('btnOpen');
+      var hint = document.getElementById('openHint');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        f.src = btn.getAttribute('href');
+        document.body.appendChild(f);
+        setTimeout(function () { if (f.parentNode) f.parentNode.removeChild(f); }, 8000);
+        hint.innerHTML = '已唤起本机启动器（浏览器弹出确认框时请选择“打开”）。<br>' +
+          '若没有反应，请先完成上方第 2 步的一次性配置（注册协议），或手动双击启动软件.bat。';
+      });
+    })();
+  </script>
+  <script src="/assets/js/site-counter.js?v=3" defer></script>
+</body>
+</html>
