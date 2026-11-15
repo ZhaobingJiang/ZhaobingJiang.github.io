@@ -67,6 +67,9 @@ footer.reader-foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(-
 body.anno-open .anno-panel{transform:none}
 .anno-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.9rem 1rem;border-bottom:1px solid var(--line);background:#faf6ee}
 .anno-head h2{margin:0;font-size:.98rem;letter-spacing:.12rem;color:var(--seal);font-weight:600}
+.anno-tools{display:flex;align-items:center;gap:.35rem}
+.anno-tools .mini{padding:.16rem .5rem;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:.76rem;cursor:pointer}
+.anno-tools .mini:hover{color:var(--seal);border-color:var(--seal)}
 .anno-head .x{border:0;background:none;font-size:1.2rem;line-height:1;color:var(--muted);cursor:pointer;padding:.2rem}
 .anno-body{flex:1;overflow:auto;padding:.9rem 1rem 2rem}
 .anno-hint{font-size:.78rem;line-height:1.75;color:var(--muted);margin:0 0 .8rem}
@@ -1055,10 +1058,10 @@ mark.anno.flash{background:#ffc857}
   </div>
   <div class="ch-nav"><a href="#c-032">← 第三十二回</a><a class="to-toc" href="index.html#toc">目次</a><span></span></div>
 </article>
-
+<script id="anno-seed" type="application/json">[{"id": "a925ee66-f7d0-4182-af7c-8bc61cf38b1e", "book": "jinpingmei", "chapter": "shang.html#c-001", "start_off": 110, "end_off": 122, "exact": "首诗，是昔年大唐国时，一", "note": "开篇引诗，先交代诗曰的来历。", "name": "站主", "created_at": "2026-11-15T12:39:26+00:00"}]</script>
 <button class="anno-toggle" id="anno-toggle" type="button" aria-controls="anno-panel" aria-expanded="false">评注<b id="anno-n">0</b></button>
 <aside class="anno-panel" id="anno-panel" aria-label="评注栏" aria-hidden="true">
-  <div class="anno-head"><h2>评注</h2><button class="x" id="anno-close" type="button" aria-label="关闭评注栏">×</button></div>
+  <div class="anno-head"><h2>评注</h2><span class="anno-tools"><button class="mini" id="anno-export" type="button" title="导出本机评注，交给站主收录">导出</button><button class="x" id="anno-close" type="button" aria-label="关闭评注栏">×</button></span></div>
   <div class="anno-body">
     <p class="anno-hint" id="anno-hint">在正文中拖选一段文字，即可写下评注。评注会显示在这里，点击可定位原文。</p>
     <form id="anno-form" hidden>
@@ -1086,6 +1089,12 @@ mark.anno.flash{background:#ffc857}
       hintEl = document.getElementById('anno-hint'),
       toggleEl = document.getElementById('anno-toggle');
   var anns = [], pending = null, saveFn = null;
+  var SEED = [];
+  try {
+    var seedEl = document.getElementById('anno-seed');
+    if (seedEl) SEED = JSON.parse(seedEl.textContent || '[]');
+  } catch (e) { SEED = []; }
+  SEED.forEach(function (a) { a.seed = 1; });
   var HL = ('highlights' in CSS) && (typeof Highlight === 'function');
   var shared = !!(CFG.url && CFG.key);
 
@@ -1165,11 +1174,11 @@ mark.anno.flash{background:#ffc857}
     hintEl.className = 'anno-hint' + (shared ? '' : ' warn');
     hintEl.innerHTML = shared
       ? '在正文中拖选一段文字，即可写下评注；评注对所有人可见。'
-      : '在正文中拖选一段文字，即可写下评注。<b>当前为本机保存</b>：评注只存在本浏览器，配置共享存储后所有人可见。';
+      : '在正文中拖选一段文字，即可写下评注。<b>本机保存</b>：新写的评注先存在本浏览器，点「导出」交给站主收录后，所有访客都能看到。';
     listEl.innerHTML = mine.length ? mine.map(function (a) {
       return '<li data-id="' + esc(a.id) + '"><p class="q">' + esc(a.exact) + '</p><p class="n">' + esc(a.note) + '</p>' +
         '<p class="m"><span>' + esc(a.name || '匿名') + '</span><span>' + fmt(a.created_at) + '</span>' +
-        (a.delete_token === token() ? '<button class="del" data-id="' + esc(a.id) + '" type="button">删除</button>' : '') + '</p></li>';
+        (a.delete_token === token() && !a.seed ? '<button class="del" data-id="' + esc(a.id) + '" type="button">删除</button>' : '') + '</p></li>';
     }).join('') : '<li class="anno-empty" style="border:0;cursor:default">本回还没有评注。</li>';
   }
 
@@ -1295,9 +1304,27 @@ mark.anno.flash{background:#ffc857}
       return api(CFG.table + '?book=eq.' + CFG.book + '&chapter=like.' + encodeURIComponent(PAGE) + '*&select=*&order=created_at.asc')
         .catch(function (e) { console.warn('shared store unavailable', e); hintEl.className = 'anno-hint warn'; hintEl.textContent = '共享存储连接失败，评注暂存本机。'; return []; });
     }
-    return Promise.resolve(JSON.parse(localStorage.getItem(LS) || '{"items":[]}').items);
+    var items = JSON.parse(localStorage.getItem(LS) || '{"items":[]}').items;
+    var seen = {};
+    SEED.forEach(function (s) { seen[s.id] = 1; });
+    return Promise.resolve(SEED.concat(items.filter(function (x) { return !seen[x.id]; })));
   }
-  load().then(function (rows) { anns = rows || []; paint(); renderList(); });
+  var expBtn = document.getElementById('anno-export');
+  if (expBtn) expBtn.addEventListener('click', function () {
+    var items = JSON.parse(localStorage.getItem(LS) || '{"items":[]}').items
+      .filter(function (a) { return a.chapter.indexOf(PAGE + '#') === 0; });
+    if (!items.length) { alert('本页还没有本机评注。'); return; }
+    var blob = new Blob([JSON.stringify({ items: items }, null, 1)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'jinpingmei-anno-' + PAGE.replace('.html', '') + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  });
+  load().then(function (rows) {
+    anns = rows || []; paint(); renderList();
+    if (anns.some(function (a) { return a.seed; })) openPanel(false);
+  });
 })();
 </script>
 <footer class="reader-foot">
