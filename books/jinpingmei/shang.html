@@ -63,8 +63,11 @@ footer.reader-foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(-
 .anno-toggle{position:fixed;right:18px;bottom:18px;z-index:85;padding:.5rem .95rem;border:1px solid var(--seal);background:#fffdf8;color:var(--seal);border-radius:999px;font-size:.88rem;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.14);font-family:inherit}
 .anno-toggle:hover{background:var(--seal);color:#fff}
 .anno-toggle b{font-weight:600;margin-left:.2rem}
-.anno-panel{position:fixed;top:0;right:0;z-index:100;width:min(360px,100%);height:100%;display:flex;flex-direction:column;background:#fffdf8;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(40,30,20,.12);transform:translateX(103%);transition:transform .24s ease;}
-body.anno-open .anno-panel{transform:none}
+body{--anno-w:360px}
+.anno-panel{position:fixed;top:0;right:0;z-index:100;width:var(--anno-w);max-width:100%;height:100%;display:flex;flex-direction:column;background:#fffdf8;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(40,30,20,.12);}
+body.anno-open{padding-right:var(--anno-w)}
+.anno-resizer{position:absolute;left:-3px;top:0;width:8px;height:100%;cursor:col-resize;touch-action:none;background:transparent;z-index:101}
+.anno-resizer:hover,.anno-resizer.drag{background:rgba(142,34,28,.20)}
 .anno-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.9rem 1rem;border-bottom:1px solid var(--line);background:#faf6ee}
 .anno-head h2{margin:0;font-size:.98rem;letter-spacing:.12rem;color:var(--seal);font-weight:600}
 .anno-tools{display:flex;align-items:center;gap:.35rem}
@@ -95,7 +98,14 @@ body.anno-open .anno-panel{transform:none}
 ::highlight(jpm-flash){background-color:#ffc857}
 mark.anno{background:#f7e2a4;color:inherit;padding:0}
 mark.anno.flash{background:#ffc857}
-@media(max-width:1100px){.anno-panel{width:100%;height:72%;top:auto;bottom:0;border-left:0;border-top:1px solid var(--line);transform:translateY(104%);border-radius:12px 12px 0 0}body.anno-open .anno-panel{transform:none}}
+@media(max-width:1100px){
+.anno-panel{width:100%;max-width:100%;height:72%;top:auto;bottom:0;border-left:0;border-top:1px solid var(--line);border-radius:12px 12px 0 0;transform:translateY(104%);transition:transform .24s ease}
+body.anno-open{padding-right:0}
+body.anno-open .anno-panel{transform:none}
+.anno-resizer{display:none}
+#anno-close{display:inline-block}
+}
+@media(min-width:1101px){#anno-close{display:none}}
 </style>
 </head>
 <body>
@@ -1058,9 +1068,10 @@ mark.anno.flash{background:#ffc857}
   </div>
   <div class="ch-nav"><a href="#c-032">← 第三十二回</a><a class="to-toc" href="index.html#toc">目次</a><span></span></div>
 </article>
-<script id="anno-seed" type="application/json">[{"id": "a925ee66-f7d0-4182-af7c-8bc61cf38b1e", "book": "jinpingmei", "chapter": "shang.html#c-001", "start_off": 110, "end_off": 122, "exact": "首诗，是昔年大唐国时，一", "note": "开篇引诗，先交代诗曰的来历。", "name": "站主", "created_at": "2026-11-15T12:39:26+00:00"}]</script>
+<script id="anno-seed" type="application/json">[]</script>
 <button class="anno-toggle" id="anno-toggle" type="button" aria-controls="anno-panel" aria-expanded="false">评注<b id="anno-n">0</b></button>
 <aside class="anno-panel" id="anno-panel" aria-label="评注栏" aria-hidden="true">
+<div class="anno-resizer" id="anno-resizer" role="separator" aria-orientation="vertical" aria-label="拖动调整评注栏宽度" title="拖动调整宽度"></div>
   <div class="anno-head"><h2>评注</h2><span class="anno-tools"><button class="mini" id="anno-export" type="button" title="导出本机评注，交给站主收录">导出</button><button class="x" id="anno-close" type="button" aria-label="关闭评注栏">×</button></span></div>
   <div class="anno-body">
     <p class="anno-hint" id="anno-hint">在正文中拖选一段文字，即可写下评注。评注会显示在这里，点击可定位原文。</p>
@@ -1089,6 +1100,9 @@ mark.anno.flash{background:#ffc857}
       hintEl = document.getElementById('anno-hint'),
       toggleEl = document.getElementById('anno-toggle');
   var anns = [], pending = null, saveFn = null;
+  var WKEY = 'jpm-anno-w';
+  var savedW = parseInt(localStorage.getItem(WKEY) || '0', 10);
+  if (savedW >= 280 && savedW <= 720) document.body.style.setProperty('--anno-w', savedW + 'px');
   var SEED = [];
   try {
     var seedEl = document.getElementById('anno-seed');
@@ -1145,13 +1159,27 @@ mark.anno.flash{background:#ffc857}
       } catch (e) { paintMarks(); }
     }
   }
+  function wrapOffsets(root, s, e, id) {
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), segs = [], acc = 0, n;
+    while ((n = w.nextNode())) { segs.push({ n: n, a: acc, b: acc + n.nodeValue.length }); acc += n.nodeValue.length; }
+    segs.forEach(function (seg) {
+      var a = Math.max(s, seg.a), b = Math.min(e, seg.b);
+      if (b <= a || !seg.n.parentNode) return;
+      var t = seg.n.nodeValue, i = a - seg.a, j = b - seg.a;
+      var frag = document.createDocumentFragment();
+      if (i > 0) frag.appendChild(document.createTextNode(t.slice(0, i)));
+      var m = document.createElement('mark'); m.className = 'anno'; m.dataset.id = id; m.textContent = t.slice(i, j);
+      frag.appendChild(m);
+      if (j < t.length) frag.appendChild(document.createTextNode(t.slice(j)));
+      seg.n.parentNode.replaceChild(frag, seg.n);
+    });
+  }
   function paintMarks() {
     [].slice.call(document.querySelectorAll('mark.anno')).forEach(function (m) { var p = m.parentNode; while (m.firstChild) p.insertBefore(m.firstChild, m); p.removeChild(m); p.normalize(); });
     myAnnos().slice().sort(function (a, b) { return b.start_off - a.start_off; }).forEach(function (a) {
       var body = bodyOf(artOf(a)); if (!body) return;
       var r = rangeAt(body, a.start_off, a.end_off); if (!r) return;
-      var m = document.createElement('mark'); m.className = 'anno'; m.dataset.id = a.id;
-      try { r.surroundContents(m); } catch (e) { m.appendChild(r.extractContents()); r.insertNode(m); }
+      wrapOffsets(body, a.start_off, a.end_off, a.id);
     });
   }
   function flash(a) {
@@ -1309,6 +1337,26 @@ mark.anno.flash{background:#ffc857}
     SEED.forEach(function (s) { seen[s.id] = 1; });
     return Promise.resolve(SEED.concat(items.filter(function (x) { return !seen[x.id]; })));
   }
+  var rz = document.getElementById('anno-resizer');
+  if (rz) rz.addEventListener('pointerdown', function (ev) {
+    ev.preventDefault();
+    rz.setPointerCapture(ev.pointerId);
+    rz.classList.add('drag');
+    function move(e) {
+      var maxW = Math.min(720, window.innerWidth - 320);
+      var w = Math.min(Math.max(window.innerWidth - e.clientX, 280), Math.max(280, maxW));
+      document.body.style.setProperty('--anno-w', w + 'px');
+    }
+    function up() {
+      rz.classList.remove('drag');
+      rz.removeEventListener('pointermove', move);
+      rz.removeEventListener('pointerup', up);
+      var w = parseInt(getComputedStyle(document.body).getPropertyValue('--anno-w'), 10) || 360;
+      localStorage.setItem(WKEY, String(w));
+    }
+    rz.addEventListener('pointermove', move);
+    rz.addEventListener('pointerup', up);
+  });
   var expBtn = document.getElementById('anno-export');
   if (expBtn) expBtn.addEventListener('click', function () {
     var items = JSON.parse(localStorage.getItem(LS) || '{"items":[]}').items
@@ -1321,10 +1369,8 @@ mark.anno.flash{background:#ffc857}
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
   });
-  load().then(function (rows) {
-    anns = rows || []; paint(); renderList();
-    if (anns.some(function (a) { return a.seed; })) openPanel(false);
-  });
+  if (window.matchMedia('(min-width:1101px)').matches) openPanel(false);
+  load().then(function (rows) { anns = rows || []; paint(); renderList(); });
 })();
 </script>
 <footer class="reader-foot">

@@ -63,8 +63,11 @@ footer.reader-foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(-
 .anno-toggle{position:fixed;right:18px;bottom:18px;z-index:85;padding:.5rem .95rem;border:1px solid var(--seal);background:#fffdf8;color:var(--seal);border-radius:999px;font-size:.88rem;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.14);font-family:inherit}
 .anno-toggle:hover{background:var(--seal);color:#fff}
 .anno-toggle b{font-weight:600;margin-left:.2rem}
-.anno-panel{position:fixed;top:0;right:0;z-index:100;width:min(360px,100%);height:100%;display:flex;flex-direction:column;background:#fffdf8;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(40,30,20,.12);transform:translateX(103%);transition:transform .24s ease;}
-body.anno-open .anno-panel{transform:none}
+body{--anno-w:360px}
+.anno-panel{position:fixed;top:0;right:0;z-index:100;width:var(--anno-w);max-width:100%;height:100%;display:flex;flex-direction:column;background:#fffdf8;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(40,30,20,.12);}
+body.anno-open{padding-right:var(--anno-w)}
+.anno-resizer{position:absolute;left:-3px;top:0;width:8px;height:100%;cursor:col-resize;touch-action:none;background:transparent;z-index:101}
+.anno-resizer:hover,.anno-resizer.drag{background:rgba(142,34,28,.20)}
 .anno-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.9rem 1rem;border-bottom:1px solid var(--line);background:#faf6ee}
 .anno-head h2{margin:0;font-size:.98rem;letter-spacing:.12rem;color:var(--seal);font-weight:600}
 .anno-tools{display:flex;align-items:center;gap:.35rem}
@@ -95,7 +98,14 @@ body.anno-open .anno-panel{transform:none}
 ::highlight(jpm-flash){background-color:#ffc857}
 mark.anno{background:#f7e2a4;color:inherit;padding:0}
 mark.anno.flash{background:#ffc857}
-@media(max-width:1100px){.anno-panel{width:100%;height:72%;top:auto;bottom:0;border-left:0;border-top:1px solid var(--line);transform:translateY(104%);border-radius:12px 12px 0 0}body.anno-open .anno-panel{transform:none}}
+@media(max-width:1100px){
+.anno-panel{width:100%;max-width:100%;height:72%;top:auto;bottom:0;border-left:0;border-top:1px solid var(--line);border-radius:12px 12px 0 0;transform:translateY(104%);transition:transform .24s ease}
+body.anno-open{padding-right:0}
+body.anno-open .anno-panel{transform:none}
+.anno-resizer{display:none}
+#anno-close{display:inline-block}
+}
+@media(min-width:1101px){#anno-close{display:none}}
 </style>
 </head>
 <body>
