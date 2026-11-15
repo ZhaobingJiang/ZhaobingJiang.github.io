@@ -1088,6 +1088,7 @@ body.anno-open .anno-panel{transform:none}
   var CFG = { book: 'jinpingmei', url: '', key: '', table: 'annotations' };
   var PAGE = (location.pathname.split('/').pop() || 'index.html');
   var LS = 'jpm_anno_v1';
+  var NT = { acceptNode: function (n) { return n.nodeValue && n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; } };
   var arts = [].slice.call(document.querySelectorAll('article.chapter'));
   if (!arts.length) return;
   var panel = document.getElementById('anno-panel'),
@@ -1124,7 +1125,7 @@ body.anno-open .anno-panel{transform:none}
   function bodyOf(art) { return art ? art.querySelector('.ch-body') : null; }
 
   function pointAt(root, off) {
-    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), acc = 0, n;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, NT), acc = 0, n;
     while ((n = w.nextNode())) { var L = n.nodeValue.length; if (acc + L >= off) return { node: n, off: off - acc }; acc += L; }
     return null;
   }
@@ -1136,7 +1137,7 @@ body.anno-open .anno-panel{transform:none}
     return r;
   }
   function offsetOf(root, node, off) {
-    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), acc = 0, n;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, NT), acc = 0, n;
     while ((n = w.nextNode())) { if (n === node) return acc + off; acc += n.nodeValue.length; }
     return -1;
   }
@@ -1160,7 +1161,7 @@ body.anno-open .anno-panel{transform:none}
     }
   }
   function wrapOffsets(root, s, e, id) {
-    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), segs = [], acc = 0, n;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, NT), segs = [], acc = 0, n;
     while ((n = w.nextNode())) { segs.push({ n: n, a: acc, b: acc + n.nodeValue.length }); acc += n.nodeValue.length; }
     segs.forEach(function (seg) {
       var a = Math.max(s, seg.a), b = Math.min(e, seg.b);
@@ -1182,8 +1183,29 @@ body.anno-open .anno-panel{transform:none}
       wrapOffsets(body, a.start_off, a.end_off, a.id);
     });
   }
+  function reveal(a) {
+    var marks = document.querySelectorAll('mark.anno[data-id="' + a.id + '"]'), target = null;
+    for (var i = 0; i < marks.length; i++) { if (marks[i].textContent.trim()) { target = marks[i]; break; } }
+    if (!target && marks.length) target = marks[0];
+    if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(a); return; }
+    var art = artOf(a);
+    if (!art) return;
+    var body = art.querySelector('.ch-body');
+    var r = body ? rangeAt(body, a.start_off || 0, Math.max((a.start_off || 0) + 1, a.end_off || 0)) : null;
+    if (r) {
+      var rect = r.getBoundingClientRect();
+      if (rect && (rect.width || rect.height)) {
+        var y = window.pageYOffset + rect.top - window.innerHeight / 2 + rect.height / 2;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        flash(a); return;
+      }
+    }
+    art.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    flash(a);
+  }
+
   function flash(a) {
-    var m = document.querySelector('mark.anno[data-id="' + a.id + '"]');
+    var ms = document.querySelectorAll('mark.anno[data-id="' + a.id + '"]'), m = null; for (var i = 0; i < ms.length; i++) { if (ms[i].textContent.trim()) { m = ms[i]; break; } } if (!m && ms.length) m = ms[0];
     if (!m) return;
     m.classList.add('flash');
     setTimeout(function () { m.classList.remove('flash'); }, 1500);
@@ -1265,7 +1287,7 @@ body.anno-open .anno-panel{transform:none}
     if (del) { ev.stopPropagation(); remove(del.dataset.id); return; }
     if (li && li.dataset.id) {
       var a = anns.filter(function (x) { return x.id === li.dataset.id; })[0];
-      if (a) { var art = artOf(a); if (art) art.scrollIntoView({ behavior: 'smooth', block: 'center' }); flash(a); }
+      if (a) reveal(a);
       return;
     }
     if (!ev.target.closest || !ev.target.closest('.ch-body')) return;
