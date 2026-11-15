@@ -1141,6 +1141,35 @@ body.anno-open .anno-panel{transform:none}
     while ((n = w.nextNode())) { if (n === node) return acc + off; acc += n.nodeValue.length; }
     return -1;
   }
+  function flatText(root) {
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, NT), t = '', n;
+    while ((n = w.nextNode())) t += n.nodeValue;
+    return t;
+  }
+  function healAnno(a) {
+    var body = bodyOf(artOf(a)); if (!body || !a.exact) return false;
+    var t = flatText(body), len = a.exact.length;
+    if (t.substr(a.start_off, len) === a.exact) return false;
+    function nearest(needle) {
+      var best = -1, bestD = Infinity, i = t.indexOf(needle);
+      while (i >= 0) { var d = Math.abs(i - a.start_off); if (d < bestD) { bestD = d; best = i; } i = t.indexOf(needle, i + 1); }
+      return best;
+    }
+    var at = nearest(a.exact);
+    if (at < 0) {
+      var trimmed = a.exact.trim();
+      if (trimmed && trimmed !== a.exact) { at = nearest(trimmed); if (at >= 0) { a.exact = trimmed; len = trimmed.length; } }
+    }
+    if (at < 0) return false;
+    a.start_off = at; a.end_off = at + len; a._healed = true;
+    return true;
+  }
+  function healAll(list) {
+    var changed = false;
+    list.forEach(function (a) { if (healAnno(a)) changed = true; });
+    return changed;
+  }
+
   function myAnnos() { return anns.filter(function (a) { return a.chapter.indexOf(PAGE + '#') === 0; }); }
 
   function paint() {
@@ -1179,6 +1208,7 @@ body.anno-open .anno-panel{transform:none}
     [].slice.call(document.querySelectorAll('mark.anno')).forEach(function (m) { var p = m.parentNode; while (m.firstChild) p.insertBefore(m.firstChild, m); p.removeChild(m); p.normalize(); });
     myAnnos().slice().sort(function (a, b) { return b.start_off - a.start_off; }).forEach(function (a) {
       var body = bodyOf(artOf(a)); if (!body) return;
+      if (flatText(body).substr(a.start_off, (a.exact || '').length) !== a.exact) return;
       var r = rangeAt(body, a.start_off, a.end_off); if (!r) return;
       wrapOffsets(body, a.start_off, a.end_off, a.id);
     });
@@ -1392,7 +1422,14 @@ body.anno-open .anno-panel{transform:none}
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
   });
   if (window.matchMedia('(min-width:1101px)').matches) openPanel(false);
-  load().then(function (rows) { anns = rows || []; paint(); renderList(); });
+  load().then(function (rows) {
+    anns = rows || [];
+    if (healAll(anns)) {
+      var keep = anns.filter(function (a) { return !a.seed; });
+      localStorage.setItem(LS, JSON.stringify({ items: keep }));
+    }
+    paint(); renderList();
+  });
 })();
 </script>
 <footer class="reader-foot">
